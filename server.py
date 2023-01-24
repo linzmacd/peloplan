@@ -1,0 +1,110 @@
+"""Server for movie ratings app."""
+
+from flask import (Flask, render_template, request,flash, session, redirect)
+from model import connect_to_db, db
+import crud, peloton_api
+from jinja2 import StrictUndefined
+
+
+app = Flask(__name__)
+app.secret_key = 'dev'
+app.jinja_env.undefined = StrictUndefined
+
+
+
+# Routes and view functions
+@app.route('/')
+def homepage():
+    '''View PeloPlan homepage.'''
+    return render_template('homepage.html')
+
+
+@app.route('/create-account', methods=['POST'])
+def create_account():
+    '''Creates new PeloPlan user account'''
+    fname = request.form.get('fname')
+    lname = request.form.get('lname')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    # check to see if email in use
+    user = crud.get_user_by_email(email)
+    if user:
+        flash('Email already in use.')
+    # if not, creates new user
+    else: 
+        crud.create_user(fname, lname, email, password)
+        flash('Account created! Please log in to continue.')
+
+    return redirect('/')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    '''Login to PeloPlan user account'''
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    # check to see if email in use
+    user = crud.get_user_by_email(email)
+    if user:
+        # check to see if password correct
+        if user.password == password:
+            flash('Logged in to PeloPlan!')
+            session['user_id'] = user.user_id
+            # check for session id
+            session_id = user.session_id
+            if not session_id:
+                return redirect('/peloton-login')
+            return redirect(f"/check-cookies/{session_id}")
+        else:
+            flash("Incorrect password.")
+    else:
+        flash('Incorrect email.')
+
+    return redirect('/')
+
+@app.route('/check-cookies/<session_id>')
+def check_session_cookie(session_id):
+    '''Check auth status of session id.'''
+    auth_status = peloton_api.check_session_id(session_id)
+    if auth_status:
+        session['cookie'] = {'peloton_session_id': session_id}
+        return redirect('/peloplan')
+    else:
+        return redirect('/peloton-login')
+    
+
+@app.route('/peloton-login')
+def peloton_login():
+    '''View Peloton Login page'''
+    return render_template('peloton-login.html')
+
+
+@app.route('/peloton-login', methods=['POST'])
+def get_peloton_cookie():
+    '''Login to Peloton to get session_id.'''
+    peloton_username = request.form.get('peloton_username')
+    peloton_password = request.form.get('peloton_password')
+    login_credentials = {"username_or_email": peloton_username, 
+                                 "password": peloton_password}
+    session_id = peloton_api.get_session_id(login_credentials)
+    session['cookie'] = {'peloton_session_id': session_id}
+    
+    # add session_id to user in db
+    user_id = session['user_id']
+    crud.add_session_id(user_id, session_id)
+
+    return render_template('peloplan.html')
+    
+
+@app.route('/peloplan')
+def display_peloplan():
+    '''Show monthly calendar'''
+    return render_template('peloplan.html')
+
+
+
+if __name__ == "__main__":
+    connect_to_db(app)
+    app.run(host="0.0.0.0", debug=True)

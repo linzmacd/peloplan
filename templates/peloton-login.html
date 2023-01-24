@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}PeloPlan{% endblock %}
+
+{% block body %}
+
+<div>
+    <h2>Peloton Log In</h2>
+    <form action="/peloton-login" method="POST">
+      <p>Peloton Leaderboard Name <input type="text" name="peloton_username"></p>
+      <p>Peloton Password <input type="password" name="peloton_password"></p>
+      <p><input type="submit"></p>
+      <p>Please note, your Peloton password is not being saved.</p>
+    </form>
+  </div>
+
+{% endblock %}
