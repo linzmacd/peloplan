@@ -3,30 +3,40 @@
 {% block title %}PeloPlan{% endblock %}
 
 {% block body %}
-
-  <h1>Welcome!</h1>
+<div class='row'>
+  <div class='col-8'>
+    <h1>Welcome to PeloPlan!</h1>
+    <br>
+  </div>
   <!-- <h2>Navigation</h2>
   <ul>
-    <li><a href="/movies">View all movies</a></li>
-    <li><a href="/users">View all users</a></li>
+    <li><a href='/movies'>View all movies</a></li>
+    <li><a href='/users'>View all users</a></li>
   </ul> -->
-    <div>
-    <h2>Log In</h2>
-    <form action="/login" method="POST">
-      <p>Email <input type="text" name="email"></p>
-      <p>Password <input type="password" name="password"></p>
-      <p><input type="submit"></p>
-    </form>
+</div>
+<div class='row'>
+  <div class='col-4'>
+    <div id='login-box'>
+      <h2>Log In</h2>
+      <form action='/login' method='POST'>
+        <p>Email <input type='text' name='email' required></p>
+        <p>Password <input type='password' name='password' required></p>
+        <p><input type='submit'></p>
+      </form>
+    </div>
   </div>
-  <div>
-    <h2>Create an Account</h2>
-    <form action="/create-account" method="POST">
-      <p>First Name <input type="text" name="fname"></p>
-      <p>Last Name <input type="text" name="lname"></p>
-      <p>Email <input type="text" name="email"></p>
-      <p>Password <input type="password" name="password"></p>
-      <p><input type="submit"></p>
-    </form>
+  <div class='col-4'>
+    <div id='new-acct-box'>
+      <h2>Create an Account</h2>
+      <form action='/create-account' method='POST'>
+        <p>First name <input type='text' name='fname'></p>
+        <p>Last name <input type='text' name='lname'></p>
+        <p>Email <input type='text' name='email' required></p>
+        <p>Password <input type='password' name='password' required></p>
+        <p><input type='submit'></p>
+      </form>
+    </div>
   </div>
+</div>
   
 {% endblock %}

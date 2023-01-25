@@ -4,14 +4,22 @@
 
 {% block body %}
 
-<div>
+<div class='row'>
+  <div class='col-6 text-center'>
     <h2>Peloton Log In</h2>
-    <form action="/peloton-login" method="POST">
-      <p>Peloton Leaderboard Name <input type="text" name="peloton_username"></p>
-      <p>Peloton Password <input type="password" name="peloton_password"></p>
-      <p><input type="submit"></p>
-      <p>Please note, your Peloton password is not being saved.</p>
+    <br>
+    <br>
+    <form action='/peloton-login' method='POST'>
+      <p>Peloton Username <input type='text' name='peloton_username' required></p>
+      <p>Peloton Password <input type='password' name='peloton_password' required></p>
+      <p><input type='submit'></p>
+      <br>
+      <p>Please note, your Peloton password will never be saved. <br>
+         You may be required to periodically log in to Peloton.</p>
     </form>
   </div>
+</div>
 
+
+  
 {% endblock %}
