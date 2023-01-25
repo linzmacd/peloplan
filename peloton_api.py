@@ -21,13 +21,13 @@ def get_session_id(login_credentials):
     api_url = BASE_URL + endpoint
     response = requests.post(api_url, json=login_credentials)
     auth_details = response.json()
-    session_id = auth_details['session_id']
     
-    return session_id
+    return auth_details
 
 
 def get_instructors():
     '''Gets list of instructors.'''
+    print('peloton_api.get_instructors is running.')
     endpoint = "api/instructor"
     query_string = "?limit=100"
     api_url = BASE_URL + endpoint + query_string

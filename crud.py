@@ -26,10 +26,11 @@ def get_user_by_id(user_id):
     return User.query.get(user_id)
 
 
-def add_session_id(user_id, session_id):
+def add_auth_details(user_id, auth_details):
     '''Adds session_id to specified user_id.'''
     user = get_user_by_id(user_id)
-    user.session_id = session_id
+    user.peloton_user_id = auth_details['user_id']
+    user.session_id = auth_details['session_id']
     db.session.commit()
 
 
@@ -47,7 +48,6 @@ def verify_instructors():
                                         instructor_name = instructor_name)
             db.session.add(new_instructor)
     db.session.commit()
-    print('Instructors verified.')
 
 
 def get_instructor_name(instructor_id):
@@ -71,7 +71,6 @@ def verify_categories():
                                     discipline = discipline)
             db.session.add(new_category)
     db.session.commit()
-    print('Categories verified.')
 
 
 def get_category(category_id):

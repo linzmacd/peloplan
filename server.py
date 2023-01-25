@@ -90,14 +90,17 @@ def get_peloton_cookie():
     login_credentials = {'username_or_email': peloton_username, 
                          'password': peloton_password}
     try:
-        session_id = peloton_api.get_session_id(login_credentials)
-        session['cookie'] = {'peloton_session_id': session_id}
+        auth_details = peloton_api.get_session_id(login_credentials)
+        session['cookie'] = {'peloton_session_id': auth_details['session_id']}
     except:
         flash('Incorrect Peloton credentials.')
         return redirect('/peloton-login')
-    # add session_id to user in db
+    # add auth_details to user in db
     user_id = session['user_id']
-    crud.add_session_id(user_id, session_id)
+    crud.add_auth_details(user_id, auth_details)
+    # verify instructors and categories
+    crud.verify_instructors()
+    crud.verify_categories()
 
     return render_template('peloplan.html')
     
@@ -105,8 +108,6 @@ def get_peloton_cookie():
 @app.route('/peloplan')
 def display_peloplan():
     '''Shows monthly calendar.'''
-    crud.verify_instructors()
-    crud.verify_categories()
     return render_template('peloplan.html')
 
 

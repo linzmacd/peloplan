@@ -17,6 +17,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     fname = db.Column(db.String)
     lname = db.Column(db.String)
+    peloton_user_id = db.Column(db.String)
     session_id = db.Column(db.String)
 
     sched_workouts = db.relationship('Sched_Workout', back_populates='user')
@@ -119,7 +120,7 @@ def reset_db(): ########## FOR TESTING #################
 
 def connect_to_db(flask_app, db_uri='postgresql:///peloplan', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-    flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_ECHO'] = False
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.app = flask_app
