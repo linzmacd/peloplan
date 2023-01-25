@@ -1,15 +1,19 @@
-from model import db, User, Sched_Workout, Workout, connect_to_db
+from model import (db, User, Sched_Workout, Workout, 
+                   Instructor, Category,connect_to_db)
+import peloton_api
 
+
+########## USERS ############################
 
 def create_user(fname, lname, email, password):
     '''Creates a new user object.'''
-    user = User(fname = fname, 
+    new_user = User(fname = fname, 
                 lname = lname, 
                 email = email, 
                 password = password)
-    db.session.add(user)
+    db.session.add(new_user)
     db.session.commit()
-    return user
+    return new_user
 
 
 def get_user_by_email(email):
@@ -29,6 +33,54 @@ def add_session_id(user_id, session_id):
     db.session.commit()
 
 
+########## INSTRUCTORS ######################
+
+def verify_instructors():
+    '''Verifies instructors table up-to-date.'''
+    instructors = peloton_api.get_instructors()
+    for instructor in instructors:
+        instructor_id = instructor['id']
+        in_db = bool(Instructor.query.get('instructor_id'))
+        if not in_db:
+            instructor_name = instructor['name']
+            new_instructor = Instructor(instructor_id = instructor_id,
+                                        instructor_name = instructor_name)
+            db.session.add(new_instructor)
+    db.session.commit()
+    print('Instructors verified.')
+
+
+def get_instructor_name(instructor_id):
+    '''Returns instructor name at specified instructor_id.'''
+    return Instructor.query.get(instructor_id).instructor_name
+
+
+########## CATEGORIES #######################
+
+def verify_categories():
+    '''Verifies categories table up-to-date.'''
+    categories = peloton_api.get_categories()
+    for category in categories:
+        category_id = category['id']
+        in_db = bool(Category.query.get(category_id))
+        if not in_db:
+            category_name = category['display_name']
+            discipline = category['fitness_discipline']
+            new_category = Category(category_id = category_id,
+                                    category_name = category_name,
+                                    discipline = discipline)
+            db.session.add(new_category)
+    db.session.commit()
+    print('Categories verified.')
+
+
+def get_category(category_id):
+    '''Returns category name at specified category_id.'''
+    return Category.query.get(category_id).category_name
+
+
+########## SCHED_WORKOUTS ###################
+
 # def schedule_workout(user_id, sched_date, sched_order, discipline, workout_id):
 #     '''Creates a new scheduled workout object.'''
 #     sched_workout = Sched_Workout(user_id = user_id, 
@@ -38,6 +90,8 @@ def add_session_id(user_id, session_id):
 #                                   workout_id = workout_id)
 #     return sched_workout
 
+
+########## WORKOUTS #########################
 
 # def add_workout(workout_id, discipline, category, instructor, title, duration):
 #     '''Creates a new workout object'''

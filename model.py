@@ -1,4 +1,4 @@
-"""Models for PeloPlan app."""
+'''Models for PeloPlan app.'''
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
-    """A user."""
+    '''A user.'''
 
     __tablename__ = 'users'
 
@@ -26,7 +26,7 @@ class User(db.Model):
     
 
 class Sched_Workout(db.Model):
-    """A scheduled workout."""
+    '''A scheduled workout.'''
 
     __tablename__ = 'sched_workouts'
 
@@ -41,6 +41,7 @@ class Sched_Workout(db.Model):
     discipline = db.Column(db.String, nullable=False)
     workout_id = db.Column(db.String, 
                            db.ForeignKey('workouts.workout_id'))
+    completed = db.Column(db.Boolean)
 
     user = db.relationship('User', back_populates='sched_workouts')
     workout = db.relationship('Workout', back_populates='sched_workouts')
@@ -52,7 +53,7 @@ class Sched_Workout(db.Model):
 
 
 class Workout(db.Model):
-    """A workout."""
+    '''A workout.'''
 
     __tablename__ = 'workouts'
 
@@ -68,10 +69,39 @@ class Workout(db.Model):
     
     def __repr__(self):
         return f'<Workout {self.title} with {self.instructor}>'
+    
+
+class Instructor(db.Model):
+    '''An Instructor.'''
+
+    __tablename__ = 'instructors'
+
+    instructor_id = db.Column(db.String,
+                              primary_key=True)
+    instructor_name = db.Column(db.String, nullable=False)
+
+    def __repr__(self):
+        return f'<Instructor {self.instructor_name}>'
+
+
+class Category(db.Model):
+    '''A workout category.'''
+
+    __tablename__ = 'categories'
+
+    category_id = db.Column(db.String,
+                            primary_key=True)
+    category_name = db.Column(db.String, nullable=False)
+    discipline = db.Column(db.String, nullable=False)
+
+    def __repr__(self):
+        return f'<Category {self.category_name}, {self.discipline}>'
 
 
 def reset_db(): ########## FOR TESTING #################
     '''Seed DB'''
+    # db.drop_all() in terminal
+    # db.create_all() in terminal
     test_user = User(email='test@test.com', 
                      password='testpw')
     test_workout = Workout(workout_id='fs98sdfs', discipline='cycling', 
@@ -79,7 +109,7 @@ def reset_db(): ########## FOR TESTING #################
                            title='30 min Rock Ride', duration=900)
     test_sched = Sched_Workout(user_id=1, sched_date='10-07-2023', 
                                sched_order=1, discipline='cycling', 
-                               workout_id='fs98sdfs')
+                               workout_id='fs98sdfs', completed=False)
 
     db.session.add(test_user)
     db.session.add(test_workout)
@@ -87,18 +117,18 @@ def reset_db(): ########## FOR TESTING #################
     db.session.commit()
 
 
-def connect_to_db(flask_app, db_uri="postgresql:///peloplan", echo=True):
-    flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
-    flask_app.config["SQLALCHEMY_ECHO"] = echo
-    flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+def connect_to_db(flask_app, db_uri='postgresql:///peloplan', echo=True):
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.app = flask_app
     db.init_app(flask_app)
 
-    print("Connected to the db!")
+    print('Connected to the db!')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from server import app
     connect_to_db(app, echo=False)
 
