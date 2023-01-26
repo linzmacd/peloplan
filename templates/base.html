@@ -1,15 +1,19 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang='en'>
   <head>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" 
-      rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css' 
+      rel='stylesheet' 
+      integrity='sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x' 
+      crossorigin='anonymous'>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width' >
     
     <!-- Your custom styles -->
-    <link rel="stylesheet" href="/static/mystyles.css">
+    <!-- <link rel='stylesheet' href='/static/mystyles.css'> -->
     
+    {% block header %}{% endblock %}
+
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
@@ -21,4 +25,5 @@
     
     {% block body %}{% endblock %}
   </body>
+  {% block js %}{% endblock %}
 </html>
