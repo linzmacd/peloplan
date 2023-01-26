@@ -5,12 +5,15 @@ import peloton_api
 
 ########## USERS ############################
 
-def create_user(fname, lname, email, password):
+def create_user(fname, lname, email, password, 
+                peloton_user_id=None, session_id=None):
     '''Creates a new user object.'''
     new_user = User(fname = fname, 
                 lname = lname, 
                 email = email, 
-                password = password)
+                password = password,
+                peloton_user_id = peloton_user_id,
+                session_id = session_id)
     db.session.add(new_user)
     db.session.commit()
     return new_user
@@ -50,7 +53,7 @@ def verify_instructors():
     db.session.commit()
 
 
-def get_instructor_name(instructor_id):
+def get_instructor(instructor_id):
     '''Returns instructor name at specified instructor_id.'''
     return Instructor.query.get(instructor_id).instructor_name
 
@@ -80,27 +83,38 @@ def get_category(category_id):
 
 ########## SCHED_WORKOUTS ###################
 
-# def schedule_workout(user_id, sched_date, sched_order, discipline, workout_id):
-#     '''Creates a new scheduled workout object.'''
-#     sched_workout = Sched_Workout(user_id = user_id, 
-#                                   sched_date = sched_date,
-#                                   sched_order = sched_order, 
-#                                   discipline = discipline,
-#                                   workout_id = workout_id)
-#     return sched_workout
+def schedule_workout(user_id, sched_date, sched_order, 
+                     discipline, workout_id=None, completed=False):
+    '''Creates a new scheduled workout object.'''
+    if not workout_id == None:
+        # add workout to db if new
+        if not bool(Workout.query.get(workout_id)):
+            workout_details = peloton_api.get_workout_details(workout_id)
+            add_workout(workout_details)
+    sched_workout = Sched_Workout(user_id = user_id, 
+                                  sched_date = sched_date,
+                                  sched_order = sched_order, 
+                                  discipline = discipline,
+                                  workout_id = workout_id,
+                                  completed = completed)
+    db.session.add(sched_workout)
+    db.session.commit()
 
 
 ########## WORKOUTS #########################
 
-# def add_workout(workout_id, discipline, category, instructor, title, duration):
-#     '''Creates a new workout object'''
-#     workout = Workout(workout_id = workout_id,
-#                       discipline = discipline, 
-#                       category = category, 
-#                       instructor = instructor, 
-#                       title = title, 
-#                       duration = duration)
-#     return workout
+def add_workout(workout_details):
+    '''Creates a new workout object'''
+    data = workout_details['ride']
+    workout = Workout(workout_id = data['id'],
+                      discipline = data['fitness_discipline'], 
+                      category = get_category(data['ride_type_id']), 
+                      instructor = get_instructor(data['instructor_id']), 
+                      title = data['title'], 
+                      duration = data['duration'])
+    db.session.add(workout)
+    db.session.commit()  
+
 
 
 if __name__ == '__main__':

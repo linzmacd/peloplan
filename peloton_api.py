@@ -27,9 +27,8 @@ def get_session_id(login_credentials):
 
 def get_instructors():
     '''Gets list of instructors.'''
-    print('peloton_api.get_instructors is running.')
-    endpoint = "api/instructor"
-    query_string = "?limit=100"
+    endpoint = 'api/instructor'
+    query_string = '?limit=100'
     api_url = BASE_URL + endpoint + query_string
     response = requests.get(api_url, cookies=session['cookie'])
     instructors = response.json()['data']
@@ -45,4 +44,14 @@ def get_categories():
     categories = response.json()['class_types']
 
     return categories
+
+
+def get_workout_details(workout_id):
+    '''Gets details of workout with specified id.'''
+    endpoint = 'api/ride/' + workout_id + '/details'
+    api_url = BASE_URL + endpoint
+    response = requests.get(api_url, cookies=session['cookie'])
+    workout_details = response.json()
+
+    return workout_details
     
