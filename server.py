@@ -1,6 +1,7 @@
 '''Server for movie ratings app.'''
 
-from flask import (Flask, render_template, request,flash, session, redirect)
+from flask import (Flask, render_template, request, 
+                   flash, session, redirect, jsonify)
 from model import connect_to_db, db
 import crud, peloton_api
 from jinja2 import StrictUndefined
@@ -98,18 +99,26 @@ def get_peloton_cookie():
     # add auth_details to user in db
     user_id = session['user_id']
     crud.add_auth_details(user_id, auth_details)
-    # verify instructors and categories
-    crud.verify_instructors()
-    crud.verify_categories()
 
-    return render_template('peloplan.html')
+    return redirect('/peloplan')
     
 
 @app.route('/peloplan')
 def display_peloplan():
     '''Shows monthly calendar.'''
+    # verify instructors and categories
+    crud.verify_instructors()
+    crud.verify_categories()
+
     return render_template('peloplan.html')
 
+
+@app.route('/peloplan/schedule')
+def get_schedule():
+    '''Gets schedule data for populating calendar'''
+    schedule = crud.get_schedule(session['user_id'])
+ 
+    return jsonify(schedule)
 
 
 if __name__ == '__main__':

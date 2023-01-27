@@ -44,7 +44,7 @@ def verify_instructors():
     instructors = peloton_api.get_instructors()
     for instructor in instructors:
         instructor_id = instructor['id']
-        in_db = bool(Instructor.query.get('instructor_id'))
+        in_db = bool(Instructor.query.get(instructor_id))
         if not in_db:
             instructor_name = instructor['name']
             new_instructor = Instructor(instructor_id = instructor_id,
@@ -100,6 +100,36 @@ def schedule_workout(user_id, sched_date, sched_order,
     db.session.add(sched_workout)
     db.session.commit()
 
+
+def get_schedule(user_id):
+    '''Gets schedule for specified user.'''
+    schedule =  Sched_Workout.query.options(db.joinedload('workout'))\
+                             .filter(Sched_Workout.user_id == user_id)\
+                             .order_by(Sched_Workout.sched_date,\
+                                       Sched_Workout.sched_order).all()
+    schedule_list = []
+    for workout in schedule:
+        workout_dict = {
+            'id': workout.schedule_id,
+            'date': workout.sched_date.strftime("%Y-%m-%d"),
+            'order': workout.sched_order,
+            'discipline': workout.discipline, 
+            'completed': workout.completed,
+        }
+        url = (f'https://members.onepeloton.com/classes/cycling?'
+              f'modal=classDetailsModal&classId={workout.workout_id}')
+        if workout.workout_id:
+            workout_dict['title'] = workout.workout.title
+            workout_dict['instructor'] = workout.workout.instructor
+            workout_dict['url'] = url
+        else:
+            workout_dict['title'] = workout.discipline.title()
+            workout_dict['instructor'] = None
+            workout_dict['url'] = None
+        schedule_list.append(workout_dict)
+
+    return schedule_list
+     
 
 ########## WORKOUTS #########################
 
