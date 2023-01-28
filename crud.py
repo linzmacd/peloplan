@@ -53,9 +53,25 @@ def verify_instructors():
     db.session.commit()
 
 
-def get_instructor(instructor_id):
+def get_instructors():
+    '''Returns dictionary of all instructors by id.'''
+    instructor_objs =  Instructor.query.order_by(Instructor.instructor_name).all()
+    instructor_dict = {}
+    for instructor in instructor_objs:
+        instructor_dict[instructor.instructor_name] = instructor.instructor_id
+
+    return instructor_dict
+
+
+def get_instructor_name(instructor_id):
     '''Returns instructor name at specified instructor_id.'''
     return Instructor.query.get(instructor_id).instructor_name
+
+
+def get_instructor_id(name):
+    '''Returns instructor_id for specified instructor.'''
+    return Instructor.query.filter(Instructor.instructor_name == name)\
+                           .first().instructor_id
 
 
 ########## CATEGORIES #######################
@@ -64,21 +80,40 @@ def verify_categories():
     '''Verifies categories table up-to-date.'''
     categories = peloton_api.get_categories()
     for category in categories:
-        category_id = category['id']
-        in_db = bool(Category.query.get(category_id))
-        if not in_db:
-            category_name = category['display_name']
-            discipline = category['fitness_discipline']
-            new_category = Category(category_id = category_id,
-                                    category_name = category_name,
-                                    discipline = discipline)
-            db.session.add(new_category)
+        if category['is_active']:
+            category_id = category['id']
+            in_db = bool(Category.query.get(category_id))
+            if not in_db:
+                category_name = category['display_name']
+                discipline = category['fitness_discipline']
+                new_category = Category(category_id = category_id,
+                                        category_name = category_name,
+                                        discipline = discipline)
+                db.session.add(new_category)
     db.session.commit()
 
 
-def get_category(category_id):
+def get_discipline_categories(discipline):
+    '''Returns dictionary of all categories of a discipline by id.'''
+    category_objs =  Category.query.filter(Category.discipline == discipline)\
+                                   .order_by(Category.category_name).all()
+    category_dict = {}
+    for category in category_objs:
+        category_dict[category.category_name] = category.category_id
+
+    return category_dict
+
+
+def get_category_name(category_id):
     '''Returns category name at specified category_id.'''
     return Category.query.get(category_id).category_name
+
+
+def get_category_id(category_name, discipline):
+    '''Returns category_id for specified category.'''
+    return Category.query.filter(Category.category_name == category_name,
+                                 Category.discipline == discipline)\
+                         .first().category_id
 
 
 ########## SCHED_WORKOUTS ###################
@@ -125,7 +160,7 @@ def get_schedule(user_id):
         else:
             workout_dict['title'] = workout.discipline.title()
             workout_dict['instructor'] = None
-            workout_dict['url'] = None
+            workout_dict['url'] = 0
         schedule_list.append(workout_dict)
 
     return schedule_list
@@ -138,8 +173,8 @@ def add_workout(workout_details):
     data = workout_details['ride']
     workout = Workout(workout_id = data['id'],
                       discipline = data['fitness_discipline'], 
-                      category = get_category(data['ride_type_id']), 
-                      instructor = get_instructor(data['instructor_id']), 
+                      category = get_category_name(data['ride_type_id']), 
+                      instructor = get_instructor_name(data['instructor_id']), 
                       title = data['title'], 
                       duration = data['duration'])
     db.session.add(workout)

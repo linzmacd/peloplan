@@ -121,6 +121,29 @@ def get_schedule():
     return jsonify(schedule)
 
 
+@app.route('/<workout_date>/discipline-selection/')
+def select_discipline(workout_date):
+    '''Allows user to select workout discipline.'''
+
+    return render_template('/disciplines.html')
+
+
+@app.route('/<workout_date>/<discipline>/workout-selection/')
+def select_workout(workout_date, discipline):
+    '''Allows user to select specific workout.'''
+    instructors = crud.get_instructors()
+    categories = crud.get_discipline_categories(discipline)
+    results = peloton_api.query_database()
+
+    return render_template('/workouts.html',
+                           workout_date = workout_date,
+                           discipline = discipline,
+                           instructors = instructors,
+                           categories = categories,
+                           results = results
+                           )
+
+
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
