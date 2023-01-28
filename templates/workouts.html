@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Workouts{% endblock %}
+
+{% block body %}
+
+<div class='row'>
+  <div class='col-8'>
+    <h1>Welcome to PeloPlan!</h1>
+    <br>
+  </div>
+  <!-- <h2>Navigation</h2>
+  <ul>
+    <li><a href='/movies'>View all movies</a></li>
+    <li><a href='/users'>View all users</a></li>
+  </ul> -->
+</div>
+<div class='row'>
+  <div class='col-2'>
+    <div id='filters-box'>
+      <h2>Filter classes</h2>
+      <form>
+        <div>
+          Class Length:<br>
+          <select name='duration'>
+            <option value=''></option>
+            <option value='300'>5 minutes</option>
+            <option value='600'>10 minutes</option>
+            <option value='900'>15 minutes</option>
+            <option value='1200'>20 minutes</option>
+            <option value='1800'>30 minutes</option>
+            <option value='2700'>45 minutes</option>
+            <option value='3600'>60 minutes</option>
+            <option value='5200'>90 minutes</option>
+          </select>
+        </div>
+        <div>
+          <br>Instructor:<br>
+          <select name='instructor'>
+            <option value=''></option>
+            {% for instructor in instructors %}
+            <option value={{ instructors[instructor] }}>{{ instructor }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <br>Category:<br>
+          <select name='category'>
+            <option value=''></option>
+            {% for category in categories %}
+            <option value={{ categories[category] }}>{{ category }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <br>Bookmarked? <input type='checkbox' name='favorite' value=True> 
+        </div>
+        <div>
+          <br>Already Taken? <input type='checkbox' name='completed' value=True> 
+        </div>
+        <div>
+          <br>Keywords: <br> 
+          <input type='text' name='keywords'>
+        </div>
+        <div>
+          <br><input type='submit' value='Apply'>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class='col-10'>
+    <h2>Classes that match your search criteria</h2>
+    <div id='query-results'>
+      {% for result in results %}
+      <div class='row align-items-center' style='padding: 5px; margin: 5px; border: 1px solid black'>
+        <div class='col-4'>
+          <img src="{{ result['image_url'] }}" height=170px>
+        </div>
+        <div class='col-5'>
+          <h3>{{ result['title'] }}</h3>
+          {{ result['description'] }}<br>
+          Total Riders: {{ result['total_workouts'] }}<br>
+          Rating: {{ result['overall_rating_avg'] }}<br>
+          Difficulty: {{ result['difficulty_rating_avg'] }}
+        </div>
+        <div class='col-2'>
+          <button id='unique-id' value="{{ result['id'] }}"> Add to Calendar </button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
