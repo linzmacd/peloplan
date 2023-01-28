@@ -1,23 +1,3 @@
-// const schedule = []
-// fetch('/peloplan/schedule')
-//   .then((response) => response.json())
-//   .then((schedule) => {
-//     for (const workout in schedule) {
-//       schedule.append({
-//         id: workout.schedule_id,
-//         title: workout.discipline,
-//         body: workout.workout_id,
-//         date: workout.sched_date,
-//         location: workout.sched_order,
-//       });
-//     };
-//   });
-
-//   console.log(schedule)
-
-// for (const workout in schedule) {
-
-// }
 
 const colors = {
   strength: 'black',
@@ -40,15 +20,22 @@ document.addEventListener('DOMContentLoaded', function() {
     timeZone: 'local',
     eventOrder: 'order',
     eventClick: function(info) {
+      console.log(info.event.url)
       info.jsEvent.preventDefault();
-      if (info.event.url) {
+      if (info.event.url != 0) {
         window.open(info.event.url);
       } else { 
-        const discipline = info.event.discipline; // DO OTHER STUFF HERE
+        const date = info.event.start;
+        const workout_date = date.toISOString().substr(0,10);
+        const discipline = info.event.title.toLowerCase();
+        const url = `/${workout_date}/${discipline}/workout-selection`
+        window.location.href = url;
        }
     },
     dateClick: function(info) {
-      alert('Clicked on: ' + info.dateStr);
+      const workout_date = info.dateStr;
+      const url = `/${workout_date}/discipline-selection`
+      window.location.href = url;
     }
   });
   fetch('/peloplan/schedule')
