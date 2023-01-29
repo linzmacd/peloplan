@@ -125,7 +125,16 @@ def get_schedule():
 def select_discipline(workout_date):
     '''Allows user to select workout discipline.'''
 
-    return render_template('/disciplines.html')
+    return render_template('/disciplines.html',
+                           workout_date = workout_date)
+
+
+@app.route('/<workout_date>/<discipline>')
+def add_generic_workout(workout_date, discipline):
+    '''Adds generic workout to PeloPlan'''
+    order = crud.get_order(session['user_id'],workout_date)
+    crud.schedule_workout(session['user_id'], workout_date, order, discipline)
+    return redirect('/peloplan')
 
 
 @app.route('/<workout_date>/<discipline>/workout-selection/')
@@ -140,8 +149,7 @@ def select_workout(workout_date, discipline):
                            discipline = discipline,
                            instructors = instructors,
                            categories = categories,
-                           results = results
-                           )
+                           results = results)
 
 
 if __name__ == '__main__':

@@ -164,7 +164,18 @@ def get_schedule(user_id):
         schedule_list.append(workout_dict)
 
     return schedule_list
-     
+
+
+def get_order(user_id, sched_date):
+    '''Returns next slot in order on specified date.'''
+    max =  Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
+                                      Sched_Workout.sched_date == sched_date)\
+                        .order_by(Sched_Workout.sched_order.desc()).first()
+    if max:
+        next_order = max.sched_order + 1
+    else:
+        next_order = 1
+    return next_order
 
 ########## WORKOUTS #########################
 

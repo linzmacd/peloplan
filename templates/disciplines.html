@@ -9,57 +9,31 @@
 <div class='row align-items-center'>
   <div class='col-4 offset-1'>
     <div class='d-grid gap-2 col-6 mx-auto'>
-      <button class='btn btn-primary strength' type='button' value='strength'>
-        Strength</button>
-      <button class='btn btn-primary yoga' type='button' value='yoga'>
-        Yoga</button>
-      <button class='btn btn-primary meditation' type='button' value='meditation'>
-        Meditation</button>
-      <button class='btn btn-primary stretching' type='button' value='stretching'>
-        Stretching</button>
-      <button class='btn btn-primary cardio' type='button' value='cardio'>
-        Cardio</button>
-      <button class='btn btn-primary cycling' type='button' value='cycling'>
-        Cycling</button>
-      <button class='btn btn-primary bc_bike' type='button' value='bike_bootcamp'>
-        Bike Bootcamp</button>
-      <!-- <button class='btn btn-primary rowing' type='button' value='caesar'>
-        Rowing</button> -->
-      <button class='btn btn-primary outdoor' type='button' value='outdoor'>
-        Outdoor</button>
-      <button class='btn btn-primary running' type='button' value='running'>
-        Running</button>
-      <button class='btn btn-primary walking' type='button' value='walking'>
-        Walking</button>
-      <button class='btn btn-primary bc_tread' type='button' value='tread_bootcamp'>
-        Tread Bootcamp</button>
-      <!-- <button class='btn btn-primary bc_row' type='button' value='caesar_bootcamp'>
-        Row Bootcamp</button> -->
+      <button class='btn btn-primary strength' type='button' value='strength'>Strength</button>
+      <button class='btn btn-primary yoga' type='button' value='yoga'>Yoga</button>
+      <button class='btn btn-primary meditation' type='button' value='meditation'>Meditation</button>
+      <button class='btn btn-primary stretching ' type='button' value='stretching'>Stretching</button>
+      <button class='btn btn-primary cardio' type='button' value='cardio'>Cardio</button>
+      <button class='btn btn-primary cycling' type='button' value='cycling'>Cycling</button>
+      <button class='btn btn-primary bc_bike' type='button' value='bike_bootcamp'>Bike Bootcamp</button>
+      <!-- <button class='btn btn-primary rowing' type='button' value='caesar'>Rowing</button> -->
+      <button class='btn btn-primary outdoor' type='button' value='outdoor'>Outdoor</button>
+      <button class='btn btn-primary running' type='button' value='running'>Running</button>
+      <button class='btn btn-primary walking' type='button' value='walking'>Walking</button>
+      <button class='btn btn-primary bc_tread' type='button' value='tread_bootcamp'>Tread Bootcamp</button>
+      <!-- <button class='btn btn-primary bc_row' type='button' value='caesar_bootcamp'>Row Bootcamp</button> -->
     </div>
   </div>
   <div class='col-6'>
-      <input type='submit' value='Save a generic workout to PeloPlan'><br><br>
-      <input type='submit' value='Pick a specific Peloton workout'>
+    <input type='text'  id='workout-date' value={{ workout_date }}><br><br>
+    <input type='submit' id='add-discipline' value='Save a generic workout to PeloPlan' disabled><br><br>
+    <input type='submit' id='select-workout' value='Pick a specific Peloton workout' disabled>
   </div>
 </div>
 
-
-
 {% endblock %}
 
+{% block js %}
+<script src='/static/js/disciplines.js'></script>
 
-<div class='d-grid gap-2 col-6 mx-auto'>
-  <button class='btn btn-primary strength' type='button'>Strength</button>
-  <button class='btn btn-primary yoga' type='button'>Yoga</button>
-  <button class='btn btn-primary meditation' type='button'>Meditation</button>
-  <button class='btn btn-primary stretching' type='button'>Stretching</button>
-  <button class='btn btn-primary cardio' type='button'>Cardio</button>
-  <button class='btn btn-primary cycling' type='button'>Cycling</button>
-  <button class='btn btn-primary bc_bike' type='button'>Bike Bootcamp</button>
-  <!-- <button class='btn btn-primary rowing' type='button'>Rowing</button> -->
-  <button class='btn btn-primary outdoor' type='button'>Outdoor</button>
-  <button class='btn btn-primary running' type='button'>Running</button>
-  <button class='btn btn-primary walking' type='button'>Walking</button>
-  <button class='btn btn-primary bc_tread' type='button'>Tread Bootcamp</button>
-  <!-- <button class='btn btn-primary bc_row' type='button'>Row Bootcamp</button> -->
-</div>
+{% endblock %}
