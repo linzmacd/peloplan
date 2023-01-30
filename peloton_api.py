@@ -59,57 +59,38 @@ def get_workout_details(workout_id):
     return workout_details
 
 
-def query_database():
+def query_database(discipline, duration=None, instructor=None, 
+                   category=None, bookmarked=None, completed=None, 
+                   sortby='original_air_time', desc=True):
     '''Returns list of workouts with specified filters'''
     endpoint = 'api/v2/ride/archived'
     
-    # test data
-    discipline = 'cycling'
-    limit = 18
-    page = 0
-    duration = 900
-    # instructor_id = crud.get_instructor_id('Ben Alldis')
-    instructor_id = 'c0a9505d8135412d824cf3c97406179b'
-    # class_type_id = crud.get_category_id('Music', discipline)
-    category_id = 'c87e20095d80463db5ce04df7fe2b989'
-    favorite = True
-    completed = True
-    sort = 'top_rated' # original_air_time*, popularity, difficulty, trending
-    descending = True # True* False when easiest
+    params = {}
+    params['content_format'] = ['audio', 'video']
+    params['limit'] = 18
 
-    params = {
-        'browse_category': discipline,
-        'content_format': ['audio', 'video'],
-        'limit': 18,
-        'duration': duration,
-        'instructor_id': instructor_id,
-        'class_type_id': category_id,
-        # 'super_genre_id': '',
-        'is_favorite_ride': favorite,
-        'has_workout': completed,
-        'sort_by': sort,
-        'desc': descending,
-        }
+    # corresponding lists of arguments and their corresponding query parameters
+    arguments = [discipline, duration, instructor, category, 
+                   bookmarked, completed, sortby, desc]
+    query_params = ['browse_category', 'duration', 'instructor_id', 
+                    'class_type_id', # 'super_genre_id',
+                    'is_favorite_ride', 'has_workout', 'sort_by', 'desc']
+
+    # combine query parameter names with args
+    for index, argument in enumerate(arguments):
+        if argument:
+            params[query_params[index]] = argument
     
-    # query_string = (
-    #     f'?browse_category={discipline}&content_format=audio,video'
-    #     f'&limit={limit}&page={page}&duration={duration}'
-    #     f'&instructor_id={instructor_id}'
-    #     f'&class_type_id={category_id}'
-    #     # f'&super_genre_id=c06217bbe61f485094cfe62d098b3bf8'
-    #     f'&is_favorite_ride={favorite}&has_workout={completed}'
-    #     f'&sort_by={sort}&desc={descending}'
-    #     )
+    # if sorting by easiest, correct params
+    if params['sort_by'] == 'easiest':
+        params['sort_by'] = 'difficulty'
+        params['desc'] = False
     
-    api_url = BASE_URL + endpoint #+ query_string
+    api_url = BASE_URL + endpoint
     response = requests.get(api_url, params=params, cookies=session['cookie'])
     workout_results = response.json()['data']
 
     return workout_results
-
-
-
-    # https://api.onepeloton.com/api/v2/ride/archived?browse_category=cycling&content_format=audio,video&limit=18&page=0&duration=600,1800&instructor_id=c0a9505d8135412d824cf3c97406179b,7f3de5e78bb44d8591a0f77f760478c3&class_type_id=c87e20095d80463db5ce04df7fe2b989,59a49f882ea9475faa3110d50a8fb3f3&super_genre_id=c06217bbe61f485094cfe62d098b3bf8,7afdd1462d474005841e9a6a403229f1&is_favorite_ride=true&has_workout=false&sort_by=top_rated&desc=true
     
 
     

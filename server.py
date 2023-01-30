@@ -142,7 +142,7 @@ def select_workout(workout_date, discipline):
     '''Allows user to select specific workout.'''
     instructors = crud.get_instructors()
     categories = crud.get_discipline_categories(discipline)
-    results = peloton_api.query_database()
+    results = peloton_api.query_database(discipline)
 
     return render_template('/workouts.html',
                            workout_date = workout_date,
