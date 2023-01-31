@@ -136,6 +136,16 @@ def schedule_workout(user_id, sched_date, sched_order,
     db.session.commit()
 
 
+def update_workout(user_id, sched_date, sched_order, workout_id):
+    '''Adds specific workout to workout object.'''
+    workout = get_workout(user_id, sched_date, sched_order)
+    if not bool(Workout.query.get(workout_id)):
+            workout_details = peloton_api.get_workout_details(workout_id)
+            add_workout(workout_details)
+    workout.workout_id = workout_id
+    db.session.commit()
+
+
 def get_schedule(user_id):
     '''Gets schedule for specified user.'''
     schedule =  Sched_Workout.query.options(db.joinedload('workout'))\
@@ -176,6 +186,15 @@ def get_order(user_id, sched_date):
     else:
         next_order = 1
     return next_order
+
+
+def get_workout(user_id, sched_date, sched_order):
+    '''Returns workout object at specified date and order.'''
+    workout =  Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
+                                          Sched_Workout.sched_date == sched_date,
+                                          Sched_Workout.sched_order == sched_order)
+    return workout.first()
+
 
 ########## WORKOUTS #########################
 

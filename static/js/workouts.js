@@ -4,14 +4,10 @@ console.log(addWorkoutButtons);
 for (const addWorkoutButton of addWorkoutButtons) {
   addWorkoutButton.addEventListener('click', () => {
     const workout_date = document.querySelector('#workout-date').value
+    const sched_order = document.querySelector('#sched-order').value
     const discipline = document.querySelector('#filter-discipline').value
     const workout_id = addWorkoutButton.value
-    console.log(workout_date)
-    console.log(discipline)
-    console.log(workout_id)
-    
-    const url = `/${workout_date}/${discipline}/${workout_id}`
-    console.log(url)
+    const url = `/${workout_date}/${sched_order}/${discipline}/${workout_id}`
     window.location.href = url
   });
 };

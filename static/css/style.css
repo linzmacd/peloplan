@@ -1,11 +1,14 @@
 #workout-date {
   display: none;
 }
-.dimmed {
-  opacity: .2;
+#sched-order {
+  display: none;
 }
 #filter-discipline {
   display: none;
+}
+.dimmed {
+  opacity: .2;
 }
 .strength {
   color: white;

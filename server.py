@@ -124,21 +124,24 @@ def get_schedule():
 @app.route('/<workout_date>/discipline-selection/')
 def select_discipline(workout_date):
     '''Allows user to select workout discipline.'''
+    sched_order = crud.get_order(session['user_id'], workout_date)
 
     return render_template('/disciplines.html',
-                           workout_date = workout_date)
+                           workout_date = workout_date,
+                           sched_order = sched_order)
 
 
-@app.route('/<workout_date>/<discipline>')
-def add_generic_workout(workout_date, discipline):
+@app.route('/<workout_date>/<sched_order>/<discipline>')
+def add_generic_workout(workout_date, sched_order, discipline):
     '''Adds generic workout to PeloPlan'''
-    order = crud.get_order(session['user_id'],workout_date)
-    crud.schedule_workout(session['user_id'], workout_date, order, discipline)
+    crud.schedule_workout(session['user_id'], workout_date, 
+                          sched_order, discipline)
+    
     return redirect('/peloplan')
 
 
-@app.route('/<workout_date>/<discipline>/workout-selection')
-def select_workout(workout_date, discipline):
+@app.route('/<workout_date>/<sched_order>/<discipline>/workout-selection')
+def select_workout(workout_date, sched_order, discipline):
     '''Allows user to select specific workout.'''
     duration = request.args.get('duration', None)
     instructor = request.args.get('instructor', None)
@@ -159,19 +162,24 @@ def select_workout(workout_date, discipline):
 
     return render_template('/workouts.html',
                            workout_date = workout_date,
+                           sched_order = sched_order,
                            discipline = discipline,
                            instructors = instructors,
                            categories = categories,
                            results = results)
 
 
-@app.route('/<workout_date>/<discipline>/<workout_id>')
-def add_workout(workout_date, discipline, workout_id):
+@app.route('/<workout_date>/<sched_order>/<discipline>/<workout_id>')
+def add_workout(workout_date, sched_order, discipline, workout_id):
     '''Adds specific workout to PeloPlan.'''
-    order = crud.get_order(session['user_id'],workout_date)
-    crud.schedule_workout(session['user_id'], workout_date, 
-                          order, discipline, workout_id)
-    
+    workout = crud.get_workout(session['user_id'], workout_date, sched_order)
+    if workout: 
+        crud.update_workout(session['user_id'], workout_date, 
+                            sched_order, workout_id)
+    else:
+        crud.schedule_workout(session['user_id'], workout_date, 
+                              sched_order, discipline, workout_id)
+
     return render_template('/peloplan.html')
 
 

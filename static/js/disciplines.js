@@ -14,18 +14,23 @@ for (const disciplineButton of disciplineButtons) {
   });
 };
 
+const workout_date = document.querySelector('#workout-date').value
+const sched_order = document.querySelector('#sched-order').value
+
 const addDisciplineButton = document.querySelector('#add-discipline');
 addDisciplineButton.addEventListener('click', () => {
-  const workout_date = document.querySelector('#workout-date').value
+  // const workout_date = document.querySelector('#workout-date').value
+  // const sched_order = document.querySelector('#sched-order').value
   const discipline = document.querySelector('.selected').value
-  const url = `/${workout_date}/${discipline}`
+  const url = `/${workout_date}/${sched_order}/${discipline}`
   window.location.href = url
 });
 
 const selectWorkoutButton = document.querySelector('#select-workout');
 selectWorkoutButton.addEventListener('click', () => {
-  const workout_date = document.querySelector('#workout-date').value
+  // const workout_date = document.querySelector('#workout-date').value
+  // const sched_order = document.querySelector('#sched-order').value
   const discipline = document.querySelector('.selected').value
-  const url = `/${workout_date}/${discipline}/workout-selection`
+  const url = `/${workout_date}/${sched_order}/${discipline}/workout-selection`
   window.location.href = url
 });

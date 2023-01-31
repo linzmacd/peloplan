@@ -30,11 +30,12 @@ document.addEventListener('DOMContentLoaded', function() {
       info.jsEvent.preventDefault();
       if (info.event.url != 0) {
         window.open(info.event.url);
-      } else { 
+      } else {
         const date = info.event.start;
         const workout_date = date.toISOString().substr(0,10);
+        const order = info.event.extendedProps.order;
         const discipline = info.event.title.toLowerCase();
-        const url = `/${workout_date}/${discipline}/workout-selection`
+        const url = `/${workout_date}/${order}/${discipline}/workout-selection`
         window.location.href = url;
        }
     }
