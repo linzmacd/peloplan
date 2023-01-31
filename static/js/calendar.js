@@ -15,6 +15,12 @@ const colors = {
   'caesar_bootcamp': 'lightcoral'
 }
 
+const completedBG = {
+  true: 'white',
+  false: 'lightgray'
+}
+
+
 const initialDate =  document.querySelector('#initial-date').value;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -50,6 +56,26 @@ document.addEventListener('DOMContentLoaded', function() {
     .then((schedule) => {
       for (const key in schedule) {
         const completed = schedule[key]['completed'];
+        const workoutDate = new Date(new Date(schedule[key]['date']))
+        const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
+        const bygone = (workoutDate < todayDate);
+        console.log(schedule[key]['title'])
+        console.log(workoutDate)
+        console.log(todayDate)
+        // console.log(bygone)
+        // const completedFC = {
+        //   true: colors[schedule[key]['discipline']],
+        //   false: 'white'
+        // }
+        const disciplineColor = colors[schedule[key]['discipline']]
+        const background = {
+          true: "lightgray",
+          false: colors[schedule[key]['discipline']] 
+        }
+        const font = {
+          true: 'white',
+          false: colors[schedule[key]['discipline']]
+        }
         const event = {
           start: schedule[key]['date'],
           order: schedule[key]['order'],
@@ -57,9 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
           title: schedule[key]['title'],
           instructor: schedule[key]['instructor'],
           url: schedule[key]['url'],
-          backgroundColor: completed ? 'white' : colors[schedule[key]['discipline']],
-          borderColor: colors[schedule[key]['discipline']],
-          textColor: completed ? colors[schedule[key]['discipline']] : 'white',
+          // backgroundColor: bygone ? completedBG[completed] : colors[schedule[key]['discipline']],
+          // borderColor: bygone ? completedFC[completed] : 'white',
+          // textColor: bygone ? completedFC[completed] : 'white',
+          backgroundColor: completed ? 'white' : background[bygone],
+          borderColor: completed ? disciplineColor : font[bygone],
+          textColor: completed ? disciplineColor : 'white',
           };
         calendar.addEvent(event);
       };
