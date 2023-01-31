@@ -1,7 +1,7 @@
 
 const disciplineButtons = document.querySelectorAll('.btn-primary');
 for (const disciplineButton of disciplineButtons) {
-  disciplineButton.addEventListener('click', evt => {
+  disciplineButton.addEventListener('click', () => {
     const selectedButtons = document.querySelectorAll('.btn-primary');
     for (const selectedButton of selectedButtons) {
       selectedButton.classList.remove('selected');

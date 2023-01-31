@@ -137,12 +137,25 @@ def add_generic_workout(workout_date, discipline):
     return redirect('/peloplan')
 
 
-@app.route('/<workout_date>/<discipline>/workout-selection/')
+@app.route('/<workout_date>/<discipline>/workout-selection')
 def select_workout(workout_date, discipline):
     '''Allows user to select specific workout.'''
+    duration = request.args.get('duration', None)
+    instructor = request.args.get('instructor', None)
+    category = request.args.get('category', None)
+    bookmarked = request.args.get('bookmarked', None)
+    completed = request.args.get('completed', None)
+    sortby = request.args.get('sortby', 'original_air_time')
+
     instructors = crud.get_instructors()
     categories = crud.get_discipline_categories(discipline)
-    results = peloton_api.query_database(discipline)
+    results = peloton_api.query_database(discipline = discipline,
+                                         duration = duration,
+                                         instructor = instructor,
+                                         category = category, 
+                                         bookmarked = bookmarked, 
+                                         completed = completed, 
+                                         sortby = sortby)
 
     return render_template('/workouts.html',
                            workout_date = workout_date,
@@ -150,6 +163,16 @@ def select_workout(workout_date, discipline):
                            instructors = instructors,
                            categories = categories,
                            results = results)
+
+
+@app.route('/<workout_date>/<discipline>/<workout_id>')
+def add_workout(workout_date, discipline, workout_id):
+    '''Adds specific workout to PeloPlan.'''
+    order = crud.get_order(session['user_id'],workout_date)
+    crud.schedule_workout(session['user_id'], workout_date, 
+                          order, discipline, workout_id)
+    
+    return render_template('/peloplan.html')
 
 
 if __name__ == '__main__':

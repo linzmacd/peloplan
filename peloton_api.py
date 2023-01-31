@@ -79,7 +79,8 @@ def query_database(discipline, duration=None, instructor=None,
     # combine query parameter names with args
     for index, argument in enumerate(arguments):
         if argument:
-            params[query_params[index]] = argument
+            if argument != '':
+                params[query_params[index]] = argument
     
     # if sorting by easiest, correct params
     if params['sort_by'] == 'easiest':
