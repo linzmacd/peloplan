@@ -5,6 +5,7 @@ from flask import (Flask, render_template, request,
 from model import connect_to_db, db
 import crud, peloton_api
 from jinja2 import StrictUndefined
+from datetime import date
 
 
 app = Flask(__name__)
@@ -107,10 +108,12 @@ def get_peloton_cookie():
 def display_peloplan():
     '''Shows monthly calendar.'''
     # verify instructors and categories
+    initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
     crud.verify_instructors()
     crud.verify_categories()
 
-    return render_template('peloplan.html')
+    return render_template('peloplan.html',
+                           initial_date = initial_date)
 
 
 @app.route('/peloplan/schedule')
@@ -136,7 +139,8 @@ def add_generic_workout(workout_date, sched_order, discipline):
     '''Adds generic workout to PeloPlan'''
     crud.schedule_workout(session['user_id'], workout_date, 
                           sched_order, discipline)
-    
+    session['date'] = workout_date
+
     return redirect('/peloplan')
 
 
@@ -179,8 +183,8 @@ def add_workout(workout_date, sched_order, discipline, workout_id):
     else:
         crud.schedule_workout(session['user_id'], workout_date, 
                               sched_order, discipline, workout_id)
-
-    return render_template('/peloplan.html')
+    session['date'] = workout_date
+    return redirect('/peloplan')
 
 
 if __name__ == '__main__':

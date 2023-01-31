@@ -10,13 +10,18 @@ const colors = {
   running: 'blue',
   walking: 'blue',
   'tread bootcamp': 'blue',
-  'bike bootcamp': 'red'
+  'bike bootcamp': 'red',
+  caesar: 'lightcoral',
+  'caesar_bootcamp': 'lightcoral'
 }
+
+const initialDate =  document.querySelector('#initial-date').value;
 
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
+    initialDate: initialDate,
     timeZone: 'local',
     fixedWeekCount: false,
     dayMaxEventRows: true,
@@ -34,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = info.event.start;
         const workout_date = date.toISOString().substr(0,10);
         const order = info.event.extendedProps.order;
-        const discipline = info.event.title.toLowerCase();
+        const discipline = info.event.extendedProps.discipline;
         const url = `/${workout_date}/${order}/${discipline}/workout-selection`
         window.location.href = url;
        }

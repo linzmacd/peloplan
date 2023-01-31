@@ -11,10 +11,10 @@
 
 <div class='row align-items-center'>
   <div class='col-1'></div>
-  <div class='col-9'>
+  <div class='col-8'>
     <div id='calendar'></div>
   </div>
-  <div class='col-2' id='discipline-selection'> <!--align-items-center?--> 
+  <!-- <div class='col-2' id='discipline-selection'>
     <div class='d-grid gap-2 col-6 mx-auto'>
       What kind of workout?
       <button class='btn btn-primary strength' type='button'>Strength</button>
@@ -23,17 +23,19 @@
       <button class='btn btn-primary cardio' type='button'>Cardio</button>
       <button class='btn btn-primary stretching' type='button'>Stretching</button>
       <button class='btn btn-primary cycling' type='button'>Cycling</button>
-      <!-- <button class='btn btn-primary rowing' type='button'>Rowing</button> -->
+      <button class='btn btn-primary rowing' type='button'>Rowing</button>
       <button class='btn btn-primary outdoor' type='button'>Outdoor</button>
       <button class='btn btn-primary running' type='button'>Running</button>
       <button class='btn btn-primary walking' type='button'>Walking</button>
       <button class='btn btn-primary bc_tread' type='button'>Tread Bootcamp</button>
       <button class='btn btn-primary bd_bike' type='button'>Bike Bootcamp</button>
-      <!-- <button class='btn btn-primary bc_row' type='button'>Row Bootcamp</button> -->
+      <button class='btn btn-primary bc_row' type='button'>Row Bootcamp</button>
     </div>
-  </div>
+  </div> -->
 </div>
-
+<div>
+  <input type='text'  id='initial-date' value={{ initial_date }}>
+</div>
 {% endblock %}
 
 {% block js %}
