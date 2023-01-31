@@ -168,7 +168,12 @@ def get_schedule(user_id):
             workout_dict['instructor'] = workout.workout.instructor
             workout_dict['url'] = url
         else:
-            workout_dict['title'] = workout.discipline.title()
+            if workout.discipline == 'caesar':
+                workout_dict['title'] = 'Rowing'
+            elif workout.discipline == 'caesar_bootcamp':
+                workout_dict['title'] = "Rowing Bootcamp"
+            else:
+                workout_dict['title'] = workout.discipline.title()
             workout_dict['instructor'] = None
             workout_dict['url'] = 0
         schedule_list.append(workout_dict)

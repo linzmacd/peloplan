@@ -7,6 +7,9 @@
 #filter-discipline {
   display: none;
 }
+#initial-date {
+  display:none;
+}
 .dimmed {
   opacity: .2;
 }
@@ -207,6 +210,42 @@
   background-color: blue;
   border-color: blue;
   box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+}
+.rowing {
+  color: white;
+  background-color: lightcoral;
+  border-color: lightcoral;
+}
+.rowing:hover {
+  color: white;
+  background-color: lightcoral;
+  border-color: lightcoral;
+  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
+  opacity: 1;
+}
+.rowing.selected {
+  color: white;
+  background-color: lightcoral;
+  border-color: lightcoral;
+  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
+}
+.bc_row {
+  color: white;
+  background-color: lightcoral;
+  border-color: lightcoral;
+}
+.bc_row:hover {
+  color: white;
+  background-color: lightcoral;
+  border-color: lightcoral;
+  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
+  opacity: 1;
+}
+.bc_row.selected {
+  color: white;
+  background-color: lightcoral;
+  border-color: lightcoral;
+  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
 }
 /* .add-discipline {
   color: white;
