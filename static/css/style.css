@@ -1,4 +1,217 @@
+#workout-date {
+  display: none;
+}
+.dimmed {
+  opacity: .2;
+}
+#filter-discipline {
+  display: none;
+}
+.strength {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+.strength:hover {
+  color: white;
+  background-color: black;
+  border-color: black;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 0 / 50%);
+  opacity: 1;
+}
+.strength.selected {
+  color: white;
+  background-color: black;
+  border-color: black;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 0 / 50%);
+}
 .meditation {
-  color: green;
-  background-color: white;
+  color: white;
+  background-color: green;
+  border-color: green;
+}
+.meditation:hover {
+  color: white;
+  background-color: green;
+  border-color: green;
+  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
+  opacity: 1;
+}
+.meditation.selected {
+  color: white;
+  background-color: green;
+  border-color: green;
+  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
+}
+.stretching {
+  color: white;
+  background-color: green;
+  border-color: green;
+}
+.stretching:hover {
+  color: white;
+  background-color: green;
+  border-color: green;
+  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
+  opacity: 1;
+}
+.stretching.selected {
+  color: white;
+  background-color: green;
+  border-color: green;
+  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
+}
+.yoga {
+  color: white;
+  background-color: purple;
+  border-color: purple;
+}
+.yoga:hover {
+  color: white;
+  background-color: purple;
+  border-color: purple;
+  box-shadow: 0 0 0 0.25rem rgb(128 0 128 / 50%);
+  opacity: 1;
+}
+.yoga.selected {
+  color: white;
+  background-color: purple;
+  border-color: purple;
+  box-shadow: 0 0 0 0.25rem rgb(128 0 128 / 50%);
+}
+.cardio {
+  color: white;
+  background-color: goldenrod;
+  border-color: goldenrod;
+}
+.cardio:hover {
+  color: white;
+  background-color: goldenrod;
+  border-color: goldenrod;
+  box-shadow: 0 0 0 0.25rem rgb(218 165 32 / 50%);
+  opacity: 1;
+}
+.cardio.selected {
+  color: white;
+  background-color: goldenrod;
+  border-color: goldenrod;
+  box-shadow: 0 0 0 0.25rem rgb(218 165 32 / 50%);
+}
+.cycling {
+  color: white;
+  background-color: red;
+  border-color: red;
+}
+.cycling.selected {
+  color: white;
+  background-color: red;
+  border-color: red;
+  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
+}
+.cycling:hover {
+  color: white;
+  background-color: red;
+  border-color: red;
+  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
+  opacity: 1;
+}
+.bc_bike {
+  color: white;
+  background-color: red;
+  border-color: red;
+}
+.bc_bike:hover {
+  color: white;
+  background-color: red;
+  border-color: red;
+  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
+  opacity: 1;
+}
+.bc_bike.selected {
+  color: white;
+  background-color: red;
+  border-color: red;
+  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
+}
+.outdoor {
+  color: white;
+  background-color: gray;
+  border-color: gray;
+}
+.outdoor:hover {
+  color: white;
+  background-color: gray;
+  border-color: gray;
+  box-shadow: 0 0 0 0.25rem rgb(128 128 128 / 50%);
+  opacity: 1;
+}
+.outdoor.selected {
+  color: white;
+  background-color: gray;
+  border-color: gray;
+  box-shadow: 0 0 0 0.25rem rgb(128 128 128 / 50%);
+}
+.running {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+}
+.running:hover {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+  opacity: 1;
+}
+.running.selected {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+}
+.walking {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+}
+.walking:hover {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+  opacity: 1;
+}
+.walking.selected {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+}
+.bc_tread {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+}
+.bc_tread:hover {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+  opacity: 1;
+}
+.bc_tread.selected {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+}
+/* .add-discipline {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+} */
+
+.fc-h-event .fc-event-title {
+  font-size: 11px;
 }
