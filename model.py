@@ -62,7 +62,7 @@ class Workout(db.Model):
                            primary_key=True)
     discipline = db.Column(db.String, nullable=False)
     category = db.Column(db.String, nullable = False)
-    instructor = db.Column(db.String, nullable = False)
+    instructor = db.Column(db.String)
     title = db.Column(db.String, nullable=False)
     duration = db.Column(db.Integer, nullable=False)
 
@@ -94,28 +94,29 @@ class Category(db.Model):
                             primary_key=True)
     category_name = db.Column(db.String, nullable=False)
     discipline = db.Column(db.String, nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
         return f'<Category {self.category_name}, {self.discipline}>'
 
 
-def reset_db(): ########## FOR TESTING #################
-    '''Seed DB'''
-    # db.drop_all() in terminal
-    # db.create_all() in terminal
-    test_user = User(email='test@test.com', 
-                     password='testpw')
-    test_workout = Workout(workout_id='fs98sdfs', discipline='cycling', 
-                           category='warm up', instructor='sam yo', 
-                           title='30 min Rock Ride', duration=900)
-    test_sched = Sched_Workout(user_id=1, sched_date='10-07-2023', 
-                               sched_order=1, discipline='cycling', 
-                               workout_id='fs98sdfs', completed=False)
+# def reset_db(): ########## FOR TESTING #################
+#     '''Seed DB'''
+#     # db.drop_all() in terminal
+#     # db.create_all() in terminal
+#     test_user = User(email='test@test.com', 
+#                      password='testpw')
+#     test_workout = Workout(workout_id='fs98sdfs', discipline='cycling', 
+#                            category='warm up', instructor='sam yo', 
+#                            title='30 min Rock Ride', duration=900)
+#     test_sched = Sched_Workout(user_id=1, sched_date='10-07-2023', 
+#                                sched_order=1, discipline='cycling', 
+#                                workout_id='fs98sdfs', completed=False)
 
-    db.session.add(test_user)
-    db.session.add(test_workout)
-    db.session.add(test_sched)
-    db.session.commit()
+#     db.session.add(test_user)
+#     db.session.add(test_workout)
+#     db.session.add(test_sched)
+#     db.session.commit()
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///peloplan', echo=True):
