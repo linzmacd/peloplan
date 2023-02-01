@@ -1,6 +1,7 @@
 from model import (db, User, Sched_Workout, Workout, 
-                   Instructor, Category,connect_to_db)
+                   Instructor, Category, connect_to_db)
 import peloton_api
+from datetime import datetime
 
 
 ########## USERS ############################
@@ -80,22 +81,25 @@ def verify_categories():
     '''Verifies categories table up-to-date.'''
     categories = peloton_api.get_categories()
     for category in categories:
-        if category['is_active']:
-            category_id = category['id']
-            in_db = bool(Category.query.get(category_id))
-            if not in_db:
-                category_name = category['display_name']
-                discipline = category['fitness_discipline']
-                new_category = Category(category_id = category_id,
-                                        category_name = category_name,
-                                        discipline = discipline)
-                db.session.add(new_category)
+        # if category['is_active']:
+        category_id = category['id']
+        in_db = bool(Category.query.get(category_id))
+        if not in_db:
+            category_name = category['display_name']
+            discipline = category['fitness_discipline']
+            is_active = category['is_active']
+            new_category = Category(category_id = category_id,
+                                    category_name = category_name,
+                                    discipline = discipline,
+                                    is_active = is_active)
+            db.session.add(new_category)
     db.session.commit()
 
 
 def get_discipline_categories(discipline):
-    '''Returns dictionary of all categories of a discipline by id.'''
-    category_objs =  Category.query.filter(Category.discipline == discipline)\
+    '''Returns dictionary of all active categories of a discipline by id.'''
+    category_objs =  Category.query.filter(Category.discipline == discipline,
+                                           Category.is_active == True) \
                                    .order_by(Category.category_name).all()
     category_dict = {}
     for category in category_objs:
@@ -201,15 +205,82 @@ def get_workout(user_id, sched_date, sched_order):
     return workout.first()
 
 
+def check_workout_id(user_id, workout_date, workout_id):
+    '''Returns workout objects matching workout_id on specified date.'''
+    workout =  Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
+                                          Sched_Workout.sched_date == workout_date,
+                                          Sched_Workout.workout_id == workout_id)
+    return workout.first()
+
+
+def check_workout_discipline(user_id, workout_date, discipline):
+    '''Returns first workout objects matching discipline on specified date.'''
+    workout =  Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
+                                          Sched_Workout.sched_date == workout_date,
+                                          Sched_Workout.workout_id == None,
+                                          Sched_Workout.discipline == discipline)
+    return workout.first()
+
+
+def sync_with_peloton(user_id):
+    '''Adds new completed workouts from Peloton'''
+    workout_history = peloton_api.get_workout_history(user_id)
+    index_counter = 0
+    for workout in reversed(workout_history):
+        workout_date = datetime.fromtimestamp(workout['created']).strftime('%Y-%m-%d')
+        discipline = workout['fitness_discipline']
+        try: 
+            workout_id = workout['peloton']['ride']['id']
+        except TypeError:
+            workout_id = None
+        # check to see if match for specific workout on schedule
+        sched_workout = check_workout_id(user_id, workout_date, workout_id)
+        if sched_workout:
+            sched_workout.completed = True
+            print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
+            index_counter += 1
+        else:
+            # check to see if workout is in db and add, if necessary
+            if not bool(Workout.query.get(workout_id)):
+                try:
+                    workout_details = peloton_api.get_workout_details(workout_id)
+                    add_workout(workout_details)
+                    print(f"{index_counter} - {workout_details['ride']['title']} added to db")
+                except TypeError:
+                    sched_order = get_order(user_id, workout_date)
+                    schedule_workout(user_id, workout_date, sched_order, discipline)
+                    print(f"{index_counter} - (Type Error) Just Workout added to db")     
+            # check to see if match for generic workout on schedule 
+            sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
+            if sched_discipline:
+                sched_discipline.workout_id = workout_id
+                sched_discipline.completed = True
+                print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+                index_counter += 1    
+            # otherwise make new completed workout on schedule
+            else:
+                sched_order = get_order(user_id, workout_date)
+                schedule_workout(user_id, workout_date, sched_order, 
+                                 discipline, workout_id, True)
+                print(f'{index_counter} - New Workout added on {workout_date}')
+                index_counter += 1    
+
+    db.session.commit()
+
+
 ########## WORKOUTS #########################
 
 def add_workout(workout_details):
     '''Creates a new workout object'''
     data = workout_details['ride']
+    try:
+        instructor = peloton_api.get_instructor(data['instructor_id'])
+    except:
+        instructor = None
     workout = Workout(workout_id = data['id'],
                       discipline = data['fitness_discipline'], 
                       category = get_category_name(data['ride_type_id']), 
-                      instructor = get_instructor_name(data['instructor_id']), 
+                      instructor = instructor, 
                       title = data['title'], 
                       duration = data['duration'])
     db.session.add(workout)

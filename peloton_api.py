@@ -1,9 +1,11 @@
 import requests
-# from flask import session
+from flask import session
+from model import connect_to_db
 import crud
 
-session = {}
-session['cookie'] = {'peloton_session_id': 'de69fb0867cd439d9470784aa3328505'}
+# session = {}
+# session['cookie'] = {'peloton_session_id': 'de69fb0867cd439d9470784aa3328505'}
+# session['user_id'] = 2
 
 BASE_URL = 'https://api.onepeloton.com/'
 
@@ -39,6 +41,16 @@ def get_instructors():
     return instructors
 
 
+def get_instructor(instructor_id):
+    '''Get instructor name by id.'''
+    endpoint = f'api/instructor/{instructor_id}'
+    api_url = BASE_URL + endpoint
+    response = requests.get(api_url, cookies=session['cookie'])
+    instructor = response.json()
+
+    return instructor['name']
+
+
 def get_categories():
     '''Gets list of categories.'''
     endpoint = 'api/v2/ride/archived'
@@ -47,6 +59,25 @@ def get_categories():
     categories = response.json()['class_types']
 
     return categories
+
+
+def get_workout_history(user_id):
+    '''Gets Peloton workout history.'''
+    user = crud.get_user_by_id(user_id)
+    peloton_user_id = user.peloton_user_id
+    endpoint = 'api/user/'+ peloton_user_id + '/workouts'
+    params = {
+        'joins': 'peloton.ride',
+        'limit': 100,
+        'page' : 0,
+        'sort': '-created'
+    }
+    api_url = BASE_URL + endpoint
+    response = requests.get(api_url, params=params, cookies=session['cookie'])
+    print(response.url)
+    workout_list = response.json()["data"]
+
+    return workout_list
 
 
 def get_workout_details(workout_id):
@@ -64,10 +95,12 @@ def query_database(discipline, duration=None, instructor=None,
                    sortby='original_air_time', desc=True):
     '''Returns list of workouts with specified filters'''
     endpoint = 'api/v2/ride/archived'
-    
-    params = {}
-    params['content_format'] = ['audio', 'video']
-    params['limit'] = 18
+    params = {
+        'content_format': ['audio', 'video'],
+        'limit': 18
+    }
+    # params['content_format'] = ['audio', 'video']
+    # params['limit'] = 18
 
     # corresponding lists of arguments and their corresponding query parameters
     arguments = [discipline, duration, instructor, category, 
@@ -92,6 +125,12 @@ def query_database(discipline, duration=None, instructor=None,
     workout_results = response.json()['data']
 
     return workout_results
+
+
+
+if __name__ == '__main__':
+    from server import app
+    connect_to_db(app)
     
 
     

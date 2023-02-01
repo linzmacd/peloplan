@@ -73,7 +73,7 @@ def check_session_cookie(session_id):
     # if authorized, add to flask session
     if auth_status:
         session['cookie'] = {'peloton_session_id': session_id}
-        return redirect('/peloplan')
+        return redirect('/update-databases')
     else:
         return redirect('/peloton-login')
     
@@ -101,16 +101,23 @@ def get_peloton_cookie():
     user_id = session['user_id']
     crud.add_auth_details(user_id, auth_details)
 
+    return redirect('/update-databases')
+
+
+@app.route('/update-databases')
+def custodial_work():
+    '''Syncs with Peloton to verify workout history, instructors, and categories.'''
+    crud.verify_instructors()
+    crud.verify_categories()
+    crud.sync_with_peloton(session['user_id'])
+
     return redirect('/peloplan')
-    
+
 
 @app.route('/peloplan')
 def display_peloplan():
     '''Shows monthly calendar.'''
-    # verify instructors and categories
     initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
-    crud.verify_instructors()
-    crud.verify_categories()
 
     return render_template('peloplan.html',
                            initial_date = initial_date)
@@ -184,6 +191,7 @@ def add_workout(workout_date, sched_order, discipline, workout_id):
         crud.schedule_workout(session['user_id'], workout_date, 
                               sched_order, discipline, workout_id)
     session['date'] = workout_date
+    
     return redirect('/peloplan')
 
 
