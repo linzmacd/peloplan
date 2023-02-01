@@ -165,8 +165,11 @@ def get_schedule(user_id):
             'discipline': workout.discipline, 
             'completed': workout.completed,
         }
-        url = (f'https://members.onepeloton.com/classes/cycling?'
-              f'modal=classDetailsModal&classId={workout.workout_id}')
+        if workout.workout.category == 'Freestyle':
+            url = f'https://members.onepeloton.com/profile/workouts/{workout.workout_id}'
+        else:
+            url = (f'https://members.onepeloton.com/classes/cycling?'
+                   f'modal=classDetailsModal&classId={workout.workout_id}')
         if workout.workout_id:
             workout_dict['title'] = workout.workout.title
             workout_dict['instructor'] = workout.workout.instructor
@@ -307,7 +310,7 @@ def sync_with_peloton(user_id):
                     index_counter += 1    
         elif workout_type == 'freestyle':
             workout_title = workout_title = workout['title']
-            workout_id = f'{workout_date} / {workout_title}'
+            workout_id = workout['id']
             # if not in db
             if not Workout.query.get(workout_id):
                 duration = workout['ride']['duration']
