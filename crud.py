@@ -123,7 +123,7 @@ def get_category_id(category_name, discipline):
 ########## SCHED_WORKOUTS ###################
 
 def schedule_workout(user_id, sched_date, sched_order, 
-                     discipline, workout_id=None, completed=False):
+                     discipline, workout_id=None, completed_id=None):
     '''Creates a new scheduled workout object.'''
     if not workout_id == None:
         # add workout to db if new
@@ -135,7 +135,7 @@ def schedule_workout(user_id, sched_date, sched_order,
                                   sched_order = sched_order, 
                                   discipline = discipline,
                                   workout_id = workout_id,
-                                  completed = completed)
+                                  completed_id = completed_id)
     db.session.add(sched_workout)
     db.session.commit()
 
@@ -162,11 +162,11 @@ def get_schedule(user_id):
             'id': workout.schedule_id,
             'date': workout.sched_date.strftime("%Y-%m-%d"),
             'order': workout.sched_order,
-            'discipline': workout.discipline, 
-            'completed': workout.completed,
-        }
-        if workout.workout.category == 'Freestyle':
-            url = f'https://members.onepeloton.com/profile/workouts/{workout.workout_id}'
+            'discipline': workout.discipline,
+            'completed': bool(workout.completed_id)
+            }
+        if workout.completed_id:
+            url = f'https://members.onepeloton.com/profile/workouts/{workout.completed_id}'
         else:
             url = (f'https://members.onepeloton.com/classes/cycling?'
                    f'modal=classDetailsModal&classId={workout.workout_id}')
@@ -281,10 +281,11 @@ def sync_with_peloton(user_id):
         # if workout is a class or scenic workout
         if workout_type == 'class' or workout_type == 'scenic':
             workout_id = workout['peloton']['ride']['id']
-            # if class is already on schedule
+            completed_id = workout['id']
+            # if class is already on schedule add completed_id
             sched_workout = check_workout_id(user_id, workout_date, workout_id)
             if sched_workout:
-                sched_workout.completed = True
+                sched_workout.completed_id = completed_id
                 print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
                 index_counter += 1
             # if class not on schedule
@@ -298,35 +299,36 @@ def sync_with_peloton(user_id):
                 sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
                 if sched_discipline:
                     sched_discipline.workout_id = workout_id
-                    sched_discipline.completed = True
+                    sched_discipline.completed_id = completed_id
                     print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
                     index_counter += 1    
                 # otherwise make new completed workout on schedule
                 else:
                     sched_order = get_order(user_id, workout_date)
                     schedule_workout(user_id, workout_date, sched_order, 
-                                     discipline, workout_id, True)
+                                     discipline, workout_id, completed_id)
                     print(f'{index_counter} - New Workout added on {workout_date}')
                     index_counter += 1    
         elif workout_type == 'freestyle':
             workout_title = workout_title = workout['title']
-            workout_id = workout['id']
+            workout_id = f'{{workout_date}} / {{workout_title }}'
+            completed_id = workout['id']
             # if not in db
             if not Workout.query.get(workout_id):
                 duration = workout['ride']['duration']
-                workout_id = add_freestyle_workout(workout_id, discipline,
-                                                   workout_title, duration)
+                add_freestyle_workout(workout_id, discipline,
+                                      workout_title, duration)
                 # check whether workout matches generic workout
                 sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
                 if sched_discipline:
                     sched_discipline.workout_id = workout_id
-                    sched_discipline.completed = True
+                    sched_discipline.completed_id = completed_id
                     print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
                     index_counter += 1
                 else:
                     sched_order = get_order(user_id, workout_date)
                     schedule_workout(user_id, workout_date, sched_order, 
-                                    discipline, workout_id, True)
+                                    discipline, workout_id, completed_id)
                     print(f'{index_counter} - New Freestyle Workout added on {workout_date}')
                     index_counter += 1   
         else:
@@ -355,7 +357,7 @@ def add_workout(workout_details):
 
 
 def add_freestyle_workout(workout_id, discipline, workout_title, duration):
-    '''Creates a new workout object and returns workout_id.'''
+    '''Creates a new Freestyle workout object.'''
     workout = Workout(workout_id = workout_id,
                       discipline = discipline, 
                       category = 'Freestyle', 
@@ -364,8 +366,6 @@ def add_freestyle_workout(workout_id, discipline, workout_title, duration):
                       duration = duration)
     db.session.add(workout)
     db.session.commit()
-
-    return workout_id
 
 
 if __name__ == '__main__':

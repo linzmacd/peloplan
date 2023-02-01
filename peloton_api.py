@@ -60,7 +60,6 @@ def get_categories():
 
     return categories
 
-
 def get_workout_history(user_id):
     '''Gets Peloton workout history.'''
     user = crud.get_user_by_id(user_id)
@@ -99,8 +98,6 @@ def query_database(discipline, duration=None, instructor=None,
         'content_format': ['audio', 'video'],
         'limit': 18
     }
-    # params['content_format'] = ['audio', 'video']
-    # params['limit'] = 18
 
     # corresponding lists of arguments and their corresponding query parameters
     arguments = [discipline, duration, instructor, category, 

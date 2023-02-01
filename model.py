@@ -42,7 +42,8 @@ class Sched_Workout(db.Model):
     discipline = db.Column(db.String, nullable=False)
     workout_id = db.Column(db.String, 
                            db.ForeignKey('workouts.workout_id'))
-    completed = db.Column(db.Boolean)
+    # completed = db.Column(db.Boolean)
+    completed_id = db.Column(db.String)
 
     user = db.relationship('User', back_populates='sched_workouts')
     workout = db.relationship('Workout', back_populates='sched_workouts')
@@ -99,24 +100,6 @@ class Category(db.Model):
     def __repr__(self):
         return f'<Category {self.category_name}, {self.discipline}>'
 
-
-# def reset_db(): ########## FOR TESTING #################
-#     '''Seed DB'''
-#     # db.drop_all() in terminal
-#     # db.create_all() in terminal
-#     test_user = User(email='test@test.com', 
-#                      password='testpw')
-#     test_workout = Workout(workout_id='fs98sdfs', discipline='cycling', 
-#                            category='warm up', instructor='sam yo', 
-#                            title='30 min Rock Ride', duration=900)
-#     test_sched = Sched_Workout(user_id=1, sched_date='10-07-2023', 
-#                                sched_order=1, discipline='cycling', 
-#                                workout_id='fs98sdfs', completed=False)
-
-#     db.session.add(test_user)
-#     db.session.add(test_workout)
-#     db.session.add(test_sched)
-#     db.session.commit()
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///peloplan', echo=True):

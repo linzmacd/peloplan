@@ -54,7 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
     .then((response) => response.json())
     .then((schedule) => {
       for (const workout of schedule) {
-        const completed = workout['completed'];
+        const completed = workout['completed']
+        console.log(workout['title'])
+        console.log(completed)
         const workoutDate = new Date(new Date(workout['date']))
         const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
         const bygone = (workoutDate < todayDate);
