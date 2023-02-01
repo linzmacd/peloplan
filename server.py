@@ -118,9 +118,12 @@ def custodial_work():
 def display_peloplan():
     '''Shows monthly calendar.'''
     initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
+    user = crud.get_user_by_id(session['user_id'])
+    
 
     return render_template('peloplan.html',
-                           initial_date = initial_date)
+                           initial_date = initial_date,
+                           user_fname = user.fname)
 
 
 @app.route('/peloplan/schedule')

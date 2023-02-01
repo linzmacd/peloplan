@@ -20,7 +20,6 @@ const completedBG = {
   false: 'lightgray'
 }
 
-
 const initialDate =  document.querySelector('#initial-date').value;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -54,38 +53,31 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch('/peloplan/schedule')
     .then((response) => response.json())
     .then((schedule) => {
-      for (const key in schedule) {
-        const completed = schedule[key]['completed'];
-        const workoutDate = new Date(new Date(schedule[key]['date']))
+      for (const workout of schedule) {
+        const completed = workout['completed'];
+        const workoutDate = new Date(new Date(workout['date']))
         const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
         const bygone = (workoutDate < todayDate);
-        console.log(schedule[key]['title'])
-        console.log(workoutDate)
-        console.log(todayDate)
+        // console.log(workout['title'])
+        // console.log(workoutDate)
+        // console.log(todayDate)
         // console.log(bygone)
-        // const completedFC = {
-        //   true: colors[schedule[key]['discipline']],
-        //   false: 'white'
-        // }
-        const disciplineColor = colors[schedule[key]['discipline']]
+        const disciplineColor = colors[workout['discipline']]
         const background = {
           true: "lightgray",
-          false: colors[schedule[key]['discipline']] 
+          false: colors[workout['discipline']] 
         }
         const font = {
           true: 'white',
-          false: colors[schedule[key]['discipline']]
+          false: colors[workout['discipline']]
         }
         const event = {
-          start: schedule[key]['date'],
-          order: schedule[key]['order'],
-          discipline: schedule[key]['discipline'],
-          title: schedule[key]['title'],
-          instructor: schedule[key]['instructor'],
-          url: schedule[key]['url'],
-          // backgroundColor: bygone ? completedBG[completed] : colors[schedule[key]['discipline']],
-          // borderColor: bygone ? completedFC[completed] : 'white',
-          // textColor: bygone ? completedFC[completed] : 'white',
+          start: workout['date'],
+          order: workout['order'],
+          discipline: workout['discipline'],
+          title: workout['title'],
+          instructor: workout['instructor'],
+          url: workout['url'],
           backgroundColor: completed ? 'white' : background[bygone],
           borderColor: completed ? disciplineColor : font[bygone],
           textColor: completed ? disciplineColor : 'white',
