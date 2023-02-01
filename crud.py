@@ -222,48 +222,112 @@ def check_workout_discipline(user_id, workout_date, discipline):
     return workout.first()
 
 
+# def sync_with_peloton(user_id):
+#     '''Adds new completed workouts from Peloton.'''
+#     workout_history = peloton_api.get_workout_history(user_id)
+#     index_counter = 0
+#     for workout in reversed(workout_history):
+#         workout_date = datetime.fromtimestamp(workout['created']).strftime('%Y-%m-%d')
+#         discipline = workout['fitness_discipline']
+#         try: 
+#             workout_id = workout['peloton']['ride']['id']
+#         except TypeError:
+#             workout_id = None
+#         # check to see if match for specific workout on schedule
+#         sched_workout = check_workout_id(user_id, workout_date, workout_id)
+#         if sched_workout:
+#             sched_workout.completed = True
+#             print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
+#             index_counter += 1
+#         else:
+#             # check to see if workout is in db and add, if necessary
+#             if not bool(Workout.query.get(workout_id)):
+#                 try:
+#                     workout_details = peloton_api.get_workout_details(workout_id)
+#                     add_workout(workout_details)
+#                     print(f"{index_counter} - {workout_details['ride']['title']} added to db")
+#                 except TypeError:
+#                     sched_order = get_order(user_id, workout_date)
+#                     schedule_workout(user_id, workout_date, sched_order, discipline)
+#                     print(f"{index_counter} - (Type Error) Just Workout added to db")     
+#             # check to see if match for generic workout on schedule 
+#             sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
+#             if sched_discipline:
+#                 sched_discipline.workout_id = workout_id
+#                 sched_discipline.completed = True
+#                 print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+#                 index_counter += 1    
+#             # otherwise make new completed workout on schedule
+#             else:
+#                 sched_order = get_order(user_id, workout_date)
+#                 schedule_workout(user_id, workout_date, sched_order, 
+#                                  discipline, workout_id, True)
+#                 print(f'{index_counter} - New Workout added on {workout_date}')
+#                 index_counter += 1    
+
+#     db.session.commit()
+
 def sync_with_peloton(user_id):
-    '''Adds new completed workouts from Peloton'''
+    '''Adds new completed workouts from Peloton.'''
     workout_history = peloton_api.get_workout_history(user_id)
     index_counter = 0
     for workout in reversed(workout_history):
         workout_date = datetime.fromtimestamp(workout['created']).strftime('%Y-%m-%d')
         discipline = workout['fitness_discipline']
-        try: 
+        workout_type = workout['workout_type']
+        # if workout is a class or scenic workout
+        if workout_type == 'class' or workout_type == 'scenic':
             workout_id = workout['peloton']['ride']['id']
-        except TypeError:
-            workout_id = None
-        # check to see if match for specific workout on schedule
-        sched_workout = check_workout_id(user_id, workout_date, workout_id)
-        if sched_workout:
-            sched_workout.completed = True
-            print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
-            index_counter += 1
-        else:
-            # check to see if workout is in db and add, if necessary
-            if not bool(Workout.query.get(workout_id)):
-                try:
+            # if class is already on schedule
+            sched_workout = check_workout_id(user_id, workout_date, workout_id)
+            if sched_workout:
+                sched_workout.completed = True
+                print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
+                index_counter += 1
+            # if class not on schedule
+            else:
+                # check whether workout in db and add if necessary
+                if not Workout.query.get(workout_id):
                     workout_details = peloton_api.get_workout_details(workout_id)
                     add_workout(workout_details)
                     print(f"{index_counter} - {workout_details['ride']['title']} added to db")
-                except TypeError:
+                # check whether workout matches generic workout
+                sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
+                if sched_discipline:
+                    sched_discipline.workout_id = workout_id
+                    sched_discipline.completed = True
+                    print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+                    index_counter += 1    
+                # otherwise make new completed workout on schedule
+                else:
                     sched_order = get_order(user_id, workout_date)
-                    schedule_workout(user_id, workout_date, sched_order, discipline)
-                    print(f"{index_counter} - (Type Error) Just Workout added to db")     
-            # check to see if match for generic workout on schedule 
-            sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
-            if sched_discipline:
-                sched_discipline.workout_id = workout_id
-                sched_discipline.completed = True
-                print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
-                index_counter += 1    
-            # otherwise make new completed workout on schedule
-            else:
-                sched_order = get_order(user_id, workout_date)
-                schedule_workout(user_id, workout_date, sched_order, 
-                                 discipline, workout_id, True)
-                print(f'{index_counter} - New Workout added on {workout_date}')
-                index_counter += 1    
+                    schedule_workout(user_id, workout_date, sched_order, 
+                                     discipline, workout_id, True)
+                    print(f'{index_counter} - New Workout added on {workout_date}')
+                    index_counter += 1    
+        elif workout_type == 'freestyle':
+            workout_title = workout_title = workout['title']
+            workout_id = f'{workout_date} / {workout_title}'
+            # if not in db
+            if not Workout.query.get(workout_id):
+                duration = workout['ride']['duration']
+                workout_id = add_freestyle_workout(workout_id, discipline,
+                                                   workout_title, duration)
+                # check whether workout matches generic workout
+                sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
+                if sched_discipline:
+                    sched_discipline.workout_id = workout_id
+                    sched_discipline.completed = True
+                    print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+                    index_counter += 1
+                else:
+                    sched_order = get_order(user_id, workout_date)
+                    schedule_workout(user_id, workout_date, sched_order, 
+                                    discipline, workout_id, True)
+                    print(f'{index_counter} - New Freestyle Workout added on {workout_date}')
+                    index_counter += 1   
+        else:
+            print("NEW WORKOUT TYPE!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     db.session.commit()
 
@@ -271,7 +335,7 @@ def sync_with_peloton(user_id):
 ########## WORKOUTS #########################
 
 def add_workout(workout_details):
-    '''Creates a new workout object'''
+    '''Creates a new workout object.'''
     data = workout_details['ride']
     try:
         instructor = peloton_api.get_instructor(data['instructor_id'])
@@ -284,8 +348,21 @@ def add_workout(workout_details):
                       title = data['title'], 
                       duration = data['duration'])
     db.session.add(workout)
-    db.session.commit()  
+    db.session.commit()
 
+
+def add_freestyle_workout(workout_id, discipline, workout_title, duration):
+    '''Creates a new workout object and returns workout_id.'''
+    workout = Workout(workout_id = workout_id,
+                      discipline = discipline, 
+                      category = 'Freestyle', 
+                      instructor = None, 
+                      title = workout_title, 
+                      duration = duration)
+    db.session.add(workout)
+    db.session.commit()
+
+    return workout_id
 
 
 if __name__ == '__main__':
