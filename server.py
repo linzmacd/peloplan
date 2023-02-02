@@ -106,9 +106,16 @@ def get_peloton_cookie():
 
 @app.route('/update-databases')
 def custodial_work():
-    '''Syncs with Peloton to verify workout history, instructors, and categories.'''
+    '''Syncs with Peloton to verify instructors, and categories.'''
     crud.verify_instructors()
     crud.verify_categories()
+
+    return redirect('/peloton-sync')
+
+
+@app.route('/peloton-sync')
+def sync_with_peloton():
+    '''Syncs with Peloton to verify workout history.'''
     crud.sync_with_peloton(session['user_id'])
 
     return redirect('/peloplan')
