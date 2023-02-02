@@ -125,7 +125,7 @@ def get_schedule():
 @app.route('/peloplan')
 def display_peloplan():
     '''Shows monthly calendar.'''
-    initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
+    initial_date = session.get('pp_start_date', date.today().strftime("%Y-%m-%d"))
     user = crud.get_user_by_id(session['user_id'])
     
 
@@ -137,7 +137,7 @@ def display_peloplan():
 @app.route('/peloplan-weekly')
 def display_weekly_peloplan():
     '''Shows weekly calendar.'''
-    initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
+    initial_date = session.get('pp_start_date', date.today().strftime("%Y-%m-%d"))
     user = crud.get_user_by_id(session['user_id'])
     
 
@@ -149,7 +149,7 @@ def display_weekly_peloplan():
 @app.route('/peloplan-list')
 def display_peloplan_as_list():
     '''Shows a weekly list.'''
-    initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
+    initial_date = session.get('pp_start_date', date.today().strftime("%Y-%m-%d"))
     user = crud.get_user_by_id(session['user_id'])
     
 
@@ -173,7 +173,7 @@ def add_generic_workout(workout_date, sched_order, discipline):
     '''Adds generic workout to PeloPlan'''
     crud.schedule_workout(session['user_id'], workout_date, 
                           sched_order, discipline)
-    session['date'] = workout_date
+    session['pp_start_date'] = workout_date
 
     return redirect('/peloplan')
 
@@ -217,9 +217,17 @@ def add_workout(workout_date, sched_order, discipline, workout_id):
     else:
         crud.schedule_workout(session['user_id'], workout_date, 
                               sched_order, discipline, workout_id)
-    session['date'] = workout_date
+    session['pp_start_date'] = workout_date
     
     return redirect('/peloplan')
+
+
+@app.route('/log-out')
+def log_out():
+    for key in list(session.keys()):
+        session.pop(key)
+
+    return redirect('/')
 
 
 if __name__ == '__main__':
