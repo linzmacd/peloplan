@@ -25,12 +25,15 @@ const initialDate =  document.querySelector('#initial-date').value;
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
-    height: 700,
-    initialView: 'dayGridMonth',
+    height: 300,
+    initialView: 'dayGridWeek',
+    headerToolbar: {
+      left: 'title',
+      center: '',
+      right: 'today prev,next'
+    },
     initialDate: initialDate,
     timeZone: 'local',
-    fixedWeekCount: false,
-    dayMaxEventRows: true,
     dateClick: function(info) {
       const workout_date = info.dateStr;
       const url = `/${workout_date}/discipline-selection`

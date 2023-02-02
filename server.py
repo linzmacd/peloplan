@@ -114,6 +114,14 @@ def custodial_work():
     return redirect('/peloplan')
 
 
+@app.route('/peloplan/schedule')
+def get_schedule():
+    '''Gets schedule data for populating calendar'''
+    schedule = crud.get_schedule(session['user_id'])
+ 
+    return jsonify(schedule)
+
+
 @app.route('/peloplan')
 def display_peloplan():
     '''Shows monthly calendar.'''
@@ -126,12 +134,28 @@ def display_peloplan():
                            user_fname = user.fname)
 
 
-@app.route('/peloplan/schedule')
-def get_schedule():
-    '''Gets schedule data for populating calendar'''
-    schedule = crud.get_schedule(session['user_id'])
- 
-    return jsonify(schedule)
+@app.route('/peloplan-weekly')
+def display_weekly_peloplan():
+    '''Shows weekly calendar.'''
+    initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
+    user = crud.get_user_by_id(session['user_id'])
+    
+
+    return render_template('peloplan-weekly.html',
+                           initial_date = initial_date,
+                           user_fname = user.fname)
+
+
+@app.route('/peloplan-list')
+def display_peloplan_as_list():
+    '''Shows a weekly list.'''
+    initial_date = session.get('date', date.today().strftime("%Y-%m-%d"))
+    user = crud.get_user_by_id(session['user_id'])
+    
+
+    return render_template('peloplan-list.html',
+                           initial_date = initial_date,
+                           user_fname = user.fname)
 
 
 @app.route('/<workout_date>/discipline-selection/')
