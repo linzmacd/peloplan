@@ -119,7 +119,7 @@ def query_database(discipline, duration=None, instructor=None,
     
     api_url = BASE_URL + endpoint
     response = requests.get(api_url, params=params, cookies=session['cookie'])
-    workout_results = response.json()['data']
+    workout_results = response.json()
 
     return workout_results
 

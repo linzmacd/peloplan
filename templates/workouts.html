@@ -82,13 +82,18 @@
   <div class='col-10'>
     <h2>Classes that match your search criteria</h2>
     <div id='query-results'>
-      {% for result in results %}
+      {% for result in results['data'] %}
       <div class='row align-items-center' style='padding: 5px; margin: 5px; border: 1px solid black'>
         <div class='col-4'>
           <img src="{{ result['image_url'] }}" height=170px>
         </div>
         <div class='col-5'>
           <h3>{{ result['title'] }}</h3>
+          {% for instructor in results['instructors'] %}
+            {% if instructor['id'] == result['instructor_id'] %}
+              {{ instructor['name'].upper() }}<br>
+            {% endif %}
+          {% endfor %}
           {{ result['description'] }}<br>
           Total Riders: {{ '{:,}'.format(result['total_workouts']) }}<br> 
           Rating: {{'%.2f' | format(result['overall_rating_avg']*100) }}% 
