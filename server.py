@@ -214,6 +214,27 @@ def select_workout(workout_date, sched_order, discipline):
                            results = results)
 
 
+@app.route('/<workout_date>/<sched_order>/<discipline>/workout-selection', methods=['POST'])
+def select_filtered_workout(workout_date, sched_order, discipline):
+    '''Allows user to select filtered workout.'''
+    duration = request.json.get('duration', None)
+    instructor = request.json.get('instructor', None)
+    category = request.json.get('category', None)
+    bookmarked = request.json.get('bookmarked', None)
+    completed = request.json.get('completed', None)
+    sortby = request.json.get('sortby', 'original_air_time')
+
+    results = peloton_api.query_database(discipline = discipline,
+                                         duration = duration,
+                                         instructor = instructor,
+                                         category = category, 
+                                         bookmarked = bookmarked, 
+                                         completed = completed, 
+                                         sortby = sortby)
+
+    return jsonify(results)
+
+
 @app.route('/<workout_date>/<sched_order>/<discipline>/<workout_id>')
 def add_workout(workout_date, sched_order, discipline, workout_id):
     '''Adds specific workout to PeloPlan.'''

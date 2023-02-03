@@ -14,7 +14,8 @@
   <div class='col-2'>
     <div id='filters-box'>
       <h2>Filter classes</h2>
-      <form action='/{{ workout_date }}/{{ sched_order }}/{{ discipline }}/workout-selection'>
+      <form>
+      <!-- <form action='/{{ workout_date }}/{{ sched_order }}/{{ discipline }}/workout-selection'> -->
         <input type='text'  id='workout-date' value={{ workout_date }}>
         <input type='text'  id='sched-order' value={{ sched_order }}>
         <input type='text'  id='filter-discipline' value={{ discipline }}>
@@ -51,17 +52,15 @@
           </select>
         </div>
         <div>
-          <br>Bookmarked? <input type='checkbox' name='bookmarked' 
-                                 id='filter-bookmarked' value=True> 
+          <br>Bookmarked? <input type='checkbox' id='filter-bookmarked'> 
         </div>
         <div>
-          <br>Already Taken? <input type='checkbox' name='completed' 
-                                    id='filter-completed' value=True> 
+          <br>Already Taken? <input type='checkbox' id='filter-completed'> 
         </div>
-        <div>
+        <!-- <div>
           <br>Keywords: <br> 
           <input type='text' name='keywords'>
-        </div>
+        </div> -->
         <div>
           <br>Sort By:<br>
           <select name='duration' id='filter-sortby'>
@@ -73,9 +72,9 @@
             <option value='easiest'>Easiest</option>
           </select>
         </div>
-        <div>
+        <!-- <div>
           <br><input type='submit' id='apply-filters' value='Apply'>
-        </div>
+        </div> -->
       </form>
     </div>
   </div>
