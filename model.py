@@ -33,7 +33,7 @@ class Sched_Workout(db.Model):
 
     schedule_id = db.Column(db.Integer,
                         autoincrement=True,
-                        primary_key=True )
+                        primary_key=True)
     user_id = db.Column(db.Integer, 
                         db.ForeignKey('users.user_id'), 
                         nullable=False)
@@ -82,8 +82,27 @@ class Instructor(db.Model):
                               primary_key=True)
     instructor_name = db.Column(db.String, nullable=False)
 
+    disciplines = db.relationship('Inst_Disc', back_populates='instructors')
+
     def __repr__(self):
         return f'<Instructor {self.instructor_name}>'
+
+
+class Inst_Disc(db.Model):
+    '''A instructor:discipline pairing.'''
+
+    __tablename__ = 'instructor_disciplines'
+
+    inst_disc_id = db.Column(db.Integer,
+                             autoincrement=True,
+                             primary_key=True)
+    instructor_id = db.Column(db.String, 
+                              db.ForeignKey('instructors.instructor_id'),
+                              nullable=False)
+    discipline = db.Column(db.String,
+                           nullable=False)
+    
+    instructors = db.relationship('Instructor', back_populates='disciplines')
 
 
 class Category(db.Model):

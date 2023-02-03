@@ -195,7 +195,7 @@ def select_workout(workout_date, sched_order, discipline):
     completed = request.args.get('completed', None)
     sortby = request.args.get('sortby', 'original_air_time')
 
-    instructors = crud.get_instructors()
+    instructors = crud.get_instructors_by_discipline(discipline)
     categories = crud.get_discipline_categories(discipline)
     results = peloton_api.query_database(discipline = discipline,
                                          duration = duration,

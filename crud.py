@@ -1,5 +1,5 @@
-from model import (db, User, Sched_Workout, Workout, 
-                   Instructor, Category, connect_to_db)
+from model import (db, User, Sched_Workout, Workout, Instructor, 
+                   Inst_Disc, Category, connect_to_db)
 import peloton_api
 from datetime import datetime
 
@@ -41,25 +41,36 @@ def add_auth_details(user_id, auth_details):
 ########## INSTRUCTORS ######################
 
 def verify_instructors():
-    '''Verifies instructors table up-to-date.'''
+    '''Verifies instructors and instructor_disciplines tables up-to-date.'''
     instructors = peloton_api.get_instructors()
     for instructor in instructors:
         instructor_id = instructor['id']
-        in_db = bool(Instructor.query.get(instructor_id))
-        if not in_db:
+        if not Instructor.query.get(instructor_id):
             instructor_name = instructor['name']
             new_instructor = Instructor(instructor_id = instructor_id,
                                         instructor_name = instructor_name)
             db.session.add(new_instructor)
+        instructor_disciplines = instructor['fitness_disciplines']
+        for discipline in instructor_disciplines:
+            if not Inst_Disc.query.filter(Inst_Disc.instructor_id == instructor_id,
+                                          Inst_Disc.discipline == discipline).first():
+                new_pairing = Inst_Disc(instructor_id = instructor_id,
+                                        discipline = discipline)
+                db.session.add(new_pairing)
     db.session.commit()
 
 
-def get_instructors():
-    '''Returns dictionary of all instructors by id.'''
-    instructor_objs =  Instructor.query.order_by(Instructor.instructor_name).all()
+def get_instructors_by_discipline(discipline=None):
+    '''Returns dictionary of all instructors of a discipline by id.'''
+    if discipline:
+        inst_objs = Inst_Disc.query.options(db.joinedload('instructors'))\
+                                   .filter(Inst_Disc.discipline == discipline).all()
+                                #    .order_by(Inst_Disc.instructors.instructor_name)
+    else:
+        inst_objs =  Instructor.query.order_by(Instructor.instructor_name).all()
     instructor_dict = {}
-    for instructor in instructor_objs:
-        instructor_dict[instructor.instructor_name] = instructor.instructor_id
+    for paring in inst_objs:
+        instructor_dict[paring.instructors.instructor_name] = paring.instructor_id
 
     return instructor_dict
 
@@ -268,11 +279,12 @@ def delete_workout(schedule_id):
     sched_date = workout.sched_date
     db.session.delete(workout)
     workouts = Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
-                                          Sched_Workout.sched_date == sched_date) \
+                                          Sched_Workout.sched_date == sched_date)\
                                   .order_by(Sched_Workout.sched_order).all()
     for index, workout in enumerate(workouts):
             workout.sched_order = index + 1
     db.session.commit()
+    return True
 
 
 def sync_with_peloton(user_id):
