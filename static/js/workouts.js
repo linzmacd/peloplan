@@ -65,11 +65,11 @@ for (const filterButton of filterButtons) {
             <h3>${result['title']}</h3>
             ${instructors[result['instructor_id']]}<br>
             ${result['description']}<br>
-            Total Riders: ${result['total_workouts'].toLocaleString("en-US")}<br>
+            Total Riders: ${result['total_workouts'].toLocaleString('en-US')}<br>
             Rating: ${(result['overall_rating_avg']*100).toFixed(2)}%
-            (${result['overall_rating_count'].toLocaleString("en-US")} votes)<br>
+            (${result['overall_rating_count'].toLocaleString('en-US')} votes)<br>
             Difficulty: ${result['difficulty_rating_avg'].toFixed(2)}
-            (${result['difficulty_rating_count'].toLocaleString("en-US")} votes)<br>
+            (${result['difficulty_rating_count'].toLocaleString('en-US')} votes)<br>
           </div>
           <div class='col-2'>
             <button class='add-workout' value="${result['id']}"> Add to Calendar </button>

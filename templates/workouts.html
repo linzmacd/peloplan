@@ -3,7 +3,6 @@
 {% block title %}Workouts{% endblock %}
 
 {% block body %}
-
 <div class='row'>
   <div class='column'>
     <h1>Welcome to PeloPlan!</h1>
@@ -11,14 +10,14 @@
   </div>
 </div>
 <div class='row'>
+  <!-- Filters -->
   <div class='col-2'>
     <div id='filters-box'>
       <h2>Filter classes</h2>
       <form>
-      <!-- <form action='/{{ workout_date }}/{{ sched_order }}/{{ discipline }}/workout-selection'> -->
-        <input type='text'  id='workout-date' value={{ workout_date }}>
-        <input type='text'  id='sched-order' value={{ sched_order }}>
-        <input type='text'  id='filter-discipline' value={{ discipline }}>
+        <input type='hidden' id='workout-date' value={{ workout_date }}>
+        <input type='hidden' id='sched-order' value={{ sched_order }}>
+        <input type='hidden' id='filter-discipline' value={{ discipline }}>
         <div>
           Class Length:<br>
           <select name='duration' id='filter-duration'>
@@ -72,12 +71,10 @@
             <option value='easiest'>Easiest</option>
           </select>
         </div>
-        <!-- <div>
-          <br><input type='submit' id='apply-filters' value='Apply'>
-        </div> -->
       </form>
     </div>
   </div>
+  <!-- Search Results -->
   <div class='col-10'>
     <h2>Classes that match your search criteria</h2>
     <div id='query-results'>
@@ -108,10 +105,8 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
 
 {% block js %}
 <script src='/static/js/workouts.js'></script>
-
 {% endblock %}

@@ -73,8 +73,7 @@ def get_workout_history(user_id):
     }
     api_url = BASE_URL + endpoint
     response = requests.get(api_url, params=params, cookies=session['cookie'])
-    print(response.url)
-    workout_list = response.json()["data"]
+    workout_list = response.json()['data']
 
     return workout_list
 

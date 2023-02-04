@@ -7,23 +7,79 @@
 
 {% block title %} {{ user_fname }}'sPeloPlan{% endblock %}
 
-{% block body %}
+{% block variables %}
+<input type='hidden' id='initial-date' value={{ initial_date }}>
+{% endblock %}
 
+{% block body %}
+<!-- Calendar -->
 <div class='row'>
   <div class='col-1'></div>
   <div class='col-10'>
     <br>
     <div id='calendar'></div>
   </div>
+</div> 
+
+<!-- Generic Workout Modal -->
+<div class='modal fade' id='generic-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-sm modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='generic-modal-title'>Workout</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+        <button type='button' class='modal-up btn btn-outline-secondary btn-sm' title='Move Up'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708l6-6z"/>
+            <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+          </svg>
+        </button><br>
+        <button type='button' id='gen-select-class' class='btn btn-outline-danger btn-sm'>Select Class</button><br>
+        <button type='button' class='modal-delete btn btn-outline-dark btn-sm'>Delete</button><br>
+        <button type='button' class='modal-down btn btn-outline-secondary btn-sm' title='Move Down'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-down" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+            <path fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-<div>
-  <input type='text'  id='initial-date' value={{ initial_date }}>
+
+<!-- Specific Workout Modal -->
+<div class='modal fade' id='specific-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-sm modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='specific-modal-title'>Workout</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+        <button type='button' class='modal-up btn btn-outline-secondary btn-sm' title='Move Up'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708l6-6z"/>
+            <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+          </svg>
+        </button><br>
+        <button type='button' id='spec-stack-add' class='btn btn-outline-danger btn-sm'>Add to Stack</button><br>
+        <button type='button' class='modal-delete btn btn-outline-dark btn-sm'>Delete</button><br>
+        <button type='button' class='modal-down btn btn-outline-secondary btn-sm' title='Move Down'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-down" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+            <path fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
+<!-- End Modal -->
 {% endblock %}
 
 {% block js %}
 <script src='/static/js/calendar-weekly.js'></script>
-
-
-
+<script src='/static/js/app.js'></script>
 {% endblock %}

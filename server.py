@@ -132,7 +132,7 @@ def get_schedule():
 @app.route('/peloplan')
 def display_peloplan():
     '''Shows monthly calendar.'''
-    initial_date = session.get('pp_start_date', date.today().strftime("%Y-%m-%d"))
+    initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
     
 
@@ -144,7 +144,7 @@ def display_peloplan():
 @app.route('/peloplan-weekly')
 def display_weekly_peloplan():
     '''Shows weekly calendar.'''
-    initial_date = session.get('pp_start_date', date.today().strftime("%Y-%m-%d"))
+    initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
     
 
@@ -156,7 +156,7 @@ def display_weekly_peloplan():
 @app.route('/peloplan-list')
 def display_peloplan_as_list():
     '''Shows a weekly list.'''
-    initial_date = session.get('pp_start_date', date.today().strftime("%Y-%m-%d"))
+    initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
     
 
@@ -248,6 +248,24 @@ def add_workout(workout_date, sched_order, discipline, workout_id):
     session['pp_start_date'] = workout_date
     
     return redirect('/peloplan')
+
+
+@app.route('/move-up/<sched_id>')
+def move_up(sched_id):
+    '''Moves a specified class up in order.'''
+    return jsonify(crud.move_up_in_order(sched_id))
+
+
+@app.route('/move-down/<sched_id>')
+def move_down(sched_id):
+    '''Moves a specified workout down in order.'''
+    return jsonify(crud.move_down_in_order(sched_id))
+
+
+@app.route('/delete/<sched_id>')
+def delete(sched_id):
+    '''Deletes a workout from the schedule.'''
+    return jsonify(crud.delete_workout(sched_id))
 
 
 @app.route('/log-out')

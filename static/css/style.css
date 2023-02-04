@@ -1,18 +1,8 @@
 .fc-list-event-time {
   display: none;
 }
-
-#workout-date {
-  display: none;
-}
-#sched-order {
-  display: none;
-}
-#filter-discipline {
-  display: none;
-}
-#initial-date {
-  display:none;
+.modal-body {
+  text-align: center;
 }
 .dimmed {
   opacity: .2;
