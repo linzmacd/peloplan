@@ -9,8 +9,8 @@ const colors = {
   outdoor: 'gray',
   running: 'blue',
   walking: 'blue',
-  'tread bootcamp': 'blue',
-  'bike bootcamp': 'red',
+  'bootcamp': 'blue',
+  'bike_bootcamp': 'red',
   caesar: 'lightcoral',
   'caesar_bootcamp': 'lightcoral'
 }
@@ -35,9 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initialDate: initialDate,
     timeZone: 'local',
     dateClick: function(info) {
-      const workout_date = info.dateStr;
-      const url = `/${workout_date}/discipline-selection`
-      window.location.href = url;
+      const workout_date = document.querySelector('#modal-workout-date').value = info.dateStr;
+      fetch(`/get-order/${workout_date}`)
+        .then((response) => response.json())
+        .then((order) => {
+          document.querySelector('#modal-workout-order').value = order;
+        });
+        let disciplinesModal = new bootstrap.Modal(document.getElementById('disciplines-modal'));
+        disciplinesModal.show();
     },
     eventOrder: 'order',
     eventClick: function(info) {
@@ -50,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#modal-url').value = info.event.url;
       if (info.event.extendedProps.completed == true) {
         window.open(info.event.url)
-      } else if (info.event.title.toLowerCase() == info.event.extendedProps.discipline) {
+      } else if (info.event.title.toLowerCase() == info.event.extendedProps.displayDiscipline) {
         document.querySelector('#generic-modal-title').innerText = info.event.title + ' Workout';
         let genericModal = new bootstrap.Modal(document.getElementById('generic-modal'));
         genericModal.show();
@@ -66,8 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     .then((schedule) => {
       for (const workout of schedule) {
         const completed = workout['completed']
-        console.log(workout['title'])
-        console.log(completed)
         const workoutDate = new Date(new Date(workout['date']))
         const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
         const bygone = (workoutDate < todayDate);
@@ -85,8 +88,10 @@ document.addEventListener('DOMContentLoaded', function() {
           start: workout['date'],
           order: workout['order'],
           discipline: workout['discipline'],
+          displayDiscipline: workout['display_discipline'],
           title: workout['title'],
           instructor: workout['instructor'],
+          completed: workout['completed'],
           url: workout['url'],
           backgroundColor: completed ? 'white' : background[bygone],
           borderColor: completed ? disciplineColor : font[bygone],

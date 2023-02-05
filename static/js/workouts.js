@@ -1,6 +1,5 @@
 
 const addWorkoutButtons = document.querySelectorAll('.add-workout');
-console.log(addWorkoutButtons);
 for (const addWorkoutButton of addWorkoutButtons) {
   addWorkoutButton.addEventListener('click', () => {
     const workout_date = document.querySelector('#workout-date').value
@@ -37,9 +36,7 @@ for (const filterButton of filterButtons) {
       completed: document.querySelector('#filter-completed').checked,
       sortby: document.querySelector('#filter-sortby').value
     };
-    console.log(queryFilters);
-    const url = `/${workout_date}/${sched_order}/${discipline}/workout-selection`
-    console.log(url)
+    const url = `/workout-selection/${workout_date}/${sched_order}/${discipline}`
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(queryFilters),
@@ -49,7 +46,6 @@ for (const filterButton of filterButtons) {
     })
     .then((response) => response.json())
     .then((results) => {
-      console.log(results)
       const instructors = {}
       for (const instructor of results['instructors']) {
         instructors[instructor['id']] = instructor['name']
@@ -76,6 +72,17 @@ for (const filterButton of filterButtons) {
           </div>
         </div>
         `);
+      };
+      const addWorkoutButtons = document.querySelectorAll('.add-workout');
+      for (const addWorkoutButton of addWorkoutButtons) {
+        addWorkoutButton.addEventListener('click', () => {
+          const workout_date = document.querySelector('#workout-date').value
+          const sched_order = document.querySelector('#sched-order').value
+          const discipline = document.querySelector('#filter-discipline').value
+          const workout_id = addWorkoutButton.value
+          const url = `/${workout_date}/${sched_order}/${discipline}/${workout_id}`
+          window.location.href = url
+        });
       };
     });
   });

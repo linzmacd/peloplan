@@ -65,14 +65,19 @@ def get_instructors_by_discipline(discipline=None):
     if discipline:
         inst_objs = Inst_Disc.query.options(db.joinedload('instructors'))\
                                    .filter(Inst_Disc.discipline == discipline).all()
-                                #    .order_by(Inst_Disc.instructors.instructor_name)
     else:
         inst_objs =  Instructor.query.order_by(Instructor.instructor_name).all()
     instructor_dict = {}
     for paring in inst_objs:
         instructor_dict[paring.instructors.instructor_name] = paring.instructor_id
 
-    return instructor_dict
+    instructor_names = list(instructor_dict.keys())
+    instructor_names.sort()
+    sorted_dict = {}
+    for name in instructor_names:
+        sorted_dict[name] = instructor_dict[name]
+    
+    return sorted_dict
 
 
 def get_instructor_name(instructor_id):
@@ -149,6 +154,7 @@ def schedule_workout(user_id, sched_date, sched_order,
                                   completed_id = completed_id)
     db.session.add(sched_workout)
     db.session.commit()
+    return True
 
 
 def update_workout(user_id, sched_date, sched_order, workout_id):
@@ -159,6 +165,7 @@ def update_workout(user_id, sched_date, sched_order, workout_id):
             add_workout(workout_details)
     workout.workout_id = workout_id
     db.session.commit()
+    return True
 
 
 def get_schedule(user_id):
@@ -171,27 +178,35 @@ def get_schedule(user_id):
     for workout in schedule:
         workout_dict = {
             'id': workout.schedule_id,
-            'date': workout.sched_date.strftime("%Y-%m-%d"),
+            'date': workout.sched_date.strftime('%Y-%m-%d'),
             'order': workout.sched_order,
             'discipline': workout.discipline,
             'completed': bool(workout.completed_id)
             }
+        # if workout is rowing or a bootcamp, fix discipline name
+        if workout.discipline == 'caesar':
+            workout_dict['display_discipline'] = 'rowing'
+        elif workout.discipline == 'caesar_bootcamp':
+            workout_dict['display_discipline'] = 'rowing bootcamp'
+        elif workout.discipline == 'bootcamp':
+            workout_dict['display_discipline'] = 'tread bootcamp'
+        elif workout.discipline == 'bike_bootcamp':
+            workout_dict['display_discipline'] = 'bike bootcamp'
+        else:
+            workout_dict['display_discipline'] = workout.discipline
+        # if workout completed, url links to session, otherwise links to class
         if workout.completed_id:
             url = f'https://members.onepeloton.com/profile/workouts/{workout.completed_id}'
         else:
             url = (f'https://members.onepeloton.com/classes/cycling?'
                    f'modal=classDetailsModal&classId={workout.workout_id}')
+        # if there is a class assignment, add title and instructor
         if workout.workout_id:
             workout_dict['title'] = workout.workout.title
             workout_dict['instructor'] = workout.workout.instructor
             workout_dict['url'] = url
         else:
-            if workout.discipline == 'caesar':
-                workout_dict['title'] = 'Rowing'
-            elif workout.discipline == 'caesar_bootcamp':
-                workout_dict['title'] = "Rowing Bootcamp"
-            else:
-                workout_dict['title'] = workout.discipline.title()
+            workout_dict['title'] = workout_dict['display_discipline'].title()
             workout_dict['instructor'] = None
             workout_dict['url'] = 0
         schedule_list.append(workout_dict)
@@ -349,7 +364,7 @@ def sync_with_peloton(user_id):
                     print(f'{index_counter} - New Freestyle Workout added on {workout_date}')
                     index_counter += 1   
         else:
-            print("NEW WORKOUT TYPE!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print('NEW WORKOUT TYPE!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
     db.session.commit()
 

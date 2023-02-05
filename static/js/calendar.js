@@ -9,8 +9,8 @@ const colors = {
   outdoor: 'gray',
   running: 'blue',
   walking: 'blue',
-  'tread bootcamp': 'blue',
-  'bike bootcamp': 'red',
+  'bootcamp': 'blue',
+  'bike_bootcamp': 'red',
   caesar: 'lightcoral',
   'caesar_bootcamp': 'lightcoral'
 }
@@ -28,13 +28,23 @@ document.addEventListener('DOMContentLoaded', function() {
     height: 700,
     initialView: 'dayGridMonth',
     initialDate: initialDate,
+    headerToolbar: {
+      left: 'dayGridMonth dayGridWeek listWeek',
+      center: 'title',
+      right: 'today prev,next'
+    },
     timeZone: 'local',
     fixedWeekCount: false,
     dayMaxEventRows: true,
     dateClick: function(info) {
-      const workout_date = info.dateStr;
-      const url = `/${workout_date}/discipline-selection`
-      window.location.href = url;
+      const workout_date = document.querySelector('#modal-workout-date').value = info.dateStr;
+      fetch(`/get-order/${workout_date}`)
+        .then((response) => response.json())
+        .then((order) => {
+          document.querySelector('#modal-workout-order').value = order;
+        });
+        let disciplinesModal = new bootstrap.Modal(document.getElementById('disciplines-modal'));
+        disciplinesModal.show();
     },
     eventOrder: 'order',
     eventClick: function(info) {
@@ -47,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#modal-url').value = info.event.url;
       if (info.event.extendedProps.completed == true) {
         window.open(info.event.url)
-      } else if (info.event.title.toLowerCase() == info.event.extendedProps.discipline) {
+      } else if (info.event.title.toLowerCase() == info.event.extendedProps.displayDiscipline) {
         document.querySelector('#generic-modal-title').innerText = info.event.title + ' Workout';
         let genericModal = new bootstrap.Modal(document.getElementById('generic-modal'));
         genericModal.show();
@@ -80,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
           start: workout['date'],
           order: workout['order'],
           discipline: workout['discipline'],
+          displayDiscipline: workout['display_discipline'],
           title: workout['title'],
           instructor: workout['instructor'],
           completed: workout['completed'],
@@ -93,26 +104,3 @@ document.addEventListener('DOMContentLoaded', function() {
       calendar.render();
     });
   });
-
-
-
-// // Bootstrap sample code
-// const myModal = document.getElementById('myModal')
-// const myInput = document.getElementById('myInput')
-
-// discModal.addEventListener('shown.bs.modal', () => {
-//   myInput.focus()
-// })
-
-
-      // info.jsEvent.preventDefault();
-      // if (info.event.url != 0) {
-      //   window.open(info.event.url);
-      // } else {
-      //   const date = info.event.start;
-      //   const workout_date = date.toISOString().substr(0,10);
-      //   const order = info.event.extendedProps.order;
-      //   const discipline = info.event.extendedProps.discipline;
-      //   const url = `/${workout_date}/${order}/${discipline}/workout-selection`;
-      //   window.location.href = url;
-      //  }

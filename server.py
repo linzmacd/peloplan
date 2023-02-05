@@ -141,6 +141,14 @@ def display_peloplan():
                            user_fname = user.fname)
 
 
+# @app.route('/peloplan/init-date')
+# def get_pp_start_date():
+#     '''Returns the initial date for the calendar.'''
+#     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
+
+#     return jsonify(initial_date)
+
+
 @app.route('/peloplan-weekly')
 def display_weekly_peloplan():
     '''Shows weekly calendar.'''
@@ -165,45 +173,21 @@ def display_peloplan_as_list():
                            user_fname = user.fname)
 
 
-@app.route('/<workout_date>/discipline-selection/')
-def select_discipline(workout_date):
-    '''Allows user to select workout discipline.'''
-    sched_order = crud.get_order(session['user_id'], workout_date)
-
-    return render_template('/disciplines.html',
-                           workout_date = workout_date,
-                           sched_order = sched_order)
-
-
-@app.route('/<workout_date>/<sched_order>/<discipline>')
+@app.route('/add_generic/<workout_date>/<sched_order>/<discipline>')
 def add_generic_workout(workout_date, sched_order, discipline):
     '''Adds generic workout to PeloPlan'''
-    crud.schedule_workout(session['user_id'], workout_date, 
-                          sched_order, discipline)
     session['pp_start_date'] = workout_date
+    
+    return jsonify(crud.schedule_workout(session['user_id'], workout_date, 
+                                         sched_order, discipline))
 
-    return redirect('/peloplan')
 
-
-@app.route('/<workout_date>/<sched_order>/<discipline>/workout-selection')
+@app.route('/workout-selection/<workout_date>/<sched_order>/<discipline>')
 def select_workout(workout_date, sched_order, discipline):
     '''Allows user to select specific workout.'''
-    duration = request.args.get('duration', None)
-    instructor = request.args.get('instructor', None)
-    category = request.args.get('category', None)
-    bookmarked = request.args.get('bookmarked', None)
-    completed = request.args.get('completed', None)
-    sortby = request.args.get('sortby', 'original_air_time')
-
     instructors = crud.get_instructors_by_discipline(discipline)
     categories = crud.get_discipline_categories(discipline)
-    results = peloton_api.query_database(discipline = discipline,
-                                         duration = duration,
-                                         instructor = instructor,
-                                         category = category, 
-                                         bookmarked = bookmarked, 
-                                         completed = completed, 
-                                         sortby = sortby)
+    results = peloton_api.query_database(discipline = discipline)
 
     return render_template('/workouts.html',
                            workout_date = workout_date,
@@ -214,7 +198,7 @@ def select_workout(workout_date, sched_order, discipline):
                            results = results)
 
 
-@app.route('/<workout_date>/<sched_order>/<discipline>/workout-selection', methods=['POST'])
+@app.route('/workout-selection/<workout_date>/<sched_order>/<discipline>', methods=['POST'])
 def select_filtered_workout(workout_date, sched_order, discipline):
     '''Allows user to select filtered workout.'''
     duration = request.json.get('duration', None)
@@ -248,6 +232,12 @@ def add_workout(workout_date, sched_order, discipline, workout_id):
     session['pp_start_date'] = workout_date
     
     return redirect('/peloplan')
+
+
+@app.route('/get-order/<workout_date>')
+def get_order(workout_date):
+    '''Returns order number for next workout'''
+    return jsonify(crud.get_order(session['user_id'], workout_date))
 
 
 @app.route('/move-up/<sched_id>')

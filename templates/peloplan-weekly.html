@@ -5,21 +5,62 @@
 <!-- <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.0.3/main.min.css' rel='stylesheet'></link> -->
 {% endblock %}
 
-{% block title %} {{ user_fname }}'sPeloPlan{% endblock %}
+{% block title %} {{ user_fname }}'s PeloPlan{% endblock %}
 
 {% block variables %}
 <input type='hidden' id='initial-date' value={{ initial_date }}>
+<input type='hidden' id='modal-workout-date'>
+<input type='hidden' id='modal-workout-order'>
+<input type='hidden' id='modal-discipline'>
+<input type='hidden' id='modal-sched-id'>
+<input type='hidden' id='modal-url'>
 {% endblock %}
 
 {% block body %}
 <!-- Calendar -->
 <div class='row'>
-  <div class='col-1'></div>
   <div class='col-10'>
     <br>
     <div id='calendar'></div>
   </div>
 </div> 
+
+<!-- Disciplines Modal -->
+<div class='modal fade' id='disciplines-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-lg modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='disciplines-modal-title'>Select Discipline</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body '>
+        <div class='row align-items-center'>
+          <div class='col-6'>
+            <div class='d-grid gap-2 col-6 mx-auto disciplines'>
+              <button class='btn btn-primary strength' type='button' value='strength'>Strength</button>
+              <button class='btn btn-primary yoga' type='button' value='yoga'>Yoga</button>
+              <button class='btn btn-primary running' type='button' value='running'>Running</button>
+              <button class='btn btn-primary walking' type='button' value='walking'>Walking</button>
+              <button class='btn btn-primary bc_tread' type='button' value='bootcamp'>Tread Bootcamp</button>
+              <button class='btn btn-primary meditation' type='button' value='meditation'>Meditation</button>
+              <button class='btn btn-primary stretching ' type='button' value='stretching'>Stretching</button>
+              <button class='btn btn-primary cardio' type='button' value='cardio'>Cardio</button>
+              <button class='btn btn-primary cycling' type='button' value='cycling'>Cycling</button>
+              <button class='btn btn-primary bc_bike' type='button' value='bike_bootcamp'>Bike Bootcamp</button>
+              <button class='btn btn-primary rowing' type='button' value='caesar'>Rowing</button>
+              <button class='btn btn-primary bc_row' type='button' value='caesar_bootcamp'>Row Bootcamp</button>
+              <!-- <button class='btn btn-primary outdoor' type='button' value='outdoor'>Outdoor</button> -->
+            </div>
+          </div>
+          <div class='col-1'>
+            <input type='submit' id='add-discipline' value='Save a generic workout to PeloPlan' disabled><br><br>
+            <input type='submit' id='select-workout' value='Pick a specific Peloton workout' disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Generic Workout Modal -->
 <div class='modal fade' id='generic-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
@@ -31,18 +72,12 @@
       </div>
       <div class='modal-body'>
         <button type='button' class='modal-up btn btn-outline-secondary btn-sm' title='Move Up'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708l6-6z"/>
-            <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
-          </svg>
+          <i class="bi bi-arrow-up-circle"></i>
         </button><br>
-        <button type='button' id='gen-select-class' class='btn btn-outline-danger btn-sm'>Select Class</button><br>
+        <button type='button' id='gen-select-class' class='btn btn-outline-success btn-sm'>Select Class</button><br>
         <button type='button' class='modal-delete btn btn-outline-dark btn-sm'>Delete</button><br>
         <button type='button' class='modal-down btn btn-outline-secondary btn-sm' title='Move Down'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-down" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-            <path fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-          </svg>
+          <i class="bi bi-arrow-down-circle"></i>
         </button>
       </div>
     </div>
@@ -59,18 +94,12 @@
       </div>
       <div class='modal-body'>
         <button type='button' class='modal-up btn btn-outline-secondary btn-sm' title='Move Up'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708l6-6z"/>
-            <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
-          </svg>
+          <i class="bi bi-arrow-up-circle"></i>
         </button><br>
         <button type='button' id='spec-stack-add' class='btn btn-outline-danger btn-sm'>Add to Stack</button><br>
         <button type='button' class='modal-delete btn btn-outline-dark btn-sm'>Delete</button><br>
         <button type='button' class='modal-down btn btn-outline-secondary btn-sm' title='Move Down'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-down" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-            <path fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-          </svg>
+          <i class="bi bi-arrow-down-circle"></i>
         </button>
       </div>
     </div>

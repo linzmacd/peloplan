@@ -4,6 +4,17 @@
 .modal-body {
   text-align: center;
 }
+.btn-sm {
+  margin: .125rem;
+}
+.modal-up {
+  border-color: white;
+  font-size: 1rem;
+}
+.modal-down {
+  border-color: white;
+  font-size: 1rem;
+}
 .dimmed {
   opacity: .2;
 }
