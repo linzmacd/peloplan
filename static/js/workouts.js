@@ -6,7 +6,7 @@ for (const addWorkoutButton of addWorkoutButtons) {
     const sched_order = document.querySelector('#sched-order').value
     const discipline = document.querySelector('#filter-discipline').value
     const workout_id = addWorkoutButton.value
-    const url = `/${workout_date}/${sched_order}/${discipline}/${workout_id}`
+    const url = `/add-class/${workout_date}/${sched_order}/${discipline}/${workout_id}`
     window.location.href = url
   });
 };
@@ -58,7 +58,7 @@ for (const filterButton of filterButtons) {
             <img src="${result['image_url']}" height=170px>
           </div>
           <div class='col-5'>
-            <h3>${result['title']}</h3>
+            <h4>${result['title']}</h4>
             ${instructors[result['instructor_id']]}<br>
             ${result['description']}<br>
             Total Riders: ${result['total_workouts'].toLocaleString('en-US')}<br>
@@ -80,7 +80,7 @@ for (const filterButton of filterButtons) {
           const sched_order = document.querySelector('#sched-order').value
           const discipline = document.querySelector('#filter-discipline').value
           const workout_id = addWorkoutButton.value
-          const url = `/${workout_date}/${sched_order}/${discipline}/${workout_id}`
+          const url = `/add-class/${workout_date}/${sched_order}/${discipline}/${workout_id}`
           window.location.href = url
         });
       };

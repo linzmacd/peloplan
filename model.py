@@ -21,6 +21,7 @@ class User(db.Model):
     session_id = db.Column(db.String)
 
     sched_workouts = db.relationship('Sched_Workout', back_populates='user')
+    schedules = db.relationship('Schedule', back_populates='user')
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -49,8 +50,8 @@ class Sched_Workout(db.Model):
     workout = db.relationship('Workout', back_populates='sched_workouts')
 
     def __repr__(self):
-        return (f'<Sched_Workout user_id={self.user_id}, ' 
-                f'sched_date={self.sched_date}, '
+        return (f'<Sched_Workout user_id={self.user_id} ' 
+                f'sched_date={self.sched_date} '
                 f'sched_order={self.sched_order}>')
 
 
@@ -71,6 +72,31 @@ class Workout(db.Model):
     
     def __repr__(self):
         return f'<Workout {self.title} with {self.instructor}>'
+    
+
+class Schedule(db.Model):
+    '''A schedule.'''
+
+    __tablename__ = 'schedules'
+
+    storage_id = db.Column(db.Integer,
+                           autoincrement=True,
+                           primary_key=True)
+    creator = db.Column(db.Integer, 
+                        db.ForeignKey('users.user_id'),
+                        nullable=False)
+    sched_name = db.Column(db.String, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)
+    length = db.Column(db.Integer, nullable=False)
+    sched_type = db.Column(db.String, nullable=False)
+    count = db.Column(db.Integer, nullable=False)
+    workouts = db.Column(db.JSON, nullable=False)
+
+    user = db.relationship('User', back_populates='schedules')
+    
+    def __repr__(self):
+        return f'<Schedule "{self.sched_name}" created by User {self.creator}>'
     
 
 class Instructor(db.Model):

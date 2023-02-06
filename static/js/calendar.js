@@ -28,8 +28,23 @@ document.addEventListener('DOMContentLoaded', function() {
     height: 700,
     initialView: 'dayGridMonth',
     initialDate: initialDate,
+    customButtons: {
+      save: {
+        text: 'Save Schedule',
+        click: function() {
+          let saveModal = new bootstrap.Modal(document.getElementById('save-modal'));
+          saveModal.show();
+        }
+      },
+      share: {
+        text: 'Share Schedule',
+        click: function() {
+          alert('clicked the custom button!');
+        }
+      }
+    },
     headerToolbar: {
-      left: 'dayGridMonth dayGridWeek listWeek',
+      left: 'save share', // 'dayGridMonth dayGridWeek listWeek',
       center: 'title',
       right: 'today prev,next'
     },
@@ -37,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fixedWeekCount: false,
     dayMaxEventRows: true,
     dateClick: function(info) {
+      console.log(info)
       const workout_date = document.querySelector('#modal-workout-date').value = info.dateStr;
       fetch(`/get-order/${workout_date}`)
         .then((response) => response.json())
@@ -49,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     eventOrder: 'order',
     eventClick: function(info) {
       info.jsEvent.preventDefault();
+      console.log(info)
       const date = info.event.start;
       document.querySelector('#modal-workout-date').value = date.toISOString().substr(0,10);
       document.querySelector('#modal-workout-order').value  = info.event.extendedProps.order;

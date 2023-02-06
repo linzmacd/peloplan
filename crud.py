@@ -1,7 +1,8 @@
-from model import (db, User, Sched_Workout, Workout, Instructor, 
-                   Inst_Disc, Category, connect_to_db)
+from model import (db, User, Sched_Workout, Workout, Schedule, 
+                   Instructor, Inst_Disc, Category, connect_to_db)
 import peloton_api
 from datetime import datetime
+import json
 
 
 ########## USERS ############################
@@ -10,11 +11,11 @@ def create_user(fname, lname, email, password,
                 peloton_user_id=None, session_id=None):
     '''Creates a new user object.'''
     new_user = User(fname = fname, 
-                lname = lname, 
-                email = email, 
-                password = password,
-                peloton_user_id = peloton_user_id,
-                session_id = session_id)
+                    lname = lname, 
+                    email = email, 
+                    password = password,
+                    peloton_user_id = peloton_user_id,
+                    session_id = session_id)
     db.session.add(new_user)
     db.session.commit()
     return new_user
@@ -398,6 +399,85 @@ def add_freestyle_workout(workout_id, discipline, workout_title, duration):
                       duration = duration)
     db.session.add(workout)
     db.session.commit()
+
+
+########## SCHEDULES #########################
+
+def create_schedule(creator, sched_name, start_date, end_date, sched_type, workouts):
+    '''Creates a new schedule object.'''
+    diff = datetime.strptime(end_date, '%Y-%m-%d') - datetime.strptime(start_date, '%Y-%m-%d')
+    length = diff.days + 1
+    count = len(workouts)
+    schedule = Schedule(creator = creator, 
+                        sched_name = sched_name, 
+                        start_date = start_date,
+                        end_date = end_date,
+                        length = length,
+                        sched_type = sched_type,
+                        count = count, 
+                        workouts = workouts)
+    db.session.add(schedule)
+    db.session.commit()
+    return schedule
+
+
+def save_schedule(user_id, schedule_name, start_date, end_date, save_type):
+    '''Saves schedule within the specified date range.'''
+    schedule = Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
+                                          Sched_Workout.sched_date >= start_date,
+                                          Sched_Workout.sched_date <= end_date)\
+                                  .order_by(Sched_Workout.sched_date,
+                                            Sched_Workout.sched_order).all()
+    workouts = []
+    for workout in schedule:
+        workout_id = workout.workout_id
+        if (workout_id) and (save_type == 'specific'):
+            if '/' in workout_id:
+                workout_id = None
+            else:
+                workout_id = workout.workout_id
+        else:
+            workout_id = None
+        workouts += [{'sched_date': workout.sched_date.strftime('%Y-%m-%d'),
+                      'sched_order': workout.sched_order,
+                      'discipline': workout.discipline,
+                      'workout_id': workout_id}]
+    schedule = create_schedule(user_id, schedule_name, start_date, 
+                               end_date, save_type, workouts)
+
+    return schedule
+
+
+def get_user_schedules(user_id):
+    '''Returns dictionary of a schedule titles & storage ids for specified user.'''
+    schedules = Schedule.filter.query(Schedule.user_id == user_id).all()
+    schedule_dict = {}
+    for schedule in schedules:
+        schedule_dict['schedule.sched_name'] = schedule.storage_id
+
+    return schedule_dict
+
+
+def load_schedule(user_id, load_start_date, storage_id):
+    '''Loads schedule starting at a specified date.'''
+    schedule = Schedule.query.get(storage_id)
+    save_start_date = datetime.strftime(schedule.start_date,'%Y-%m-%d')
+    workouts = schedule.workouts
+    if load_start_date == save_start_date:
+        for workout in workouts:
+            schedule_workout(user_id, workout['sched_date'], workout['sched_order'], 
+                             workout['discipline'], workout['workout_id'])
+    else:
+        load_start_date = datetime.strptime(load_start_date, '%Y-%m-%d').date()
+        delta = load_start_date - schedule.start_date
+        for workout in workouts:
+            save_date = datetime.strptime(workout['sched_date'], '%Y-%m-%d')
+            load_date = (save_date + delta).strftime('%Y-%m-%d')
+            schedule_workout(user_id, load_date, workout['sched_order'], 
+                             workout['discipline'], workout['workout_id'])
+
+    return True
+
 
 
 if __name__ == '__main__':

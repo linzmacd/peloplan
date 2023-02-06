@@ -12,7 +12,7 @@
 <div class='row'>
   <!-- Filters -->
   <div class='col-2'>
-    <div id='filters-box'>
+    <div id='filters-box' align='left'>
       <h2>Filter classes</h2>
       <form>
         <input type='hidden' id='workout-date' value={{ workout_date }}>
@@ -77,14 +77,14 @@
   <!-- Search Results -->
   <div class='col-10'>
     <h2>Classes that match your search criteria</h2>
-    <div id='query-results'>
+    <div id='query-results' align='left'>
       {% for result in results['data'] %}
       <div class='row align-items-center' style='padding: 5px; margin: 5px; border: 1px solid black'>
         <div class='col-4'>
           <img src="{{ result['image_url'] }}" height=170px>
         </div>
         <div class='col-5'>
-          <h3>{{ result['title'] }}</h3>
+          <h4>{{ result['title'] }}</h4>
           {% for instructor in results['instructors'] %}
             {% if instructor['id'] == result['instructor_id'] %}
               {{ instructor['name'].upper() }}<br>

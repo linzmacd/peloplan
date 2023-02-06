@@ -14,16 +14,17 @@
 <input type='hidden' id='modal-discipline'>
 <input type='hidden' id='modal-sched-id'>
 <input type='hidden' id='modal-url'>
+<!-- <input type='hidden' id='calendar-start'>
+<input type='hidden' id='calendar-end'> -->
 {% endblock %}
 
 {% block body %}
 <!-- Calendar -->
 <div class='row'>
-  <div class='col-10'>
+  <div class='column'>
     <br>
     <div id='calendar'></div>
-  </div>
-</div> 
+  </div>  
 
 <!-- Disciplines Modal -->
 <div class='modal fade' id='disciplines-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
@@ -96,7 +97,7 @@
         <button type='button' class='modal-up btn btn-outline-secondary btn-sm' title='Move Up'>
           <i class="bi bi-arrow-up-circle"></i>
         </button><br>
-        <button type='button' id='spec-stack-add' class='btn btn-outline-danger btn-sm'>Add to Stack</button><br>
+        <button type='button' class='btn btn-outline-danger btn-sm' id='spec-stack-add'>Add to Stack</button><br>
         <button type='button' class='modal-delete btn btn-outline-dark btn-sm'>Delete</button><br>
         <button type='button' class='modal-down btn btn-outline-secondary btn-sm' title='Move Down'>
           <i class="bi bi-arrow-down-circle"></i>
@@ -105,7 +106,67 @@
     </div>
   </div>
 </div>
-<!-- End Modal -->
+
+<!-- Save Workout Modal -->
+<div class='modal fade' id='save-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='save-modal-title'>Save Schedule</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body '>
+        <div class='row align-items-center'>
+          <div class='column'>
+            <form id='save-sched-form'>
+              <div class='row'>
+                <div class='col-6' align='right'>
+                  <p>Schedule Name: </p>
+                </div>
+                <div class='col-6' align='left'>
+                  <input type='text' id='save-sched-name' required>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-6' align='right'>
+                  <p>Start Date: </p>
+                </div>
+                <div class='col-6' align='left'>
+                  <input type='date' id='save-start-date' required>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-6' align='right'>
+                  <p>End Date: </p>
+                </div>
+                <div class='col-6' align='left'>
+                  <input type='date' id='save-end-date' required></p>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-6' align='right'>
+                  <p>Save Type: </p>
+                </div>
+                <div class='col-6' align='left'>
+                  <select id='save-type'>
+                    <option value='generic'>Generic Template</option>
+                    <option value='specific'>Specific Schedule</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <p><input type='submit' id='save-schedule' value='Save'></p>
+              </div>
+              <!-- <div>
+                <p>Select 'Specific Schedule' to save selected classes.</p>
+              </div> -->
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block js %}

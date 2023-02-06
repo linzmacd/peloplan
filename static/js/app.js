@@ -20,7 +20,7 @@ addDisciplineButton.addEventListener('click', () => {
   const workout_date = document.querySelector('#modal-workout-date').value
   const sched_order = document.querySelector('#modal-workout-order').value
   const discipline = document.querySelector('.disciplines .selected').value
-  fetch(`/add_generic/${workout_date}/${sched_order}/${discipline}`)
+  fetch(`/add-generic/${workout_date}/${sched_order}/${discipline}`)
   .then(location.reload())
 });
 
@@ -74,3 +74,30 @@ document.querySelector('#spec-stack-add').addEventListener('click', (event) => {
   window.open(url)
   location.reload()
 });
+
+
+// Save Schedule Modal
+document.querySelector('#save-schedule').addEventListener('click', (event) => {
+  alert('Saved!')
+  console.log(document.querySelector('#save-sched-name').value)
+  console.log(document.querySelector('#save-start-date').value)
+  console.log(document.querySelector('#save-end-date').value)
+  console.log(document.querySelector('#save-type').value)
+  const formInputs = {
+    schedName: document.querySelector('#save-sched-name').value,
+    startDate: document.querySelector('#save-start-date').value,
+    endDate: document.querySelector('#save-end-date').value,
+    saveType: document.querySelector('#save-type').value,
+  }
+  fetch('/save-schedule', {
+    method: 'POST',
+    body: JSON.stringify(formInputs),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.text())
+    .then((responseText) => console.log(responseText))
+  // location.reload()
+});
+

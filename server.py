@@ -173,7 +173,7 @@ def display_peloplan_as_list():
                            user_fname = user.fname)
 
 
-@app.route('/add_generic/<workout_date>/<sched_order>/<discipline>')
+@app.route('/add-generic/<workout_date>/<sched_order>/<discipline>')
 def add_generic_workout(workout_date, sched_order, discipline):
     '''Adds generic workout to PeloPlan'''
     session['pp_start_date'] = workout_date
@@ -200,7 +200,7 @@ def select_workout(workout_date, sched_order, discipline):
 
 @app.route('/workout-selection/<workout_date>/<sched_order>/<discipline>', methods=['POST'])
 def select_filtered_workout(workout_date, sched_order, discipline):
-    '''Allows user to select filtered workout.'''
+    '''Filters workout results.'''
     duration = request.json.get('duration', None)
     instructor = request.json.get('instructor', None)
     category = request.json.get('category', None)
@@ -219,7 +219,7 @@ def select_filtered_workout(workout_date, sched_order, discipline):
     return jsonify(results)
 
 
-@app.route('/<workout_date>/<sched_order>/<discipline>/<workout_id>')
+@app.route('/add-class/<workout_date>/<sched_order>/<discipline>/<workout_id>')
 def add_workout(workout_date, sched_order, discipline, workout_id):
     '''Adds specific workout to PeloPlan.'''
     workout = crud.get_workout(session['user_id'], workout_date, sched_order)
@@ -256,6 +256,19 @@ def move_down(sched_id):
 def delete(sched_id):
     '''Deletes a workout from the schedule.'''
     return jsonify(crud.delete_workout(sched_id))
+
+
+@app.route('/save-schedule', methods=['POST'])
+def save_schedule():
+    '''Saves a schedule to database'''
+    sched_name = request.json.get('schedName')
+    start_date = request.json.get('startDate')
+    end_date = request.json.get('endDate')
+    save_type = request.json.get('saveType')
+
+    print(sched_name + start_date + end_date + save_type)
+    return jsonify(crud.save_schedule(session['user_id'], sched_name, 
+                                      start_date, end_date, save_type))
 
 
 @app.route('/log-out')
