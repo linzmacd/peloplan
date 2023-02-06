@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block header %}{% endblock %}
+
+{% block title %}Schedules{% endblock %}
+
+{% block variables %}{% endblock %}
+
+{% block body %}
+<div class='row' align='left'>
+  <h1>{{ fname }}'s Saved Schedules</h1>
+</div>
+<div class='row align-items-left'>
+  {% for schedule in schedules %}
+  <div class='col-2' align='left' style='padding: 5px; margin: 5px; border: 1px solid black'>
+    <h4>{{ schedule.sched_name }}</h4>
+    {% if schedule.sched_type == 'specific' %}
+      Class Schedule
+    {% endif %}
+    {% if schedule.sched_type == 'generic' %}
+      Template
+    {% endif %}
+    <p>Length: {{ schedule.length }} days<br>
+       Workouts: {{ schedule.count }}<br>
+       Notes: {{ schedule.notes }}</p>
+    <button class='DO_SOMETHING' value="{{ schedule.storage_id }}">Load</button>
+    <button class='DO_SOMETHING' value="{{ schedule.storage_id }}">Edit</button>
+    <button class='DO_SOMETHING' value="{{ schedule.storage_id }}">Delete</button>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% endblock %}

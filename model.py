@@ -92,6 +92,7 @@ class Schedule(db.Model):
     sched_type = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, nullable=False)
     workouts = db.Column(db.JSON, nullable=False)
+    notes = db.Column(db.String)
 
     user = db.relationship('User', back_populates='schedules')
     

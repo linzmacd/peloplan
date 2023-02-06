@@ -36,15 +36,16 @@ document.addEventListener('DOMContentLoaded', function() {
           saveModal.show();
         }
       },
-      share: {
-        text: 'Share Schedule',
+      load: {
+        text: 'Load Schedule',
         click: function() {
-          alert('clicked the custom button!');
+          let loadModal = new bootstrap.Modal(document.getElementById('load-modal'));
+          loadModal.show();
         }
       }
     },
     headerToolbar: {
-      left: 'save share', // 'dayGridMonth dayGridWeek listWeek',
+      left: 'save load', // 'dayGridMonth dayGridWeek listWeek',
       center: 'title',
       right: 'today prev,next'
     },

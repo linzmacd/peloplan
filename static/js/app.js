@@ -17,17 +17,20 @@ for (const disciplineButton of disciplineButtons) {
 
 const addDisciplineButton = document.querySelector('#add-discipline');
 addDisciplineButton.addEventListener('click', () => {
-  const workout_date = document.querySelector('#modal-workout-date').value
-  const sched_order = document.querySelector('#modal-workout-order').value
-  const discipline = document.querySelector('.disciplines .selected').value
+  const workout_date = document.querySelector('#modal-workout-date').value;
+  const sched_order = document.querySelector('#modal-workout-order').value;
+  const discipline = document.querySelector('.disciplines .selected').value;
   fetch(`/add-generic/${workout_date}/${sched_order}/${discipline}`)
-  .then(location.reload())
+  .then(() => {
+    document.querySelector('#initial-date').value = workout_date
+    location.reload()
+  })
 });
 
 const selectWorkoutButton = document.querySelector('#select-workout');
 selectWorkoutButton.addEventListener('click', () => {
-  const workout_date = document.querySelector('#modal-workout-date').value
-  const sched_order = document.querySelector('#modal-workout-order').value
+  const workout_date = document.querySelector('#modal-workout-date').value;
+  const sched_order = document.querySelector('#modal-workout-order').value;
   const discipline = document.querySelector('.selected').value
   const url = `/workout-selection/${workout_date}/${sched_order}/${discipline}`
   window.location.href = url
@@ -75,14 +78,8 @@ document.querySelector('#spec-stack-add').addEventListener('click', (event) => {
   location.reload()
 });
 
-
 // Save Schedule Modal
 document.querySelector('#save-schedule').addEventListener('click', (event) => {
-  alert('Saved!')
-  console.log(document.querySelector('#save-sched-name').value)
-  console.log(document.querySelector('#save-start-date').value)
-  console.log(document.querySelector('#save-end-date').value)
-  console.log(document.querySelector('#save-type').value)
   const formInputs = {
     schedName: document.querySelector('#save-sched-name').value,
     startDate: document.querySelector('#save-start-date').value,
@@ -96,8 +93,20 @@ document.querySelector('#save-schedule').addEventListener('click', (event) => {
       'Content-Type': 'application/json',
     },
   })
-    .then((response) => response.text())
-    .then((responseText) => console.log(responseText))
-  // location.reload()
+});
+
+// Load Schedule Modal
+document.querySelector('#load-schedule').addEventListener('click', (event) => {
+  const formInputs = {
+    storageId: document.querySelector('#load-storage-id').value,
+    startDate: document.querySelector('#load-start-date').value,
+  }
+  fetch('/load-schedule', {
+    method: 'POST',
+    body: JSON.stringify(formInputs),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 });
 

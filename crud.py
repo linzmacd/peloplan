@@ -445,20 +445,15 @@ def save_schedule(user_id, schedule_name, start_date, end_date, save_type):
     schedule = create_schedule(user_id, schedule_name, start_date, 
                                end_date, save_type, workouts)
 
-    return schedule
+    return True
 
 
 def get_user_schedules(user_id):
-    '''Returns dictionary of a schedule titles & storage ids for specified user.'''
-    schedules = Schedule.filter.query(Schedule.user_id == user_id).all()
-    schedule_dict = {}
-    for schedule in schedules:
-        schedule_dict['schedule.sched_name'] = schedule.storage_id
-
-    return schedule_dict
+    '''Returns schedule objects for specified user.'''
+    return Schedule.query.filter(Schedule.creator == user_id).all()
 
 
-def load_schedule(user_id, load_start_date, storage_id):
+def load_schedule(user_id, storage_id, load_start_date):
     '''Loads schedule starting at a specified date.'''
     schedule = Schedule.query.get(storage_id)
     save_start_date = datetime.strftime(schedule.start_date,'%Y-%m-%d')

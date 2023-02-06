@@ -134,11 +134,12 @@ def display_peloplan():
     '''Shows monthly calendar.'''
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
-    
+    schedules = crud.get_user_schedules(session['user_id'])
 
     return render_template('peloplan.html',
                            initial_date = initial_date,
-                           user_fname = user.fname)
+                           user_fname = user.fname,
+                           schedules = schedules)
 
 
 # @app.route('/peloplan/init-date')
@@ -258,17 +259,42 @@ def delete(sched_id):
     return jsonify(crud.delete_workout(sched_id))
 
 
+@app.route('/saved-schedules')
+def show_saved_schedules():
+    '''Displays all users saved schedules'''
+    user = crud.get_user_by_id(session['user_id'])
+    schedules = crud.get_user_schedules(session['user_id'])
+
+    return render_template('schedules.html',
+                           fname = user.fname,
+                           schedules = schedules)
+
+
 @app.route('/save-schedule', methods=['POST'])
 def save_schedule():
-    '''Saves a schedule to database'''
+    '''Saves a schedule to database.'''
     sched_name = request.json.get('schedName')
     start_date = request.json.get('startDate')
     end_date = request.json.get('endDate')
     save_type = request.json.get('saveType')
 
-    print(sched_name + start_date + end_date + save_type)
     return jsonify(crud.save_schedule(session['user_id'], sched_name, 
                                       start_date, end_date, save_type))
+
+
+@app.route('/get-saved-schedules')
+def get_saved_schedules():
+    '''Retrieves user's saved schedules.'''
+    return jsonify(crud.get_user_schedules(session['user_id']))
+
+
+@app.route('/load-schedule', methods=['POST'])
+def load_schedule():
+    '''Loads a schedule from database.'''
+    storage_id = request.json.get('storageId')
+    start_date = request.json.get('startDate')
+
+    return jsonify(crud.load_schedule(session['user_id'], storage_id, start_date))
 
 
 @app.route('/log-out')
