@@ -142,6 +142,12 @@ def display_peloplan():
                            schedules = schedules)
 
 
+@app.route('/redirect/peloplan')
+def re_redirect():
+    '''Redirects to PeloPlan for purpose of reloading on correct date.'''
+    return redirect('/peloplan')
+
+
 # @app.route('/peloplan/init-date')
 # def get_pp_start_date():
 #     '''Returns the initial date for the calendar.'''
@@ -156,7 +162,6 @@ def display_weekly_peloplan():
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
     
-
     return render_template('peloplan-weekly.html',
                            initial_date = initial_date,
                            user_fname = user.fname)
@@ -168,7 +173,6 @@ def display_peloplan_as_list():
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
     
-
     return render_template('peloplan-list.html',
                            initial_date = initial_date,
                            user_fname = user.fname)
@@ -231,7 +235,7 @@ def add_workout(workout_date, sched_order, discipline, workout_id):
         crud.schedule_workout(session['user_id'], workout_date, 
                               sched_order, discipline, workout_id)
     session['pp_start_date'] = workout_date
-    
+
     return redirect('/peloplan')
 
 
@@ -241,21 +245,24 @@ def get_order(workout_date):
     return jsonify(crud.get_order(session['user_id'], workout_date))
 
 
-@app.route('/move-up/<sched_id>')
-def move_up(sched_id):
+@app.route('/move-up/<workout_date>/<sched_id>')
+def move_up(workout_date, sched_id):
     '''Moves a specified class up in order.'''
+    session['pp_start_date'] = workout_date
     return jsonify(crud.move_up_in_order(sched_id))
 
 
-@app.route('/move-down/<sched_id>')
-def move_down(sched_id):
+@app.route('/move-down/<workout_date>/<sched_id>')
+def move_down(workout_date, sched_id):
     '''Moves a specified workout down in order.'''
+    session['pp_start_date'] = workout_date
     return jsonify(crud.move_down_in_order(sched_id))
 
 
-@app.route('/delete/<sched_id>')
-def delete(sched_id):
+@app.route('/delete/<workout_date>/<sched_id>')
+def delete(workout_date, sched_id):
     '''Deletes a workout from the schedule.'''
+    session['pp_start_date'] = workout_date
     return jsonify(crud.delete_workout(sched_id))
 
 
@@ -293,8 +300,57 @@ def load_schedule():
     '''Loads a schedule from database.'''
     storage_id = request.json.get('storageId')
     start_date = request.json.get('startDate')
+    session['pp_start_date'] = start_date
 
     return jsonify(crud.load_schedule(session['user_id'], storage_id, start_date))
+
+
+@app.route('/delete-range', methods=['POST'])
+def delete_range():
+    '''Deletes all workouts in specified date range.'''
+    start_date = request.json.get('startDate')
+    end_date = request.json.get('endDate')
+    session['pp_start_date'] = start_date
+    
+    return jsonify(crud.delete_workouts(session['user_id'], start_date, end_date))
+
+
+@app.route('/preview-schedule/<storage_id>')
+def preview_schedule(storage_id):
+    '''Previews a schedule from database.'''
+    sample = crud.get_saved_schedule(storage_id)
+
+    return render_template('preview.html',
+                           sample = sample)
+
+
+@app.route('/preview-schedule/<storage_id>/data')
+def get_preview_schedule(storage_id):
+    '''Gets workouts for a preview schedule.'''
+    sample = crud.get_saved_schedule(storage_id)
+    workouts = sample.workouts
+    for workout in workouts:
+        if workout['workout_id']:
+            details = crud.get_workout_details(workout['workout_id'])
+            print(details)
+            # details = peloton_api.get_workout_details(workout['workout_id'])
+            workout['title'] = details.title
+            workout['url'] = (f'https://members.onepeloton.com/classes/{workout["discipline"]}'
+                              f'?modal=classDetailsModal&classId={workout["workout_id"]}')
+        else:
+            workout['title'] = workout['discipline'].title()
+            workout['url'] = None     
+
+    return jsonify(workouts)
+
+
+@app.route('/delete-schedule', methods=['POST'])
+def delete_schedule():
+    '''Deletes a saved schedule from database.'''
+    storage_id = request.json.get('storageId')
+    print(storage_id)
+    
+    return jsonify(crud.delete_saved_schedule(storage_id))
 
 
 @app.route('/log-out')

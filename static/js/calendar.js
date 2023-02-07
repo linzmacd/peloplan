@@ -42,10 +42,17 @@ document.addEventListener('DOMContentLoaded', function() {
           let loadModal = new bootstrap.Modal(document.getElementById('load-modal'));
           loadModal.show();
         }
+      },
+      delete: {
+        text: 'Delete Range',
+        click: function() {
+          let deleteRangeModal = new bootstrap.Modal(document.getElementById('delete-range-modal'));
+          deleteRangeModal.show();
+        }
       }
     },
     headerToolbar: {
-      left: 'save load', // 'dayGridMonth dayGridWeek listWeek',
+      left: 'save load delete', // 'dayGridMonth dayGridWeek listWeek',
       center: 'title',
       right: 'today prev,next'
     },
@@ -53,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
     fixedWeekCount: false,
     dayMaxEventRows: true,
     dateClick: function(info) {
-      console.log(info)
       const workout_date = document.querySelector('#modal-workout-date').value = info.dateStr;
       fetch(`/get-order/${workout_date}`)
         .then((response) => response.json())
@@ -66,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
     eventOrder: 'order',
     eventClick: function(info) {
       info.jsEvent.preventDefault();
-      console.log(info)
       const date = info.event.start;
       document.querySelector('#modal-workout-date').value = date.toISOString().substr(0,10);
       document.querySelector('#modal-workout-order').value  = info.event.extendedProps.order;
@@ -87,38 +92,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   fetch('/peloplan/schedule')
-    .then((response) => response.json())
-    .then((schedule) => {
-      for (const workout of schedule) {
-        const completed = workout['completed']
-        const workoutDate = new Date(new Date(workout['date']))
-        const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
-        const bygone = (workoutDate < todayDate);
-        const disciplineColor = colors[workout['discipline']]
-        const background = {
-          true: 'lightgray',
-          false: colors[workout['discipline']] 
-        }
-        const font = {
-          true: 'white',
-          false: colors[workout['discipline']]
-        }
-        const event = {
-          id: workout['id'],
-          start: workout['date'],
-          order: workout['order'],
-          discipline: workout['discipline'],
-          displayDiscipline: workout['display_discipline'],
-          title: workout['title'],
-          instructor: workout['instructor'],
-          completed: workout['completed'],
-          url: workout['url'],
-          backgroundColor: completed ? 'white' : background[bygone],
-          borderColor: completed ? disciplineColor : font[bygone],
-          textColor: completed ? disciplineColor : 'white',
-          };
-        calendar.addEvent(event);
-      };
-      calendar.render();
-    });
+  .then((response) => response.json())
+  .then((schedule) => {
+    for (const workout of schedule) {
+      const completed = workout['completed']
+      const workoutDate = new Date(new Date(workout['date']))
+      const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
+      const bygone = (workoutDate < todayDate);
+      const disciplineColor = colors[workout['discipline']]
+      const background = {
+        true: 'lightgray',
+        false: colors[workout['discipline']] 
+      }
+      const font = {
+        true: 'white',
+        false: colors[workout['discipline']]
+      }
+      const event = {
+        id: workout['id'],
+        start: workout['date'],
+        order: workout['order'],
+        discipline: workout['discipline'],
+        displayDiscipline: workout['display_discipline'],
+        title: workout['title'],
+        instructor: workout['instructor'],
+        completed: workout['completed'],
+        url: workout['url'],
+        backgroundColor: completed ? 'white' : background[bygone],
+        borderColor: completed ? disciplineColor : font[bygone],
+        textColor: completed ? disciplineColor : 'white',
+        };
+      calendar.addEvent(event);
+    };
+    calendar.render();
   });
+});

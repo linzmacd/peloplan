@@ -24,7 +24,8 @@
   <div class='column'>
     <br>
     <div id='calendar'></div>
-  </div>  
+  </div> 
+</div>
 
 <!-- Disciplines Modal -->
 <div class='modal fade' id='disciplines-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
@@ -98,6 +99,7 @@
           <i class="bi bi-arrow-up-circle"></i>
         </button><br>
         <button type='button' class='btn btn-outline-danger btn-sm' id='spec-stack-add'>Add to Stack</button><br>
+        <button type='button' class='btn btn-outline-primary btn-sm' id='spec-change'>Change Workout</button><br>
         <button type='button' class='modal-delete btn btn-outline-dark btn-sm'>Delete</button><br>
         <button type='button' class='modal-down btn btn-outline-secondary btn-sm' title='Move Down'>
           <i class="bi bi-arrow-down-circle"></i>
@@ -193,9 +195,9 @@
                   </select>
                 </div>
               </div>
-              <div class='row'>
+              <!-- <div class='row'>
                 <span id='load-description'></span>
-              </div>
+              </div> -->
               <div class='row'>
                 <div class='col-5' align='right'>
                   <p>Start Date: </p>
@@ -206,6 +208,46 @@
               </div>
               <div class='modal-footer'>
                 <p><input type='submit' id='load-schedule' value='Load Schedule'></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Range Modal -->
+<div class='modal fade' id='delete-range-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='delete-range-modal-title'>Delete All Workouts In Range</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body '>
+        <div class='row align-items-center'>
+          <div class='column'>
+            <form id='delete-range-sched-form'>
+              <div class='row'>
+                <div class='col-5' align='right'>
+                  <p>Start Date: </p>
+                </div>
+                <div class='col-7' align='left'>
+                  <input type='date' id='delete-start-date' required>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-5' align='right'>
+                  <p>End Date: </p>
+                </div>
+                <div class='col-7' align='left'>
+                  <input type='date' id='delete-end-date' required></p>
+                </div>
+              </div>
+              </div>
+              <div class='modal-footer'>
+                <p><input type='submit' id='delete-range' value='Delete All Workouts'></p>
               </div>
             </form>
           </div>

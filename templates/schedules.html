@@ -4,16 +4,19 @@
 
 {% block title %}Schedules{% endblock %}
 
-{% block variables %}{% endblock %}
+{% block variables %}
+<!-- <input type='hidden' id='modal-title'>
+<input type='hidden' id='modal-storage-id'> -->
+{% endblock %}
 
 {% block body %}
 <div class='row' align='left'>
   <h1>{{ fname }}'s Saved Schedules</h1>
 </div>
-<div class='row align-items-left'>
+<div class='row align-items-left' id='schedule-card'>
   {% for schedule in schedules %}
-  <div class='col-2' align='left' style='padding: 5px; margin: 5px; border: 1px solid black'>
-    <h4>{{ schedule.sched_name }}</h4>
+  <div class='col-3' align='left' style='padding: 5px; margin: 5px; border: 1px solid black'>
+    <h4><span id='name-{{ schedule.storage_id }}'>{{ schedule.sched_name }}</span></h4>
     {% if schedule.sched_type == 'specific' %}
       Class Schedule
     {% endif %}
@@ -23,12 +26,87 @@
     <p>Length: {{ schedule.length }} days<br>
        Workouts: {{ schedule.count }}<br>
        Notes: {{ schedule.notes }}</p>
-    <button class='DO_SOMETHING' value="{{ schedule.storage_id }}">Load</button>
-    <button class='DO_SOMETHING' value="{{ schedule.storage_id }}">Edit</button>
-    <button class='DO_SOMETHING' value="{{ schedule.storage_id }}">Delete</button>
+    <button class='sched-preview' value="{{ schedule.storage_id }}">Preview</button>
+    <button class='sched-load' value="{{ schedule.storage_id }}">Load</button>
+    <!-- <button class='sched-edit' value="{{ schedule.storage_id }}">Edit</button> -->
+    <button class='sched-delete' value="{{ schedule.storage_id }}">Delete</button>
   </div>
   {% endfor %}
 </div>
 
+<!-- Load Schedule Modal -->
+<div class='modal fade' id='load-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5'>Load Schedule</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body '>
+        <div class='row align-items-center'>
+          <div class='column'>
+            <form id='load-sched-form'>
+              <div class='row'>
+                <div class='col-5' align='right'>
+                  <p>Select Schedule: </p>
+                </div>
+                <div class='col-7' align='left'>
+                  <span id='load-modal-title' data-id=''>Title</span>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-5' align='right'>
+                  <p>Start Date: </p>
+                </div>
+                <div class='col-7' align='left'>
+                  <input type='date' id='load-start-date' required>
+                </div>
+              </div>
+              <div class='modal-footer'>
+                <p><input type='submit' id='load-schedule' value='Load Schedule'></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Schedule Modal -->
+<div class='modal fade' id='delete-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5'>Delete Schedule</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body '>
+        <div class='row align-items-center'>
+          <div class='column'>
+            <form id='delete-sched-form'>
+              <div class='row'>
+                <div class='col-5' align='right'>
+                  <p>Select Schedule: </p>
+                </div>
+                <div class='col-7' align='left'>
+                  <span id='delete-modal-title' data-id=''>Title</span>
+                </div>
+              </div>
+              <div class='modal-footer'>
+                <p><input type='submit' id='delete-schedule' value='Confirm Delete'></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src='/static/js/schedules.js'></script>
 
 {% endblock %}

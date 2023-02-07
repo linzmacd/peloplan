@@ -303,6 +303,17 @@ def delete_workout(schedule_id):
     return True
 
 
+def delete_workouts(user_id, start_date, end_date):
+    '''Deletes workouts within a date range from database.'''
+    workouts = Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
+                                          Sched_Workout.sched_date >= start_date,
+                                          Sched_Workout.sched_date <= end_date).all()
+    for workout in workouts:
+        db.session.delete(workout)
+    db.session.commit()
+    return True
+
+
 def sync_with_peloton(user_id):
     '''Adds new completed workouts from Peloton.'''
     workout_history = peloton_api.get_workout_history(user_id)
@@ -401,6 +412,11 @@ def add_freestyle_workout(workout_id, discipline, workout_title, duration):
     db.session.commit()
 
 
+def get_workout_details(workout_id):
+    '''Returns workout object at specified workout_id'''
+    return Workout.query.get(workout_id)
+
+
 ########## SCHEDULES #########################
 
 def create_schedule(creator, sched_name, start_date, end_date, sched_type, workouts):
@@ -453,6 +469,11 @@ def get_user_schedules(user_id):
     return Schedule.query.filter(Schedule.creator == user_id).all()
 
 
+def get_saved_schedule(storage_id):
+    '''Returns a specific schedule'''
+    return Schedule.query.get(storage_id)
+
+
 def load_schedule(user_id, storage_id, load_start_date):
     '''Loads schedule starting at a specified date.'''
     schedule = Schedule.query.get(storage_id)
@@ -473,6 +494,14 @@ def load_schedule(user_id, storage_id, load_start_date):
 
     return True
 
+
+def delete_saved_schedule(storage_id):
+    '''Deletes schedule object from database.'''
+    schedule = Schedule.query.get(storage_id)
+    db.session.delete(schedule)
+    db.session.commit()
+
+    return True
 
 
 if __name__ == '__main__':

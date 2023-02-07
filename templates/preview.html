@@ -1,0 +1,30 @@
+{% extends 'base-homepage.html' %}
+
+{% block header %}
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.0.3/index.global.min.js'></script>
+{% endblock %}
+
+{% block title %}{{sample.sched_name}}{% endblock %}
+
+{% block variables %}
+<input type='hidden' id='initial-date' value={{ sample.start_date }}>
+<input type='hidden' id='storage-id' value={{ sample.storage_id }}>
+{% endblock %}
+
+{% block body %}
+<div class='row' align='left'>
+  <h1>Preview of "{{ sample.sched_name }}"</h1>
+</div>
+<!-- Calendar -->
+<div class='row'>
+  <div class='column'>
+    <br>
+    <div id='calendar'></div>
+  </div> 
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src='/static/js/calendar-preview.js'></script>
+{% endblock %}
