@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     headerToolbar: {
       left: '', 
       center: 'title',
-      right: 'today prev,next'
+      right: 'dayGridWeek today prev,next'
     },
     timeZone: 'local',
     fixedWeekCount: false,

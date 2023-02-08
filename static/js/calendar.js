@@ -28,23 +28,26 @@ document.addEventListener('DOMContentLoaded', function() {
     height: 700,
     initialView: 'dayGridMonth',
     initialDate: initialDate,
+    timeZone: 'local',
+    fixedWeekCount: false,
+    dayMaxEventRows: true,
     customButtons: {
       save: {
-        text: 'Save Schedule',
+        text: 'Save',
         click: function() {
           let saveModal = new bootstrap.Modal(document.getElementById('save-modal'));
           saveModal.show();
         }
       },
       load: {
-        text: 'Load Schedule',
+        text: 'Load',
         click: function() {
           let loadModal = new bootstrap.Modal(document.getElementById('load-modal'));
           loadModal.show();
         }
       },
       delete: {
-        text: 'Delete Range',
+        text: 'Delete',
         click: function() {
           let deleteRangeModal = new bootstrap.Modal(document.getElementById('delete-range-modal'));
           deleteRangeModal.show();
@@ -56,9 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
       center: 'title',
       right: 'today prev,next'
     },
-    timeZone: 'local',
-    fixedWeekCount: false,
-    dayMaxEventRows: true,
     dateClick: function(info) {
       const workout_date = document.querySelector('#modal-workout-date').value = info.dateStr;
       fetch(`/get-order/${workout_date}`)

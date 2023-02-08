@@ -98,11 +98,17 @@ document.querySelector('#spec-stack-add').addEventListener('click', (event) => {
 // Save Schedule Modal
 document.querySelector('#save-schedule').addEventListener('click', (event) => {
   event.preventDefault();
+  let visibility = 'private';
+  if (document.querySelector('#save-public').checked) {
+    visibility = 'public';
+  }
   const formInputs = {
+    visibility: visibility,
     schedName: document.querySelector('#save-sched-name').value,
     startDate: document.querySelector('#save-start-date').value,
     endDate: document.querySelector('#save-end-date').value,
     saveType: document.querySelector('#save-type').value,
+    notes: document.querySelector('#save-notes').value
   }
   fetch('/save-schedule', {
     method: 'POST',

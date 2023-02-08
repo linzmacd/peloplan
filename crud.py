@@ -39,6 +39,13 @@ def add_auth_details(user_id, auth_details):
     db.session.commit()
 
 
+def follow_user(user_id, follow_user_id):
+    '''Follows another user.'''
+    follower = User.query.get(user_id)
+    user = User.query.get(follow_user_id)
+    user.following.append(follower)
+
+
 ########## INSTRUCTORS ######################
 
 def verify_instructors():
@@ -419,25 +426,28 @@ def get_workout_details(workout_id):
 
 ########## SCHEDULES #########################
 
-def create_schedule(creator, sched_name, start_date, end_date, sched_type, workouts):
+def create_schedule(creator, visibility, sched_name, start_date, 
+                    end_date, sched_type, workouts, notes):
     '''Creates a new schedule object.'''
     diff = datetime.strptime(end_date, '%Y-%m-%d') - datetime.strptime(start_date, '%Y-%m-%d')
     length = diff.days + 1
     count = len(workouts)
-    schedule = Schedule(creator = creator, 
+    schedule = Schedule(creator = creator,
+                        visibility = visibility, 
                         sched_name = sched_name, 
                         start_date = start_date,
                         end_date = end_date,
                         length = length,
                         sched_type = sched_type,
                         count = count, 
-                        workouts = workouts)
+                        workouts = workouts,
+                        notes = notes)
     db.session.add(schedule)
     db.session.commit()
     return schedule
 
 
-def save_schedule(user_id, schedule_name, start_date, end_date, save_type):
+def save_schedule(user_id, visibility, schedule_name, start_date, end_date, save_type, notes):
     '''Saves schedule within the specified date range.'''
     schedule = Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
                                           Sched_Workout.sched_date >= start_date,
@@ -458,8 +468,8 @@ def save_schedule(user_id, schedule_name, start_date, end_date, save_type):
                       'sched_order': workout.sched_order,
                       'discipline': workout.discipline,
                       'workout_id': workout_id}]
-    schedule = create_schedule(user_id, schedule_name, start_date, 
-                               end_date, save_type, workouts)
+    schedule = create_schedule(user_id, visibility, schedule_name, start_date, 
+                               end_date, save_type, workouts, notes)
 
     return True
 
@@ -472,6 +482,12 @@ def get_user_schedules(user_id):
 def get_saved_schedule(storage_id):
     '''Returns a specific schedule'''
     return Schedule.query.get(storage_id)
+
+
+def get_public_schedules():
+    '''Returns all public schedules.'''
+    return Schedule.query.options(db.joinedload('user'))\
+                         .filter(Schedule.visibility == 'public').all()
 
 
 def load_schedule(user_id, storage_id, load_start_date):

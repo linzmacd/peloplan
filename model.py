@@ -5,6 +5,14 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
+friend = db.Table(
+    'friends',
+    db.Column('friend_id', db.Integer, primary_key=True),
+    db.Column('f1_id', db.Integer, db.ForeignKey('users.user_id')),
+    db.Column('f2_id', db.Integer, db.ForeignKey('users.user_id'))
+)
+
+
 class User(db.Model):
     '''A user.'''
 
@@ -22,6 +30,11 @@ class User(db.Model):
 
     sched_workouts = db.relationship('Sched_Workout', back_populates='user')
     schedules = db.relationship('Schedule', back_populates='user')
+    following = db.relationship('User', secondary=friend,
+                                primaryjoin=user_id == friend.c.f1_id,
+                                secondaryjoin=user_id == friend.c.f2_id,
+                                backref='followers'
+                                )
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -85,6 +98,7 @@ class Schedule(db.Model):
     creator = db.Column(db.Integer, 
                         db.ForeignKey('users.user_id'),
                         nullable=False)
+    visibility = db.Column(db.String, nullable=False)
     sched_name = db.Column(db.String, nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)

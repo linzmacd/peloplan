@@ -161,10 +161,18 @@ def display_weekly_peloplan():
     '''Shows weekly calendar.'''
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
+    schedules = crud.get_user_schedules(session['user_id'])
     
     return render_template('peloplan-weekly.html',
                            initial_date = initial_date,
-                           user_fname = user.fname)
+                           user_fname = user.fname,
+                           schedules = schedules)
+
+
+@app.route('/redirect/peloplan-weekly')
+def re_redirect_weekly():
+    '''Redirects to PeloPlan for purpose of reloading on correct date.'''
+    return redirect('/peloplan-weekly')
 
 
 @app.route('/peloplan-list')
@@ -172,10 +180,18 @@ def display_peloplan_as_list():
     '''Shows a weekly list.'''
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
     user = crud.get_user_by_id(session['user_id'])
+    schedules = crud.get_user_schedules(session['user_id'])
     
     return render_template('peloplan-list.html',
                            initial_date = initial_date,
-                           user_fname = user.fname)
+                           user_fname = user.fname,
+                           schedules = schedules)
+
+
+@app.route('/redirect/peloplan-list')
+def re_redirect_list():
+    '''Redirects to PeloPlan for purpose of reloading on correct date.'''
+    return redirect('/peloplan-list')
 
 
 @app.route('/add-generic/<workout_date>/<sched_order>/<discipline>')
@@ -268,7 +284,7 @@ def delete(workout_date, sched_id):
 
 @app.route('/saved-schedules')
 def show_saved_schedules():
-    '''Displays all users saved schedules'''
+    '''Displays all user's saved schedules'''
     user = crud.get_user_by_id(session['user_id'])
     schedules = crud.get_user_schedules(session['user_id'])
 
@@ -277,16 +293,27 @@ def show_saved_schedules():
                            schedules = schedules)
 
 
+@app.route('/public-schedules')
+def show_public_schedules():
+    '''Displays all public saved schedules'''
+    schedules = crud.get_public_schedules()
+
+    return render_template('schedules-public.html',
+                           schedules = schedules)
+
+
 @app.route('/save-schedule', methods=['POST'])
 def save_schedule():
     '''Saves a schedule to database.'''
+    visibility = request.json.get('visibility')
     sched_name = request.json.get('schedName')
     start_date = request.json.get('startDate')
     end_date = request.json.get('endDate')
     save_type = request.json.get('saveType')
+    notes = request.json.get('notes')
 
-    return jsonify(crud.save_schedule(session['user_id'], sched_name, 
-                                      start_date, end_date, save_type))
+    return jsonify(crud.save_schedule(session['user_id'], visibility, sched_name, 
+                                      start_date, end_date, save_type, notes))
 
 
 @app.route('/get-saved-schedules')

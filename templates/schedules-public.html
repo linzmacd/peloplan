@@ -10,7 +10,7 @@
 
 {% block body %}
 <div class='row' align='left'>
-  <h1>{{ fname }}'s Saved Schedules</h1>
+  <h1>Publicly Shared Schedules</h1>
 </div>
 <div class='row align-items-left' id='schedule-card'>
   {% for schedule in schedules %}
@@ -23,13 +23,14 @@
     {% if schedule.sched_type == 'generic' %}
       Template
     {% endif %}
-    <br>Description: {{ schedule.notes }}<br>
+    by {{ schedule.user.fname }} {{ schedule.user.lname }}<br>
+    Description: {{ schedule.notes }}<br>
     Length: {{ schedule.length }} days<br>
     Workouts: {{ schedule.count }}<br></p>
     <button class='sched-preview' value="{{ schedule.storage_id }}">Preview</button>
     <button class='sched-load' value="{{ schedule.storage_id }}">Load</button>
     <!-- <button class='sched-edit' value="{{ schedule.storage_id }}">Edit</button> -->
-    <button class='sched-delete' value="{{ schedule.storage_id }}">Delete</button>
+    <!-- <button class='sched-delete' value="{{ schedule.storage_id }}">Delete</button> -->
   </div>
   {% endfor %}
 </div>
