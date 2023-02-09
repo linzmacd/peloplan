@@ -90,41 +90,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   fetch('/peloplan/schedule')
-    .then((response) => response.json())
-    .then((schedule) => {
-      for (const workout of schedule) {
-        const completed = workout['completed']
-        const workoutDate = new Date(new Date(workout['date']))
-        const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
-        const bygone = (workoutDate < todayDate);
-        const disciplineColor = colors[workout['discipline']]
-        const background = {
-          true: 'lightgray',
-          false: colors[workout['discipline']] 
-        }
-        const font = {
-          true: 'white',
-          false: colors[workout['discipline']]
-        }
-        const event = {
-          id: workout['id'],
-          start: workout['date'],
-          order: workout['order'],
-          discipline: workout['discipline'],
-          displayDiscipline: workout['display_discipline'],
-          title: workout['title'],
-          instructor: workout['instructor'],
-          completed: workout['completed'],
-          url: workout['url'],
-          backgroundColor: completed ? 'white' : background[bygone],
-          borderColor: completed ? disciplineColor : font[bygone],
-          textColor: completed ? disciplineColor : 'white',
-          };
-        calendar.addEvent(event);
+  .then((response) => response.json())
+  .then((schedule) => {
+    for (const workout of schedule) {
+      const completed = workout.completed;
+      const workoutDate = new Date(new Date(workout.date));
+      const todayDate = new Date(new Date().setHours(-8, 0, 0, 0));
+      const bygone = (workoutDate < todayDate);
+      const disciplineColor = colors[workout.discipline];
+      const background = {
+        true: 'lightgray',
+        false: colors[workout.discipline] 
       };
-      calendar.render();
-    });
+      const font = {
+        true: 'white',
+        false: colors[workout.discipline]
+      };
+      const event = {
+        id: workout.id,
+        start: workout.date,
+        order: workout.order,
+        discipline: workout.discipline,
+        displayDiscipline: workout.display_discipline,
+        title: workout.title,
+        instructor: workout.instructor,
+        completed: workout.completed,
+        url: workout.url,
+        backgroundColor: completed ? 'white' : background[bygone],
+        borderColor: completed ? disciplineColor : font[bygone],
+        textColor: completed ? disciplineColor : 'white',
+        };
+      calendar.addEvent(event);
+    };
+    calendar.render();
   });
+});
 
 
 // Disciplines Modal
@@ -236,7 +236,7 @@ document.querySelector('#save-schedule').addEventListener('click', (event) => {
     startDate: document.querySelector('#save-start-date').value,
     endDate: document.querySelector('#save-end-date').value,
     saveType: document.querySelector('#save-type').value,
-    notes: document.querySelector('#save-notes').value
+    description: document.querySelector('#save-description').value
   }
   fetch('/save-schedule', {
     method: 'POST',

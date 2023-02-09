@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
       for (const workout of schedule) {
         const disciplineColor = colors[workout['discipline']]
         const event = {
-          start: workout['sched_date'],
-          order: workout['sched_order'],
-          discipline: workout['discipline'],
-          title: workout['title'],
-          url: workout['url'],
+          start: workout.sched_date,
+          order: workout.sched_order,
+          discipline: workout.discipline,
+          title: workout.title,
+          url: workout.url,
           backgroundColor: disciplineColor,
           borderColor: disciplineColor,
           textColor: 'white',

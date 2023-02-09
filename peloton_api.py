@@ -3,9 +3,6 @@ from flask import session
 from model import connect_to_db
 import crud
 
-# session = {}
-# session['cookie'] = {'peloton_session_id': 'de69fb0867cd439d9470784aa3328505'}
-# session['user_id'] = 2
 
 BASE_URL = 'https://api.onepeloton.com/'
 
@@ -60,6 +57,7 @@ def get_categories():
 
     return categories
 
+
 def get_workout_history(user_id):
     '''Gets Peloton workout history.'''
     user = crud.get_user_by_id(user_id)
@@ -86,6 +84,16 @@ def get_workout_details(workout_id):
     workout_details = response.json()
 
     return workout_details
+
+
+def get_workout_metrics(comp_workout_id):
+    '''Gets the metrics from a completed workout.'''
+    endpoint = f'api/workout/{comp_workout_id}/performance_graph'
+    api_url = BASE_URL + endpoint
+    response = requests.get(api_url, cookies=session['cookie'])
+    metrics = response.json()
+
+    return metrics
 
 
 def query_database(discipline, duration=None, instructor=None, 

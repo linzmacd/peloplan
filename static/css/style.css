@@ -262,3 +262,9 @@
 .fc-h-event .fc-event-title {
   font-size: 11px;
 }
+
+/* Profile Page */
+.unfollow-user {
+  border: none;
+  background-color: white;
+}

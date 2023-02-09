@@ -6,6 +6,8 @@ from model import connect_to_db, db
 import crud, peloton_api
 from jinja2 import StrictUndefined
 from datetime import date
+from passlib.hash import argon2
+import json
 
 
 app = Flask(__name__)
@@ -28,14 +30,19 @@ def create_account():
     lname = request.form.get('lname')
     email = request.form.get('email')
     password = request.form.get('password')
+    repeat_pw = request.form.get('confirm')
+    hashed = argon2.hash(password)
 
     # check to see if email in use
     user = crud.get_user_by_email(email)
     if user:
         flash('Email already in use.')
-    # if not, creates new user
+    # check to make sure passwords match
+    elif password != repeat_pw:
+        flash('Passwords do not match.')
+    # creates new user with hashed password
     else: 
-        crud.create_user(fname, lname, email, password)
+        crud.create_user(fname, lname, email, hashed)
         flash('Account created! Please log in to continue.')
 
     return redirect('/')
@@ -51,7 +58,7 @@ def login():
     user = crud.get_user_by_email(email)
     if user:
         # check to see if password correct
-        if user.password == password:
+        if argon2.verify(password, user.password):
             flash('Logged in to PeloPlan!')
             session['user_id'] = user.user_id
             # check for session id in db
@@ -310,10 +317,10 @@ def save_schedule():
     start_date = request.json.get('startDate')
     end_date = request.json.get('endDate')
     save_type = request.json.get('saveType')
-    notes = request.json.get('notes')
+    description = request.json.get('description')
 
     return jsonify(crud.save_schedule(session['user_id'], visibility, sched_name, 
-                                      start_date, end_date, save_type, notes))
+                                      start_date, end_date, save_type, description))
 
 
 @app.route('/get-saved-schedules')
@@ -359,8 +366,6 @@ def get_preview_schedule(storage_id):
     for workout in workouts:
         if workout['workout_id']:
             details = crud.get_workout_details(workout['workout_id'])
-            print(details)
-            # details = peloton_api.get_workout_details(workout['workout_id'])
             workout['title'] = details.title
             workout['url'] = (f'https://members.onepeloton.com/classes/{workout["discipline"]}'
                               f'?modal=classDetailsModal&classId={workout["workout_id"]}')
@@ -375,9 +380,50 @@ def get_preview_schedule(storage_id):
 def delete_schedule():
     '''Deletes a saved schedule from database.'''
     storage_id = request.json.get('storageId')
-    print(storage_id)
     
     return jsonify(crud.delete_saved_schedule(storage_id))
+
+
+@app.route('/profile')
+def show_profile():
+    '''Shows user's profile'''
+    user = crud.get_user_by_id(session['user_id'])
+    followers = crud.get_followers(session['user_id'])
+    following = crud.get_following(session['user_id'])
+
+    return render_template('profile.html',
+                           user = user,
+                           followers = followers,
+                           following = following)
+
+
+@app.route('/find-by-name/<first_name>/<last_name>')
+def find_friend_by_name(first_name, last_name):
+    '''Returns list of users with the specified name.'''
+    return jsonify(crud.get_user_by_name(first_name, last_name))
+
+
+@app.route('/find-by-email/<email>')
+def find_friend_by_email(email):
+    '''Returns the user with the specified email.'''
+    user = crud.get_user_by_email(email)
+    user_dict = {'user_id': user.user_id,
+                 'name': f'{user.fname} {user.lname}',
+                 'email': user.email}
+    
+    return jsonify(user_dict)
+
+
+@app.route('/follow/<friend_id>')
+def follow_user(friend_id):
+    '''Follows specified user.'''
+    return jsonify(crud.follow_user(session['user_id'], friend_id))
+
+
+@app.route('/unfollow/<friend_id>')
+def unfollow_user(friend_id):
+    '''Unfollows specified user.'''
+    return jsonify(crud.unfollow_user(session['user_id'], friend_id))
 
 
 @app.route('/log-out')

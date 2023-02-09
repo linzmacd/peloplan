@@ -1,8 +1,8 @@
-from model import (db, User, Sched_Workout, Workout, Schedule, 
+from model import (db, User, Sched_Workout, Comp_Workout, Workout, Schedule, 
                    Instructor, Inst_Disc, Category, connect_to_db)
 import peloton_api
 from datetime import datetime
-import json
+from sqlalchemy import func
 
 
 ########## USERS ############################
@@ -23,7 +23,20 @@ def create_user(fname, lname, email, password,
 
 def get_user_by_email(email):
     '''Returns user object if email exists.'''
-    return User.query.filter(User.email == email).first()
+    return User.query.filter(func.lower(User.email) == func.lower(email)).first()
+
+
+def get_user_by_name(fname, lname):
+    '''Returns list of users with the specified first and last names.'''
+    users = User.query.filter(func.lower(User.fname) == func.lower(fname),
+                              func.lower(User.lname) == func.lower(lname)).all()
+    user_list = []
+    for user in users:
+        user_list += [{'user_id': user.user_id,
+                       'name': f'{user.fname} {user.lname}',
+                       'email': user.email}]
+        
+    return user_list
 
 
 def get_user_by_id(user_id):
@@ -39,11 +52,32 @@ def add_auth_details(user_id, auth_details):
     db.session.commit()
 
 
-def follow_user(user_id, follow_user_id):
+def follow_user(user_id, friend_user_id):
     '''Follows another user.'''
-    follower = User.query.get(user_id)
-    user = User.query.get(follow_user_id)
-    user.following.append(follower)
+    user = User.query.get(user_id)
+    friend = User.query.get(friend_user_id)
+    user.following.append(friend)
+    db.session.commit()
+    return True
+
+
+def unfollow_user(user_id, friend_user_id):
+    "Unfollows another user."
+    user = User.query.get(user_id)
+    friend = User.query.get(friend_user_id)
+    user.following.remove(friend)
+    db.session.commit()
+    return True
+
+
+def get_followers(user_id):
+    '''Returns list of followers.'''
+    return User.query.get(user_id).followers
+
+
+def get_following(user_id):
+    '''Returns list of other users that specified user is following.'''
+    return User.query.get(user_id).following
 
 
 ########## INSTRUCTORS ######################
@@ -333,59 +367,108 @@ def sync_with_peloton(user_id):
         if workout_type == 'class' or workout_type == 'scenic':
             workout_id = workout['peloton']['ride']['id']
             completed_id = workout['id']
-            # if class is already on schedule add completed_id
-            sched_workout = check_workout_id(user_id, workout_date, workout_id)
-            if sched_workout:
-                sched_workout.completed_id = completed_id
-                print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
-                index_counter += 1
-            # if class not on schedule
+            print(completed_id)
+            # if metrics already in db, skip
+            if get_metrics(completed_id):
+                print('check!')
+                continue
             else:
-                # check whether workout in db and add if necessary
-                if not Workout.query.get(workout_id):
-                    workout_details = peloton_api.get_workout_details(workout_id)
-                    add_workout(workout_details)
-                    print(f"{index_counter} - {workout_details['ride']['title']} added to db")
-                # check whether workout matches generic workout
-                sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
-                if sched_discipline:
-                    sched_discipline.workout_id = workout_id
-                    sched_discipline.completed_id = completed_id
-                    print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
-                    index_counter += 1    
-                # otherwise make new completed workout on schedule
+                add_metrics(completed_id,)
+                # if class is already on schedule add completed_id
+                sched_workout = check_workout_id(user_id, workout_date, workout_id)
+                if sched_workout:
+                    sched_workout.completed_id = completed_id
+                    print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
+                    index_counter += 1
+                # if class not on schedule
                 else:
-                    sched_order = get_order(user_id, workout_date)
-                    schedule_workout(user_id, workout_date, sched_order, 
-                                     discipline, workout_id, completed_id)
-                    print(f'{index_counter} - New Workout added on {workout_date}')
-                    index_counter += 1    
+                    # check whether workout in db and add if necessary
+                    if not Workout.query.get(workout_id):
+                        workout_details = peloton_api.get_workout_details(workout_id)
+                        add_workout(workout_details)
+                        print(f"{index_counter} - {workout_details['ride']['title']} added to db")
+                    # check whether workout matches generic workout
+                    sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
+                    if sched_discipline:
+                        sched_discipline.workout_id = workout_id
+                        sched_discipline.completed_id = completed_id
+                        print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+                        index_counter += 1    
+                    # otherwise make new completed workout on schedule
+                    else:
+                        sched_order = get_order(user_id, workout_date)
+                        schedule_workout(user_id, workout_date, sched_order, 
+                                        discipline, workout_id, completed_id)
+                        print(f'{index_counter} - New Workout added on {workout_date}')
+                        index_counter += 1    
         elif workout_type == 'freestyle':
             workout_title = workout['title']
             workout_id = f'{workout_date} / {workout_title}'
             completed_id = workout['id']
-            # if not in db
-            if not Workout.query.get(workout_id):
-                duration = workout['ride']['duration']
-                add_freestyle_workout(workout_id, discipline,
-                                      workout_title, duration)
-                # check whether workout matches generic workout
-                sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
-                if sched_discipline:
-                    sched_discipline.workout_id = workout_id
-                    sched_discipline.completed_id = completed_id
-                    print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
-                    index_counter += 1
-                else:
-                    sched_order = get_order(user_id, workout_date)
-                    schedule_workout(user_id, workout_date, sched_order, 
-                                    discipline, workout_id, completed_id)
-                    print(f'{index_counter} - New Freestyle Workout added on {workout_date}')
-                    index_counter += 1   
+            # if metrics already in db, skip
+            if get_metrics(completed_id):
+                print('check!')
+                continue
+            else:
+                add_metrics(completed_id)
+                # if not in db
+                if not Workout.query.get(workout_id):
+                    duration = workout['ride']['duration']
+                    add_freestyle_workout(workout_id, discipline,
+                                        workout_title, duration)
+                    # check whether workout matches generic workout
+                    sched_discipline = check_workout_discipline(user_id, workout_date, discipline)
+                    if sched_discipline:
+                        sched_discipline.workout_id = workout_id
+                        sched_discipline.completed_id = completed_id
+                        print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+                        index_counter += 1
+                    else:
+                        sched_order = get_order(user_id, workout_date)
+                        schedule_workout(user_id, workout_date, sched_order, 
+                                        discipline, workout_id, completed_id)
+                        print(f'{index_counter} - New Freestyle Workout added on {workout_date}')
+                        index_counter += 1   
         else:
             print('NEW WORKOUT TYPE!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
     db.session.commit()
+
+
+########## COMPLETED WORKOUTS ###############
+
+def add_metrics(completed_id):
+    '''Adds metrics to a completed workout.'''
+    metrics = peloton_api.get_workout_metrics(completed_id)
+    metrics_dict = {'total_output': None,
+                    'distance': None,
+                    'calories': None,
+                    'avg_output': None,
+                    'avg_cadence': None,
+                    'avg_resistance': None,
+                    'avg_speed': None}
+    for metric in metrics['summaries']:
+        metrics_dict[metric['slug']] = metric['value']
+    for metric in metrics['average_summaries']:
+        metrics_dict[metric['slug']] = metric['value']
+        
+    workout  = Comp_Workout(completed_id = completed_id, 
+                            duration = metrics['duration'], 
+                            total_output = metrics_dict['total_output'], 
+                            distance = metrics_dict['distance'], 
+                            calories = metrics_dict['calories'],
+                            avg_output = metrics_dict['avg_output'], 
+                            avg_cadence = metrics_dict['avg_cadence'], 
+                            avg_resistance = metrics_dict['avg_resistance'], 
+                            avg_speed = metrics_dict['avg_speed'])
+    db.session.add(workout)
+    db.session.commit()
+    return workout
+
+
+def get_metrics(completed_id):
+    '''Returns metrics for completed workout.'''
+    return Comp_Workout.query.get(completed_id)
 
 
 ########## WORKOUTS #########################
@@ -427,7 +510,7 @@ def get_workout_details(workout_id):
 ########## SCHEDULES #########################
 
 def create_schedule(creator, visibility, sched_name, start_date, 
-                    end_date, sched_type, workouts, notes):
+                    end_date, sched_type, workouts, description):
     '''Creates a new schedule object.'''
     diff = datetime.strptime(end_date, '%Y-%m-%d') - datetime.strptime(start_date, '%Y-%m-%d')
     length = diff.days + 1
@@ -441,13 +524,13 @@ def create_schedule(creator, visibility, sched_name, start_date,
                         sched_type = sched_type,
                         count = count, 
                         workouts = workouts,
-                        notes = notes)
+                        description = description)
     db.session.add(schedule)
     db.session.commit()
     return schedule
 
 
-def save_schedule(user_id, visibility, schedule_name, start_date, end_date, save_type, notes):
+def save_schedule(user_id, visibility, schedule_name, start_date, end_date, save_type, description):
     '''Saves schedule within the specified date range.'''
     schedule = Sched_Workout.query.filter(Sched_Workout.user_id == user_id,
                                           Sched_Workout.sched_date >= start_date,
@@ -469,7 +552,7 @@ def save_schedule(user_id, visibility, schedule_name, start_date, end_date, save
                       'discipline': workout.discipline,
                       'workout_id': workout_id}]
     schedule = create_schedule(user_id, visibility, schedule_name, start_date, 
-                               end_date, save_type, workouts, notes)
+                               end_date, save_type, workouts, description)
 
     return True
 

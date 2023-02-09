@@ -108,7 +108,7 @@ document.querySelector('#save-schedule').addEventListener('click', (event) => {
     startDate: document.querySelector('#save-start-date').value,
     endDate: document.querySelector('#save-end-date').value,
     saveType: document.querySelector('#save-type').value,
-    notes: document.querySelector('#save-notes').value
+    description: document.querySelector('#save-description').value
   }
   fetch('/save-schedule', {
     method: 'POST',

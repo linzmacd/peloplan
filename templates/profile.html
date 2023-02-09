@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block header %}{% endblock %}
+
+{% block title %}Profile{% endblock %}
+
+{% block variables %}{% endblock %}
+
+{% block body %}
+
+<div class='row justify-content-center' style='padding: 5px; margin: 5px'>
+  <div class='col-4 offset-4' style='padding: 5px; margin: 5px; border: 1px solid black'>
+    <div class='row'>
+      <h2> My Profile</h2>
+    </div>
+    <div class='row'>
+      <div class='col-6' align='right'>
+        <p>First Name: </p>
+      </div>
+      <div class='col-6' align='left'>
+        <p>{{ user.fname }}</p>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-6' align='right'>
+        <p>Last Name: </p>
+      </div>
+      <div class='col-6' align='left'>
+        <p>{{ user.lname }}</p>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-6' align='right'>
+        <p>Email: </p>
+      </div>
+      <div class='col-6' align='left'>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+    <div class='row justify-content-center'>
+      <div class='col-4'>
+        <button id='update-profile'>Update Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='row justify-content-center' style='padding: 5px; margin: 5px'>
+  <div class='col-8' style='padding: 5px; margin: 5px; border: 1px solid black'>
+    <h2> My Friends</h2>
+    <div class='row justify-content-center'>
+      <div class='col-5' style='padding: 5px; margin: 10px; border: 1px solid black'>
+        <div class='row'>
+          <h3>Following</h3>
+        </div>
+        <div class='row' align='left'>
+          <div class='col-8 offset-2'>
+            <ul>
+              {% for follow in user.following %}
+              <li>{{ follow.fname }} {{ follow.lname }} <button class='unfollow-user' value={{ follow.user_id }}><i class="bi bi-x-circle"></i></button></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class='col-5' style='padding: 5px; margin: 10px; border: 1px solid black'>
+        <div class='row'>
+          <h3>Followers</h3>
+        </div>
+        <div class='row' align='left'>
+          <div class='col-8 offset-2'>
+            <ul>
+              {% for follower in user.followers %}
+              <li>{{ follower.fname }} {{ follower.lname }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='row justify-content-center'>
+      <div class='col-6'>
+        <button id='find-friends'>Find Friends</button>
+        <button id='invite-friends'>Invite Friends</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Profile Modal -->
+<div class='modal fade' id='update-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='update-modal-title'>Update Profile</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>First Name: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='text' name='fname'>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>Last Name: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='text' name='lname'>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>Email: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='email' name='email' pattern='\S+@\S+\.\S+' required>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Find Friends Modal -->
+<div class='modal fade' id='find-friends-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-lg modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='find-modal-title'>Find Friends</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+        <div class='row'>
+          <div class='col-6 offset-1' align='left'>
+            <div class='row'>
+              <p>By Full Name:</p>
+              <p><input type='text' size=15 id='find-friend-fname' placeholder='First Name' required>
+                 <input type='text' size=20 id='find-friend-lname' placeholder='Last Name' required></p>
+            </div>
+            <div class='row'>
+              <div class='col-8 '>
+                <button id='search-names'>Search by Name</button>
+              </div>
+            </div>
+          </div>
+          <div class='col-4' align='left'>
+            <div class='row'>
+              <p>By Email:</p>
+              <p><input type='email' size=30 id='find-friend-email' pattern='\S+@\S+\.\S+' placeholder='email@email.com'></p>
+            </div>
+            <div class='row'>
+              <div class='col-8 '>
+                <button id='search-email'>Search by Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='row justify-content-center' id='find-friend-results'
+        style='padding: 20px; margin: 20px'>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Invite Friends Modal -->
+<div class='modal fade' id='invite-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-sm modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='invite-modal-title'>Invite Friends</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+
+        <!-- STUFF TO INVITE FRIENDS HERE -->
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Invite Friends Modal -->
+<div class='modal fade' id='invite-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-sm modal-dialog-centered'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h1 class='modal-title fs-5' id='invite-modal-title'>Invite Friends</h1>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+
+        <!-- STUFF TO INVITE FRIENDS HERE -->
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src='/static/js/profile.js'></script>
+{% endblock %}

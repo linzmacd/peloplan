@@ -13,21 +13,21 @@
 <div class='row'>
   <div class='col-4 offset-2'>
     <div id='login-box'>
-      <h2>Log In</h2>
+      <h2>Log In to PeloPlan</h2>
       <form action='/login' method='POST'>
         <div class='row'>
-          <div class='col-3' align='right'>
+          <div class='col-4' align='right'>
             <p>Email: </p>
           </div>
-          <div class='col-9' align='left'>
-            <input type='text' name='email' required>
+          <div class='col-8' align='left'>
+            <input type='email' name='email' required>
           </div>
         </div>
         <div class='row'>
-          <div class='col-3' align='right'>
+          <div class='col-4' align='right'>
             <p>Password: </p>
           </div>
-          <div class='col-9' align='left'>
+          <div class='col-8' align='left'>
             <input type='password' name='password' required>
           </div>
         </div>
@@ -62,7 +62,7 @@
             <p>Email: </p>
           </div>
           <div class='col-8' align='left'>
-            <input type='text' name='email' required>
+            <input type='email' name='email' pattern='\S+@\S+\.\S+' required>
           </div>
         </div>
         <div class='row'>
@@ -71,6 +71,14 @@
           </div>
           <div class='col-8' align='left'>
             <input type='password' name='password' required>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>Confirm password: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='password' name='confirm' required>
           </div>
         </div>
         <div class='row'>

@@ -23,7 +23,7 @@
     {% if schedule.sched_type == 'generic' %}
       Template
     {% endif %}
-    <br>Description: {{ schedule.notes }}<br>
+    <br>Description: {{ schedule.description }}<br>
     Length: {{ schedule.length }} days<br>
     Workouts: {{ schedule.count }}<br></p>
     <button class='sched-preview' value="{{ schedule.storage_id }}">Preview</button>

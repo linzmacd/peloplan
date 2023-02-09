@@ -56,16 +56,39 @@ class Sched_Workout(db.Model):
     discipline = db.Column(db.String, nullable=False)
     workout_id = db.Column(db.String, 
                            db.ForeignKey('workouts.workout_id'))
-    # completed = db.Column(db.Boolean)
-    completed_id = db.Column(db.String)
+    completed_id = db.Column(db.String,
+                             db.ForeignKey('comp_workouts.completed_id'))
 
     user = db.relationship('User', back_populates='sched_workouts')
     workout = db.relationship('Workout', back_populates='sched_workouts')
+    metrics = db.relationship('Comp_Workout', back_populates='sched_workout')
 
     def __repr__(self):
         return (f'<Sched_Workout user_id={self.user_id} ' 
                 f'sched_date={self.sched_date} '
                 f'sched_order={self.sched_order}>')
+    
+
+class Comp_Workout(db.Model):
+    '''A completed workout'''
+
+    __tablename__ = 'comp_workouts'
+
+    completed_id = db.Column(db.String,
+                             primary_key=True)
+    duration = db.Column(db.Integer)
+    total_output = db.Column(db.Integer)
+    distance = db.Column(db.Float)
+    calories = db.Column(db.Integer)
+    avg_output = db.Column(db.Integer)
+    avg_cadence = db.Column(db.Integer)
+    avg_resistance = db.Column(db.Integer)
+    avg_speed = db.Column(db.Float)
+
+    sched_workout = db.relationship('Sched_Workout', back_populates='metrics')
+
+    def __repr__(self):
+        return (f'<Comp_Workout id={self.completed_id}')
 
 
 class Workout(db.Model):
@@ -105,8 +128,9 @@ class Schedule(db.Model):
     length = db.Column(db.Integer, nullable=False)
     sched_type = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String)
     workouts = db.Column(db.JSON, nullable=False)
-    notes = db.Column(db.String)
+    
 
     user = db.relationship('User', back_populates='schedules')
     
