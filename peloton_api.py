@@ -76,6 +76,37 @@ def get_workout_history(user_id):
     return workout_list
 
 
+def get_full_workout_history(user_id):
+    '''Gets Peloton workout history.'''
+    user = crud.get_user_by_id(user_id)
+    peloton_user_id = user.peloton_user_id
+    endpoint = 'api/user/'+ peloton_user_id + '/workouts'
+    params = {
+        'joins': 'peloton.ride',
+        'limit': 100,
+        'page' : 0,
+        'sort': '-created'
+    }
+    api_url = BASE_URL + endpoint
+    response = requests.get(api_url, params=params, cookies=session['cookie'])
+    page_count = response.json()['page_count']
+    pages = list(range(0,page_count))
+    workout_list = []
+    for page in pages:
+        params = {
+            'joins': 'peloton.ride',
+            'limit': 100,
+            'page' : page,
+            'sort': '-created'
+        }
+        response = requests.get(api_url, params=params, cookies=session['cookie'])
+        page_workout_list = response.json()['data']
+        workout_list = workout_list + page_workout_list
+    print(len(workout_list))
+
+    return workout_list
+
+
 def get_workout_details(workout_id):
     '''Gets details of workout with specified id.'''
     endpoint = 'api/ride/' + workout_id + '/details'

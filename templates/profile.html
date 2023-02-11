@@ -9,7 +9,7 @@
 {% block body %}
 
 <div class='row justify-content-center' style='padding: 5px; margin: 5px'>
-  <div class='col-4 offset-4' style='padding: 5px; margin: 5px; border: 1px solid black'>
+  <div class='col-4 offset-2' style='padding: 5px; margin: 5px; border: 1px solid black'>
     <div class='row'>
       <h2> My Profile</h2>
     </div>
@@ -43,6 +43,22 @@
       </div>
     </div>
   </div>
+  <div class='col-4 offset-1' style='padding: 5px; margin: 5px; border: 1px solid black'>
+    <div class='row'>
+      <h2>Sync Full Peloton History</h2>
+    </div>
+    <div class='row' id='full-sync-blurb'>
+      <p>This operation only needs to be performed once and takes approximately 1 
+        second per workout in your history (1000 workouts takes about 15 mins). 
+        Please be patient and do not hit refresh while syncing is taking place.</p>
+    </div>
+    <div class='row'>
+      <div class='col-6 offset-3  '>
+        <button id='full-peloton-sync'>Full History Sync</button>
+      </div>
+    </div>
+    
+  </div>  
 </div>
 <div class='row justify-content-center' style='padding: 5px; margin: 5px'>
   <div class='col-8' style='padding: 5px; margin: 5px; border: 1px solid black'>

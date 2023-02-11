@@ -129,6 +129,14 @@ def sync_with_peloton():
     return redirect('/peloplan')
 
 
+@app.route('/full-peloton-sync')
+def full_sync_with_peloton():
+    '''Syncs with Peloton to get entire workout history.'''
+    crud.full_sync_with_peloton(session['user_id'])
+
+    return jsonify(True)
+
+
 @app.route('/peloplan/schedule')
 def get_schedule():
     '''Gets schedule data for populating calendar'''

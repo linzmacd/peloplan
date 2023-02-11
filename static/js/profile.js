@@ -14,6 +14,24 @@ for (const unFollowButton of unFollowButtons) {
   });
 };
 
+const fullSyncButton = document.querySelector('#full-peloton-sync')
+fullSyncButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  const answer = confirm('Are you sure you want to begin a full sync?');
+  if (answer == true) {
+    fetch('/full-peloton-sync')
+    .then((response) => response.json())
+    .then((success) => {
+      if (success) {
+        document.querySelector('#full-sync-blurb').innerHTML = `
+        <p>Congratulations!</p>
+        <p>You are fully synced!</p>
+        `
+      };
+    });
+  };
+});
+
 // Update Profile Modal
 const updateButton = document.querySelector('#update-profile');
 updateButton.addEventListener('click', (event) => {
