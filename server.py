@@ -1,13 +1,14 @@
-'''Server for movie ratings app.'''
+'''Server for PeloPlan app.'''
 
 from flask import (Flask, render_template, request, 
                    flash, session, redirect, jsonify)
-from model import connect_to_db, db
-import crud, peloton_api
+from model import connect_to_db
 from jinja2 import StrictUndefined
-from datetime import date
 from passlib.hash import argon2
+import crud, peloton_api
+from datetime import date
 import json
+
 
 
 app = Flask(__name__)
@@ -424,6 +425,57 @@ def follow_user(friend_id):
 def unfollow_user(friend_id):
     '''Unfollows specified user.'''
     return jsonify(crud.unfollow_user(session['user_id'], friend_id))
+
+
+@app.route('/workout-stats')
+def show_workout_stats():
+    '''Shows user's workout stats.'''
+    date_today = date.today().strftime('%Y-%m')
+
+    return render_template('metrics.html',
+                           date = date_today,
+                           measure = 'duration')
+
+
+# @app.route('/get-metrics')
+# def get_metrics():
+#     '''Gets metrics for Workout Stats page.'''
+#     today = date.today().strftime('%Y-%m')
+#     metrics = crud.get_metrics_by_month(session['user_id'], today[5:], today[0:4])
+#     discipline_data = crud.discipline_chart(metrics, 'duration')
+#     instructor_data = crud.instructor_chart(metrics, 'duration')
+#     print('raw data')
+#     print(discipline_data)
+#     print(instructor_data)
+#     data = {}
+#     data['discipline_chart'] = discipline_data
+#     data['instructor_chart'] = instructor_data['duration']
+#     print('return data')
+#     print(data)
+#     return jsonify(data)
+
+
+@app.route('/workout-stats/<date>/<measure>')
+def show_filtered_workout_stats(date, measure):
+    '''Shows user's workout stats.'''
+
+    return render_template('metrics.html',
+                           date = date,
+                           measure = measure)
+
+
+@app.route('/get-metrics/<date>/<measure>')
+def get_metrics(date, measure):
+    '''Gets metrics for Workout Stats page.'''
+
+    metrics = crud.get_metrics_by_month(session['user_id'], date[5:], date[0:4])
+    discipline_data = crud.discipline_chart(metrics, measure)
+    instructor_data = crud.instructor_chart(metrics, measure)
+    data = {}
+    data['discipline_data'] = discipline_data
+    data['instructor_data'] = instructor_data
+    print(data)
+    return jsonify(data)
 
 
 @app.route('/log-out')

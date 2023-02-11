@@ -88,7 +88,7 @@ class Comp_Workout(db.Model):
     sched_workout = db.relationship('Sched_Workout', back_populates='metrics')
 
     def __repr__(self):
-        return (f'<Comp_Workout id={self.completed_id}')
+        return (f'<Comp_Workout id={self.completed_id}>')
 
 
 class Workout(db.Model):

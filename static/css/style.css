@@ -15,9 +15,6 @@
   border-color: white;
   font-size: 1rem;
 }
-.dimmed {
-  opacity: .2;
-}
 .strength {
   color: white;
   background-color: black;
@@ -58,19 +55,21 @@
   color: white;
   background-color: green;
   border-color: green;
+  opacity: .5;
 }
 .stretching:hover {
   color: white;
   background-color: green;
   border-color: green;
   box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
-  opacity: 1;
+  opacity: .5;
 }
 .stretching.selected {
   color: white;
   background-color: green;
   border-color: green;
   box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
+  opacity: .5;
 }
 .yoga {
   color: white;
@@ -130,6 +129,7 @@
   color: white;
   background-color: red;
   border-color: red;
+  opacity: .65;
 }
 .bc_bike:hover {
   color: white;
@@ -137,12 +137,14 @@
   border-color: red;
   box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
   opacity: 1;
+  opacity: .65;
 }
 .bc_bike.selected {
   color: white;
   background-color: red;
   border-color: red;
   box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
+  opacity: .65;
 }
 .outdoor {
   color: white;
@@ -184,37 +186,41 @@
   color: white;
   background-color: blue;
   border-color: blue;
+  opacity: .66;
 }
 .walking:hover {
   color: white;
   background-color: blue;
   border-color: blue;
   box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-  opacity: 1;
+  opacity: .66;
 }
 .walking.selected {
   color: white;
   background-color: blue;
   border-color: blue;
   box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+  opacity: .66;
 }
 .bc_tread {
   color: white;
   background-color: blue;
   border-color: blue;
+  opacity: .33;
 }
 .bc_tread:hover {
   color: white;
   background-color: blue;
   border-color: blue;
   box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-  opacity: 1;
+  opacity: .33;
 }
 .bc_tread.selected {
   color: white;
   background-color: blue;
   border-color: blue;
   box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
+  opacity: .33;
 }
 .rowing {
   color: white;
@@ -238,6 +244,7 @@
   color: white;
   background-color: lightcoral;
   border-color: lightcoral;
+  opacity: .75;
 }
 .bc_row:hover {
   color: white;
@@ -245,12 +252,17 @@
   border-color: lightcoral;
   box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
   opacity: 1;
+  opacity: .75;
 }
 .bc_row.selected {
   color: white;
   background-color: lightcoral;
   border-color: lightcoral;
   box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
+  opacity: .75;
+}
+.dimmed {
+  opacity: .1;
 }
 /* .add-discipline {
   color: white;

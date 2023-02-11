@@ -1,19 +1,35 @@
 
+// const colors = {
+//   strength: 'black',
+//   yoga: 'purple',
+//   meditation: 'green',
+//   cardio: 'goldenrod',
+//   stretching: 'green',
+//   cycling: 'red',
+//   outdoor: 'gray',
+//   running: 'blue',
+//   walking: 'blue',
+//   'bootcamp': 'blue',
+//   'bike_bootcamp': 'red',
+//   caesar: 'lightcoral',
+//   'caesar_bootcamp': 'lightcoral'
+// }
+
 const colors = {
-  strength: 'black',
-  yoga: 'purple',
-  meditation: 'green',
-  cardio: 'goldenrod',
-  stretching: 'green',
-  cycling: 'red',
+  strength: 'rgba(0, 0, 0, 1)',
+  yoga: 'rgba(128, 0, 128, 1)',
+  meditation: 'rgba(0, 128, 0, 1)',
+  cardio: 'rgba(218, 165, 32, 1)',
+  stretching: 'rgba(0, 128, 0, .5)',
+  cycling: 'rgba(255, 0, 0, 1)',
   outdoor: 'gray',
-  running: 'blue',
-  walking: 'blue',
-  'bootcamp': 'blue',
-  'bike_bootcamp': 'red',
-  caesar: 'lightcoral',
-  'caesar_bootcamp': 'lightcoral'
-}
+  running: 'rgba(0, 0, 255, 1)',
+  walking: 'rgba(0, 0, 255, .66)',
+  'bootcamp': 'rgba(0, 0, 255, .33)',
+  'bike_bootcamp': 'rgba(255, 0, 0, .65)',
+  caesar: 'rgba(240, 128, 128, 1)',
+  'caesar_bootcamp': 'rgba(240, 128, 128, .75)'
+};
 
 const completedBG = {
   true: 'white',
@@ -64,6 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
       fetch(`/get-order/${workout_date}`)
         .then((response) => response.json())
         .then((order) => {
+          const disciplineButtons = document.querySelectorAll('.disciplines .btn-primary');
+          for (const disciplineButton of disciplineButtons) {
+            disciplineButton.classList.remove('selected');
+            disciplineButton.classList.remove('dimmed');
+          };
           document.querySelector('#modal-workout-order').value = order;
         });
         let disciplinesModal = new bootstrap.Modal(document.getElementById('disciplines-modal'));

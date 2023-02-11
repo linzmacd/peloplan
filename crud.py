@@ -2,7 +2,8 @@ from model import (db, User, Sched_Workout, Comp_Workout, Workout, Schedule,
                    Instructor, Inst_Disc, Category, connect_to_db)
 import peloton_api
 from datetime import datetime
-from sqlalchemy import func
+from sqlalchemy import func, extract
+import pandas as pd
 
 
 ########## USERS ############################
@@ -470,6 +471,63 @@ def get_metrics(completed_id):
     '''Returns metrics for completed workout.'''
     return Comp_Workout.query.get(completed_id)
 
+
+def get_metrics_by_month(user_id, month, year):
+    '''Returns a dataFrame of monthly metrics.'''
+    workouts = Sched_Workout.query.options(db.joinedload('workout'))\
+                                  .options(db.joinedload('metrics'))\
+                                  .filter(Sched_Workout.user_id == user_id)\
+                                  .filter(extract('year', Sched_Workout.sched_date)==year)\
+                                  .filter(extract('month', Sched_Workout.sched_date)==month).all()
+    
+    metrics = []
+    for workout in workouts:
+        workout_metrics = {
+                'date': workout.sched_date,
+                'discipline': workout.discipline,
+                'category': workout.workout.category,
+                'title': workout.workout.title,
+                'instructor': workout.workout.instructor,
+                'duration': workout.workout.duration,
+                'total_output': workout.metrics.total_output,
+                'distance': workout.metrics.distance,
+                'calories': workout.metrics.calories,
+                'avg_output': workout.metrics.avg_output,
+                'avg_cadence': workout.metrics.avg_cadence,
+                'avg_resistance': workout.metrics.avg_resistance,
+                'avg_speed': workout.metrics.avg_speed
+                }
+        metrics += [workout_metrics]
+                
+    return pd.DataFrame.from_dict(metrics)
+
+
+def discipline_chart(metrics, measure):
+    '''Returns chart data for time spent in each discipline.'''
+    gb_discipline = metrics.groupby('discipline')
+    if measure == 'duration':
+        return gb_discipline.sum(numeric_only=True)['duration'].to_dict()
+    if measure == 'count':
+        return gb_discipline.count()['date'].to_dict()
+    
+
+def instructor_chart(metrics, measure):
+    '''Returns chart data for time spent with each instructor.'''
+    if measure == 'duration':
+        gb_instructor = metrics.groupby('instructor').sum(numeric_only=True)['duration']
+        gb_instructor = gb_instructor.reset_index().sort_values('duration', ascending=False)
+        instructors_data = []
+        for pair in gb_instructor.itertuples(index=False):
+            instructors_data += [pair]
+        return instructors_data
+    if measure == 'count':
+        gb_instructor = metrics.groupby('instructor').count()['date']
+        gb_instructor = gb_instructor.reset_index().sort_values('date', ascending=False)
+        instructors_data = []
+        for pair in gb_instructor.itertuples(index=False):
+            instructors_data += [pair]
+        return instructors_data
+    
 
 ########## WORKOUTS #########################
 
