@@ -374,7 +374,7 @@ def sync_with_peloton(user_id):
                 print('check!')
                 continue
             else:
-                add_metrics(completed_id,)
+                add_metrics(completed_id)
                 # if class is already on schedule add completed_id
                 sched_workout = check_workout_id(user_id, workout_date, workout_id)
                 if sched_workout:
@@ -559,6 +559,64 @@ def get_metrics_by_month(user_id, month, year):
                                   .filter(Sched_Workout.user_id == user_id)\
                                   .filter(extract('year', Sched_Workout.sched_date)==year)\
                                   .filter(extract('month', Sched_Workout.sched_date)==month).all()
+    
+    metrics = []
+    for workout in workouts:
+        workout_metrics = {
+                'date': workout.sched_date,
+                'discipline': workout.discipline,
+                'category': workout.workout.category,
+                'title': workout.workout.title,
+                'instructor': workout.workout.instructor,
+                'duration': workout.workout.duration,
+                'total_output': workout.metrics.total_output,
+                'distance': workout.metrics.distance,
+                'calories': workout.metrics.calories,
+                'avg_output': workout.metrics.avg_output,
+                'avg_cadence': workout.metrics.avg_cadence,
+                'avg_resistance': workout.metrics.avg_resistance,
+                'avg_speed': workout.metrics.avg_speed
+                }
+        metrics += [workout_metrics]
+                
+    return pd.DataFrame.from_dict(metrics)
+
+
+def get_metrics_by_dates(user_id, start_date, end_date):
+    '''Returns a dataFrame of metrics for specified dates.'''
+    workouts = Sched_Workout.query.options(db.joinedload('workout'))\
+                                  .options(db.joinedload('metrics'))\
+                                  .filter(Sched_Workout.user_id == user_id)\
+                                  .filter(Sched_Workout.sched_date >= start_date)\
+                                  .filter(Sched_Workout.sched_date <= end_date).all()
+    
+    metrics = []
+    for workout in workouts:
+        workout_metrics = {
+                'date': workout.sched_date,
+                'discipline': workout.discipline,
+                'category': workout.workout.category,
+                'title': workout.workout.title,
+                'instructor': workout.workout.instructor,
+                'duration': workout.workout.duration,
+                'total_output': workout.metrics.total_output,
+                'distance': workout.metrics.distance,
+                'calories': workout.metrics.calories,
+                'avg_output': workout.metrics.avg_output,
+                'avg_cadence': workout.metrics.avg_cadence,
+                'avg_resistance': workout.metrics.avg_resistance,
+                'avg_speed': workout.metrics.avg_speed
+                }
+        metrics += [workout_metrics]
+                
+    return pd.DataFrame.from_dict(metrics)
+
+
+def get_metrics_all_time(user_id):
+    '''Returns all metrics for for user.'''
+    workouts = Sched_Workout.query.options(db.joinedload('workout'))\
+                                  .options(db.joinedload('metrics'))\
+                                  .filter(Sched_Workout.user_id == user_id).all()
     
     metrics = []
     for workout in workouts:

@@ -19,10 +19,13 @@ fullSyncButton.addEventListener('click', (event) => {
   event.preventDefault();
   const answer = confirm('Are you sure you want to begin a full sync?');
   if (answer == true) {
+    let syncModal = new bootstrap.Modal(document.getElementById('sync-modal'));
+    syncModal.show();
     fetch('/full-peloton-sync')
     .then((response) => response.json())
     .then((success) => {
       if (success) {
+        syncModal.hide();
         document.querySelector('#full-sync-blurb').innerHTML = `
         <p>Congratulations!</p>
         <p>You are fully synced!</p>

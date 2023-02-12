@@ -15,31 +15,37 @@
 {% block body %}
 
 <div class='row'>
-  <p><br></p>
-</div>
-<div class='row'>
-  <div class='col-2' align='left'>
-    <h2>Filter Charts</h2>
+  <div class='column'>
+    <h2>Workout metrics</h2>
   </div> 
-  <div class='col-2'>
-    <input type='month' class='metrics-filter' id='filter-metrics-date' value={{ date }}>
-  </div>
-  <div class='col-2'>
-    Measure:
-    <select class='metrics-filter' id='filter-metrics-measure'>
-      <option id='option-duration'  value='duration'>Minutes</option>
-      <option id='option-count' value='count'>Class Count</option>
-    </select>
-  </div>
 </div>
-<div class='row'>
-  <div class='col-5' style='padding: 5px; margin: 5px; border: 1px solid black'>
-    <h2>Workout By Discipline</h2>
-    <div class='chart-container' >
-      <canvas id='pie-disciplines'></canvas>
+<div class='row justify-content-center' >
+  <div class='col-6' style='padding:10px; margin: 10px; border: 1px solid black'>
+    <div class='row justify-content-center'>
+      <div class='col-5'>
+        <h5>Select Month</h5>
+        <input type='month' class='metrics-filter' id='filter-metrics-date' value={{ date }}>
+      </div>
+      <div class='col-5'>
+        <h5>Select Measure</h5>
+        <select class='metrics-filter' id='filter-metrics-measure'>
+          <option id='option-duration'  value='duration'>Minutes</option>
+          <option id='option-count' value='count'>Class Count</option>
+        </select>
+      </div> 
+    </div> 
+  </div>
+</div> 
+<div class='row justify-content-center'>
+  <div class='col-5'>
+    <div class='row'>
+      <h2>Workout By Discipline</h2>
+      <div class='chart-container' >
+        <canvas id='pie-disciplines'></canvas>
+      </div>
     </div>
   </div>
-  <div class='col-6 ' style='padding: 5px; margin: 5px; border: 1px solid black'>
+  <div class='col-6'>
     <h2>Workout By Instructor</h2>
     <div class='chart-container'>
       <canvas id='bar-instructors'></canvas>

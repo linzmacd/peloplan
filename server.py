@@ -482,7 +482,7 @@ def get_metrics(date, measure):
     data = {}
     data['discipline_data'] = discipline_data
     data['instructor_data'] = instructor_data
-    print(data)
+
     return jsonify(data)
 
 
