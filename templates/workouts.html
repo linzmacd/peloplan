@@ -2,6 +2,14 @@
 
 {% block title %}Workouts{% endblock %}
 
+{% block variables %}
+<input type='hidden' id='workout-date' value={{ workout_date }}>
+<input type='hidden' id='sched-order' value={{ sched_order }}>
+<input type='hidden' id='filter-discipline' value={{ discipline }}>
+<input type='hidden' id='filter-page' value={{ results.page }}>
+<input type='hidden' id='filter-page-max' value={{ results.page_count }}>
+{% endblock %}
+
 {% block body %}
 <div class='row'>
   <div class='column'>
@@ -15,9 +23,6 @@
     <div id='filters-box' align='left'>
       <h2>Filter classes</h2>
       <form>
-        <input type='hidden' id='workout-date' value={{ workout_date }}>
-        <input type='hidden' id='sched-order' value={{ sched_order }}>
-        <input type='hidden' id='filter-discipline' value={{ discipline }}>
         <div>
           Class Length:<br>
           <select name='duration' id='filter-duration'>
@@ -102,6 +107,14 @@
         </div>
       </div>
       {% endfor %}
+    </div>
+    <div class='row justify-content-center'>
+      <div class='col-2'>
+        <button class='change-page' id='prev-page' value=-1 disabled><i class="bi bi-chevron-double-left"></i></button>
+      </div>
+      <div class='col-2'>
+        <button class='change-page' id='next-page' value=1><i class="bi bi-chevron-double-right"></i></button>
+      </div>
     </div>
   </div>
 </div>

@@ -129,12 +129,13 @@ def get_workout_metrics(comp_workout_id):
 
 def query_database(discipline, duration=None, instructor=None, 
                    category=None, bookmarked=None, completed=None, 
-                   sortby='original_air_time', desc=True):
+                   sortby='original_air_time', desc=True, page=0):
     '''Returns list of workouts with specified filters'''
     endpoint = 'api/v2/ride/archived'
     params = {
         'content_format': ['audio', 'video'],
-        'limit': 18
+        'limit': 18,
+        'page': page
     }
 
     # corresponding lists of arguments and their corresponding query parameters

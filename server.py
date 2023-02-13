@@ -235,9 +235,10 @@ def select_workout(workout_date, sched_order, discipline):
                            results = results)
 
 
-@app.route('/workout-selection/<workout_date>/<sched_order>/<discipline>', methods=['POST'])
-def select_filtered_workout(workout_date, sched_order, discipline):
+@app.route('/workout-selection/filter', methods=['POST'])
+def filter_workout():
     '''Filters workout results.'''
+    discipline = request.json.get('discipline')
     duration = request.json.get('duration', None)
     instructor = request.json.get('instructor', None)
     category = request.json.get('category', None)
@@ -252,6 +253,30 @@ def select_filtered_workout(workout_date, sched_order, discipline):
                                          bookmarked = bookmarked, 
                                          completed = completed, 
                                          sortby = sortby)
+
+    return jsonify(results)
+
+
+@app.route('/workout-selection/change-page', methods=['POST'])
+def change_page():
+    '''Retrieves next page of workout results.'''
+    discipline = request.json.get('discipline')
+    duration = request.json.get('duration', None)
+    instructor = request.json.get('instructor', None)
+    category = request.json.get('category', None)
+    bookmarked = request.json.get('bookmarked', None)
+    completed = request.json.get('completed', None)
+    sortby = request.json.get('sortby', 'original_air_time')
+    page = request.json.get('page')
+
+    results = peloton_api.query_database(discipline = discipline,
+                                         duration = duration,
+                                         instructor = instructor,
+                                         category = category, 
+                                         bookmarked = bookmarked, 
+                                         completed = completed, 
+                                         sortby = sortby,
+                                         page = page)
 
     return jsonify(results)
 
