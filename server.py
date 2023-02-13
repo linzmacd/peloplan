@@ -500,15 +500,31 @@ def show_filtered_workout_stats(date, measure):
 @app.route('/get-metrics/<date>/<measure>')
 def get_metrics(date, measure):
     '''Gets metrics for Workout Stats page.'''
-
     metrics = crud.get_metrics_by_month(session['user_id'], date[5:], date[0:4])
-    discipline_data = crud.discipline_chart(metrics, measure)
-    instructor_data = crud.instructor_chart(metrics, measure)
     data = {}
-    data['discipline_data'] = discipline_data
-    data['instructor_data'] = instructor_data
+    data['discipline_data'] = crud.discipline_chart(metrics, measure)
+    data['instructor_data'] = crud.instructor_chart(metrics, measure)
 
     return jsonify(data)
+
+
+@app.route('/output-stats')
+def show_output_stats():
+    '''Shows user's output stats over time.'''
+    metrics = crud.get_metrics_all_time(session['user_id'])
+    output_data = crud.output_chart(metrics)
+
+    return render_template('outputs.html',
+                           data = output_data)
+
+
+@app.route('/get-outputs')
+def get_outputs():
+    '''Gets metrics for Output page.'''
+    metrics = crud.get_metrics_all_time(session['user_id'])
+    output_data = crud.output_chart(metrics)
+
+    return jsonify(output_data)
 
 
 @app.route('/log-out')

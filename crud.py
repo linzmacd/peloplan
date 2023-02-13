@@ -558,7 +558,8 @@ def get_metrics_by_month(user_id, month, year):
                                   .options(db.joinedload('metrics'))\
                                   .filter(Sched_Workout.user_id == user_id)\
                                   .filter(extract('year', Sched_Workout.sched_date)==year)\
-                                  .filter(extract('month', Sched_Workout.sched_date)==month).all()
+                                  .filter(extract('month', Sched_Workout.sched_date)==month)\
+                                  .filter(Sched_Workout.completed_id != None).all()
     
     metrics = []
     for workout in workouts:
@@ -588,7 +589,8 @@ def get_metrics_by_dates(user_id, start_date, end_date):
                                   .options(db.joinedload('metrics'))\
                                   .filter(Sched_Workout.user_id == user_id)\
                                   .filter(Sched_Workout.sched_date >= start_date)\
-                                  .filter(Sched_Workout.sched_date <= end_date).all()
+                                  .filter(Sched_Workout.sched_date <= end_date)\
+                                  .filter(Sched_Workout.completed_id != None).all()
     
     metrics = []
     for workout in workouts:
@@ -616,7 +618,8 @@ def get_metrics_all_time(user_id):
     '''Returns all metrics for for user.'''
     workouts = Sched_Workout.query.options(db.joinedload('workout'))\
                                   .options(db.joinedload('metrics'))\
-                                  .filter(Sched_Workout.user_id == user_id).all()
+                                  .filter(Sched_Workout.user_id == user_id)\
+                                  .filter(Sched_Workout.completed_id != None).all()
     
     metrics = []
     for workout in workouts:
@@ -641,7 +644,7 @@ def get_metrics_all_time(user_id):
 
 
 def discipline_chart(metrics, measure):
-    '''Returns chart data for time spent in each discipline.'''
+    '''Returns chart data for workouts in each discipline.'''
     gb_discipline = metrics.groupby('discipline')
     if measure == 'duration':
         return gb_discipline.sum(numeric_only=True)['duration'].to_dict()
@@ -650,23 +653,43 @@ def discipline_chart(metrics, measure):
     
 
 def instructor_chart(metrics, measure):
-    '''Returns chart data for time spent with each instructor.'''
+    '''Returns chart data for workouts with each instructor.'''
     if measure == 'duration':
         gb_instructor = metrics.groupby('instructor').sum(numeric_only=True)['duration']
         gb_instructor = gb_instructor.reset_index().sort_values('duration', ascending=False)
         instructors_data = []
-        for pair in gb_instructor.itertuples(index=False):
-            instructors_data += [pair]
-        return instructors_data
     if measure == 'count':
         gb_instructor = metrics.groupby('instructor').count()['date']
         gb_instructor = gb_instructor.reset_index().sort_values('date', ascending=False)
         instructors_data = []
-        for pair in gb_instructor.itertuples(index=False):
-            instructors_data += [pair]
-        return instructors_data
-    
+    for pair in gb_instructor.itertuples(index=False):
+        instructors_data += [pair]
+    return instructors_data
 
+
+def output_chart(metrics):
+    '''Returns chart data for total output over time.'''
+    cycling_df = metrics[(metrics['discipline']=='cycling')\
+                        &(metrics['category']!='Warm Up/Cool Down')]
+    cycling_df = cycling_df[['date', 'duration', 'total_output']]
+    cycling_df['duration'] = cycling_df['duration']/60
+    
+    output_dict = {}
+    durations = [20,30,45,60]
+    str_durations = ['twenty' ,'thirty', 'fortyfive', 'sixty']
+    for i, duration in enumerate(durations):
+        df = cycling_df[cycling_df['duration'] == duration]
+        df = df.dropna()
+
+        list = []
+        for index, row in df.iterrows():
+            date = row['date'].strftime('%Y-%m-%d')
+            list.append({'x': date, 'y': row['total_output']})
+        output_dict[str_durations[i]] = list
+
+    return output_dict
+
+    
 ########## WORKOUTS #########################
 
 def add_workout(workout_details):

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script src='https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js'></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/randomcolor@0.6.2/randomColor.js"></script>
+{% endblock %}
+
+{% block title %}PeloPlan{% endblock %}
+
+{% block variables %}{% endblock %}
+
+{% block body %}
+
+<div class='row'>
+  <div class='column'>
+    <h2>Workout metrics</h2>
+  </div> 
+</div>
+<div>
+  <canvas id='graph-outputs'></canvas>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src='/static/js/outputs.js'></script>
+
+{% endblock %}
