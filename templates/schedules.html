@@ -14,7 +14,7 @@
 </div>
 <div class='row align-items-left' id='schedule-card'>
   {% for schedule in schedules %}
-  <div class='col-3' align='left' style='padding: 5px; margin: 5px; border: 1px solid black'>
+  <div class='col-3 content-box' align='left'>
     <h4><span id='name-{{ schedule.storage_id }}'>{{ schedule.sched_name }}</span></h4>
     <p>
     {% if schedule.sched_type == 'specific' %}

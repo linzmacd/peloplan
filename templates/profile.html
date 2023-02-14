@@ -8,8 +8,8 @@
 
 {% block body %}
 
-<div class='row justify-content-center' style='padding: 5px; margin: 5px'>
-  <div class='col-4 offset-2' style='padding: 5px; margin: 5px; border: 1px solid black'>
+<div class='row justify-content-center content-box-nb'>
+  <div class='col-4 offset-2 content-box'>
     <div class='row'>
       <h2> My Profile</h2>
     </div>
@@ -43,13 +43,13 @@
       </div>
     </div>
   </div>
-  <div class='col-4 offset-1' style='padding: 5px; margin: 5px; border: 1px solid black'>
+  <div class='col-4 offset-1 content-box'>
     <div class='row'>
       <h2>Sync Full Peloton History</h2>
     </div>
     <div class='row' id='full-sync-blurb'>
-      <p>This operation only needs to be performed once and takes approximately 1 
-        second per workout in your history (1000 workouts takes about 15 mins). 
+      <p>This operation takes about a minute per 5000 workouts. 
+        It only needs to be performed if you're a first-time user or if you haven't visited in awhile. 
         Please be patient and do not hit refresh while syncing is taking place.</p>
     </div>
     <div class='row'>
@@ -60,11 +60,11 @@
     
   </div>  
 </div>
-<div class='row justify-content-center' style='padding: 5px; margin: 5px'>
-  <div class='col-8' style='padding: 5px; margin: 5px; border: 1px solid black'>
+<div class='row justify-content-center content-box-nb'>
+  <div class='col-8 content-box'>
     <h2> My Friends</h2>
     <div class='row justify-content-center'>
-      <div class='col-5' style='padding: 5px; margin: 10px; border: 1px solid black'>
+      <div class='col-5 follow-box'>
         <div class='row'>
           <h3>Following</h3>
         </div>
@@ -78,7 +78,7 @@
           </div>
         </div>
       </div>
-      <div class='col-5' style='padding: 5px; margin: 10px; border: 1px solid black'>
+      <div class='col-5 follow-box'>
         <div class='row'>
           <h3>Followers</h3>
         </div>
@@ -174,8 +174,7 @@
             </div>
           </div>
         </div>
-        <div class='row justify-content-center' id='find-friend-results'
-        style='padding: 20px; margin: 20px'>
+        <div class='row justify-content-center find-friends' id='find-friend-results'>
         </div>
       </div>
     </div>

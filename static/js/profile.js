@@ -61,7 +61,7 @@ findNameButton.addEventListener('click', (event) => {
     const results = document.querySelector('#find-friend-results')
     for (const friend of friends) {
       results.insertAdjacentHTML('beforeend', `
-        <div class='row' style='padding: 5px; margin: 5px; border: 1px solid black'>
+        <div class='row content-box'>
           <div class='col-4'>
             ${friend.name}
           </div>
@@ -98,7 +98,7 @@ findEmailButton.addEventListener('click', (event) => {
   .then((friend) => {
     const results = document.querySelector('#find-friend-results')
     results.insertAdjacentHTML('beforeend', `
-      <div class='row' style='padding: 5px; margin: 5px; border: 1px solid black'>
+      <div class='row content-box'>
         <div class='col-4'>
           ${friend.name}
         </div>

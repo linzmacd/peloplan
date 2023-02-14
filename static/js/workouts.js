@@ -52,7 +52,7 @@ for (const filterButton of filterButtons) {
       document.querySelector('#query-results').innerHTML = ''      
       for (const result of results.data) {
         document.querySelector('#query-results').insertAdjacentHTML('beforeend', `
-        <div class='row align-items-center' style='padding: 5px; margin: 5px; border: 1px solid black'>
+        <div class='row align-items-center content-box'>
           <div class='col-4'>
             <img src="${result.image_url}" height=170px>
           </div>
@@ -128,7 +128,7 @@ for (const changePageButton of changePageButtons) {
       document.querySelector('#query-results').innerHTML = ''      
       for (const result of results.data) {
         document.querySelector('#query-results').insertAdjacentHTML('beforeend', `
-        <div class='row align-items-center' style='padding: 5px; margin: 5px; border: 1px solid black'>
+        <div class='row align-items-center content-box'>
           <div class='col-4'>
             <img src="${result.image_url}" height=170px>
           </div>

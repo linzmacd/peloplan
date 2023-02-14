@@ -327,11 +327,11 @@ def delete(workout_date, sched_id):
 def show_saved_schedules():
     '''Displays all user's saved schedules'''
     user = crud.get_user_by_id(session['user_id'])
-    schedules = crud.get_user_schedules(session['user_id'])
+    # schedules = crud.get_user_schedules(session['user_id'])
 
-    return render_template('schedules.html',
-                           fname = user.fname,
-                           schedules = schedules)
+    return render_template('schedules-react.html',
+                           fname = user.fname)
+                        #    schedules = schedules)
 
 
 @app.route('/public-schedules')
@@ -360,7 +360,8 @@ def save_schedule():
 @app.route('/get-saved-schedules')
 def get_saved_schedules():
     '''Retrieves user's saved schedules.'''
-    return jsonify(crud.get_user_schedules(session['user_id']))
+
+    return jsonify(crud.get_user_schedule_list(session['user_id']))
 
 
 @app.route('/load-schedule', methods=['POST'])
@@ -416,6 +417,18 @@ def delete_schedule():
     storage_id = request.json.get('storageId')
     
     return jsonify(crud.delete_saved_schedule(storage_id))
+
+
+@app.route('/schedule-like/<storage_id>')
+def like_schedule(storage_id):
+    '''Likes a schedule.'''
+    return jsonify(crud.like_schedule(storage_id))
+
+
+@app.route('/schedule-dislike/<storage_id>')
+def dislike_schedule(storage_id):
+    '''Dislikes a schedule.'''
+    return jsonify(crud.dislike_schedule(storage_id))
 
 
 @app.route('/profile')

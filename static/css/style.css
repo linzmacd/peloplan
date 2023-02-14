@@ -280,3 +280,26 @@
   border: none;
   background-color: white;
 }
+.content-box {
+  border: 1px solid black;
+  padding: 5px;
+  margin: 5px;
+}
+.content-box-nb {
+  padding: 5px;
+  margin: 5px;
+}
+.find-friends {
+  padding: 20px;
+  margin: 20px;
+}
+.follow-box {
+  border: 1px solid black;
+  padding: 5px;
+  margin: 10px;
+}
+.metrics-box {
+  border: 1px solid black;
+  padding:10px;
+  margin: 10px;
+}
