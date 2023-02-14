@@ -102,7 +102,7 @@ class Workout(db.Model):
     category = db.Column(db.String, nullable = False)
     instructor = db.Column(db.String)
     title = db.Column(db.String, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
+    duration = db.Column(db.Integer)
 
     sched_workouts = db.relationship('Sched_Workout', back_populates='workout')
     
@@ -128,7 +128,9 @@ class Schedule(db.Model):
     length = db.Column(db.Integer, nullable=False)
     sched_type = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.String)
+    pos_votes = db.Column(db.Integer, nullable=False)
+    total_votes = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String, nullable=False)
     workouts = db.Column(db.JSON, nullable=False)
     
 

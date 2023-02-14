@@ -124,7 +124,7 @@ def custodial_work():
 @app.route('/peloton-sync')
 def sync_with_peloton():
     '''Syncs with Peloton to verify workout history.'''
-    crud.sync_with_peloton(session['user_id'])
+    crud.sync_with_peloton_csv(session['user_id'])
 
     return redirect('/peloplan')
 
@@ -132,7 +132,7 @@ def sync_with_peloton():
 @app.route('/full-peloton-sync')
 def full_sync_with_peloton():
     '''Syncs with Peloton to get entire workout history.'''
-    crud.full_sync_with_peloton(session['user_id'])
+    crud.full_sync_with_peloton_csv(session['user_id'])
 
     return jsonify(True)
 

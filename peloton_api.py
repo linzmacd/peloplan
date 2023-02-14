@@ -2,6 +2,7 @@ import requests
 from flask import session
 from model import connect_to_db
 import crud
+import csv
 
 
 BASE_URL = 'https://api.onepeloton.com/'
@@ -102,7 +103,6 @@ def get_full_workout_history(user_id):
         response = requests.get(api_url, params=params, cookies=session['cookie'])
         page_workout_list = response.json()['data']
         workout_list = workout_list + page_workout_list
-    print(len(workout_list))
 
     return workout_list
 
@@ -117,14 +117,26 @@ def get_workout_details(workout_id):
     return workout_details
 
 
-def get_workout_metrics(comp_workout_id):
-    '''Gets the metrics from a completed workout.'''
-    endpoint = f'api/workout/{comp_workout_id}/performance_graph'
+# def get_workout_metrics(comp_workout_id):
+#     '''Gets the metrics from a completed workout.'''
+#     endpoint = f'api/workout/{comp_workout_id}/performance_graph'
+#     api_url = BASE_URL + endpoint
+#     response = requests.get(api_url, cookies=session['cookie'])
+#     metrics = response.json()
+
+#     return metrics
+
+
+def get_all_workout_metrics(peloton_user_id):
+    '''Gets all workout metrics in CSV format.'''
+    endpoint = f'api/user/{peloton_user_id}/workout_history_csv?timezone=America/Los_Angeles'
     api_url = BASE_URL + endpoint
     response = requests.get(api_url, cookies=session['cookie'])
-    metrics = response.json()
-
-    return metrics
+    content = response.content.decode('utf-8')
+    content_rows = csv.reader(content.splitlines(), delimiter=',')
+    metrics_list = list(content_rows)
+    
+    return metrics_list[1:]
 
 
 def query_database(discipline, duration=None, instructor=None, 
