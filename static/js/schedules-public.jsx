@@ -17,7 +17,7 @@ function ScheduleList(props) {
     );
   }
   return (
-    <div>{scheduleList}</div>
+    <div id='schedule-parent-box'>{scheduleList}</div>
   )
 }
 
@@ -41,11 +41,11 @@ function Schedule(props) {
     let loadModal = new bootstrap.Modal(document.getElementById('load-modal'));
     loadModal.show();
   }
-  function deleteSchedule() {
-    document.querySelector('#modal-storage-id').value = storageId;  
-    let deleteModal = new bootstrap.Modal(document.getElementById('delete-modal'));
-    deleteModal.show();
-  }
+  // function deleteSchedule() {
+  //   document.querySelector('#modal-storage-id').value = storageId;  
+  //   let deleteModal = new bootstrap.Modal(document.getElementById('delete-modal'));
+  //   deleteModal.show();
+  // }
   function likeSchedule() {
     fetch(`/schedule-like/${storageId}`)
     .then((response) => response.json())
@@ -65,15 +65,15 @@ function Schedule(props) {
   return (
     <div className='col-3 content-box' align='left'>
       <h4>{props.schedName}</h4>
-      <p>BY {props.creator.toUpperCase()}</p>
+      <p>{schedType.toUpperCase()}<br/>
+        by {props.creator}</p>
       <p>"{props.description}"</p>
-      <p>{schedType}<br/>
-      Length: {props.length} days <br/>
+      <p>Length: {props.length} days <br/>
       Workouts: {props.count} <br/>
       Rating: {(rating*100).toFixed(2)}% </p>
       <button onClick={previewSchedule}>Preview</button>
       <button onClick={loadSchedule}>Load</button>
-      <button onClick={deleteSchedule}>Delete</button>
+      {/* <button onClick={deleteSchedule}>Delete</button> */}
       <button onClick={likeSchedule}><i className='bi bi-hand-thumbs-up'></i></button>
       <button onClick={dislikeSchedule}><i className='bi bi-hand-thumbs-down'></i></button>
     </div>

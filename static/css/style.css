@@ -303,3 +303,8 @@
   padding:10px;
   margin: 10px;
 }
+#schedule-parent-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

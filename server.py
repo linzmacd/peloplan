@@ -78,7 +78,7 @@ def login():
 def check_session_cookie(session_id):
     '''Checks auth status of session id.'''
     auth_status = peloton_api.check_session_id(session_id)
-    # if authorized, add to flask session
+    # if authorized, add Peloton cookie to flask session
     if auth_status:
         session['cookie'] = {'peloton_session_id': session_id}
         return redirect('/update-databases')
@@ -114,7 +114,7 @@ def get_peloton_cookie():
 
 @app.route('/update-databases')
 def custodial_work():
-    '''Syncs with Peloton to verify instructors, and categories.'''
+    '''Syncs with Peloton to verify instructors and categories.'''
     crud.verify_instructors()
     crud.verify_categories()
 
@@ -162,14 +162,6 @@ def display_peloplan():
 def re_redirect():
     '''Redirects to PeloPlan for purpose of reloading on correct date.'''
     return redirect('/peloplan')
-
-
-# @app.route('/peloplan/init-date')
-# def get_pp_start_date():
-#     '''Returns the initial date for the calendar.'''
-#     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
-
-#     return jsonify(initial_date)
 
 
 @app.route('/peloplan-weekly')
@@ -479,24 +471,6 @@ def show_workout_stats():
     return render_template('metrics.html',
                            date = date_today,
                            measure = 'duration')
-
-
-# @app.route('/get-metrics')
-# def get_metrics():
-#     '''Gets metrics for Workout Stats page.'''
-#     today = date.today().strftime('%Y-%m')
-#     metrics = crud.get_metrics_by_month(session['user_id'], today[5:], today[0:4])
-#     discipline_data = crud.discipline_chart(metrics, 'duration')
-#     instructor_data = crud.instructor_chart(metrics, 'duration')
-#     print('raw data')
-#     print(discipline_data)
-#     print(instructor_data)
-#     data = {}
-#     data['discipline_chart'] = discipline_data
-#     data['instructor_chart'] = instructor_data['duration']
-#     print('return data')
-#     print(data)
-#     return jsonify(data)
 
 
 @app.route('/workout-stats/<date>/<measure>')

@@ -1,18 +1,5 @@
 
-if (document.querySelector('#metrics-measure').value == 'duration') {
-  document.querySelector('#filter-metrics-measure').innerHTML = `
-    <option id='option-duration' value='duration'>Minutes</option>
-    <option id='option-count' value='count'>Class Count</option>
-    `
-  document.querySelector('#option-duration').classList.add('selected')
-} else {
-  document.querySelector('#filter-metrics-measure').innerHTML = `
-  <option id='option-count' value='count'>Class Count</option>
-  <option id='option-duration'  value='duration'>Minutes</option>
-  `
-document.querySelector('#option-count').classList.add('selected')
-}
-
+// Discipline & Instructor Charts
 const disciplines = ['strength', 'yoga', 'running', 'walking', 
 'bootcamp', 'meditation', 'stretching', 'cardio', 
 'cycling', 'bike_bootcamp', 'caesar', 'caesar_bootcamp'];
@@ -142,6 +129,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// Measure Filters
+if (document.querySelector('#metrics-measure').value == 'duration') {
+  document.querySelector('#filter-metrics-measure').innerHTML = `
+    <option id='option-duration' value='duration'>Minutes</option>
+    <option id='option-count' value='count'>Class Count</option>
+    `
+  document.querySelector('#option-duration').classList.add('selected')
+} else {
+  document.querySelector('#filter-metrics-measure').innerHTML = `
+  <option id='option-count' value='count'>Class Count</option>
+  <option id='option-duration'  value='duration'>Minutes</option>
+  `
+  document.querySelector('#option-count').classList.add('selected')
+}
 
 const metricsFilters = document.querySelectorAll('.metrics-filter')
 for (const metricsFilter of metricsFilters) {
