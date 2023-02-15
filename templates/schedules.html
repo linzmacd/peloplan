@@ -16,15 +16,15 @@
   {% for schedule in schedules %}
   <div class='col-3 content-box' align='left'>
     <h4><span id='name-{{ schedule.storage_id }}'>{{ schedule.sched_name }}</span></h4>
+    <p>"{{ schedule.description }}"</p>
     <p>
     {% if schedule.sched_type == 'specific' %}
       Class Schedule
     {% endif %}
     {% if schedule.sched_type == 'generic' %}
-      Template
+      Schedule Template
     {% endif %}
-    <br>Description: {{ schedule.description }}<br>
-    Length: {{ schedule.length }} days<br>
+    <br>Length: {{ schedule.length }} days<br>
     Workouts: {{ schedule.count }}<br></p>
     <button class='sched-preview' value="{{ schedule.storage_id }}">Preview</button>
     <button class='sched-load' value="{{ schedule.storage_id }}">Load</button>

@@ -327,20 +327,18 @@ def delete(workout_date, sched_id):
 def show_saved_schedules():
     '''Displays all user's saved schedules'''
     user = crud.get_user_by_id(session['user_id'])
-    # schedules = crud.get_user_schedules(session['user_id'])
+    schedules = crud.get_user_schedules(session['user_id'])
 
-    return render_template('schedules-react.html',
-                           fname = user.fname)
-                        #    schedules = schedules)
+    return render_template('schedules.html',
+                           fname = user.fname,
+                           schedules = schedules)
 
 
 @app.route('/public-schedules')
 def show_public_schedules():
     '''Displays all public saved schedules'''
-    schedules = crud.get_public_schedules()
 
-    return render_template('schedules-public.html',
-                           schedules = schedules)
+    return render_template('schedules-public.html')
 
 
 @app.route('/save-schedule', methods=['POST'])
@@ -357,11 +355,11 @@ def save_schedule():
                                       start_date, end_date, save_type, description))
 
 
-@app.route('/get-saved-schedules')
-def get_saved_schedules():
-    '''Retrieves user's saved schedules.'''
+@app.route('/get-public-schedules')
+def get_public_schedules():
+    '''Retrieves public schedules.'''
 
-    return jsonify(crud.get_user_schedule_list(session['user_id']))
+    return jsonify(crud.get_public_schedule_list())
 
 
 @app.route('/load-schedule', methods=['POST'])

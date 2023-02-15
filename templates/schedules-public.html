@@ -1,38 +1,24 @@
 {% extends 'base.html' %}
 
-{% block header %}{% endblock %}
+{% block header %}
+<!-- React -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+{% endblock %}
 
 {% block title %}Schedules{% endblock %}
 
 {% block variables %}
-
+<input type='hidden' id='modal-storage-id'>
 {% endblock %}
 
 {% block body %}
 <div class='row' align='left'>
-  <h1>Publicly Shared Schedules</h1>
+  <h1>Public Schedules</h1>
 </div>
-<div class='row align-items-left' id='schedule-card'>
-  {% for schedule in schedules %}
-  <div class='col-3 content-box' align='left'>
-    <h4><span id='name-{{ schedule.storage_id }}'>{{ schedule.sched_name }}</span></h4>
-    <p>
-    {% if schedule.sched_type == 'specific' %}
-      Class Schedule
-    {% endif %}
-    {% if schedule.sched_type == 'generic' %}
-      Template
-    {% endif %}
-    by {{ schedule.user.fname }} {{ schedule.user.lname }}<br>
-    Description: {{ schedule.description }}<br>
-    Length: {{ schedule.length }} days<br>
-    Workouts: {{ schedule.count }}<br></p>
-    <button class='sched-preview' value="{{ schedule.storage_id }}">Preview</button>
-    <button class='sched-load' value="{{ schedule.storage_id }}">Load</button>
-    <!-- <button class='sched-edit' value="{{ schedule.storage_id }}">Edit</button> -->
-    <!-- <button class='sched-delete' value="{{ schedule.storage_id }}">Delete</button> -->
-  </div>
-  {% endfor %}
+<div class='row align-items-left' id='schedule-cards'>
+  <div id='root'></div>
 </div>
 
 <!-- Load Schedule Modal -->
@@ -108,6 +94,5 @@
 {% endblock %}
 
 {% block js %}
-<script src='/static/js/schedules.js'></script>
-
+<script type='text/jsx' src='/static/js/schedules.jsx'></script>
 {% endblock %}

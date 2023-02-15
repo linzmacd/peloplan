@@ -1035,7 +1035,29 @@ def get_saved_schedule(storage_id):
 def get_public_schedules():
     '''Returns all public schedules.'''
     return Schedule.query.options(db.joinedload('user'))\
-                         .filter(Schedule.visibility == 'public').all()
+                         .filter(Schedule.visibility == 'public')\
+
+
+def get_public_schedule_list():
+    '''Returns list of dictionaries for schedules that are public.'''
+    schedules = get_public_schedules()
+    schedule_list = []
+    for schedule in schedules:
+        schedule_dictionary = {'sched_name': schedule.sched_name,
+                               'creator': f'{schedule.user.fname} {schedule.user.lname}',
+                               'sched_type': schedule.sched_type,
+                               'description': schedule.description,
+                               'length': schedule.length,
+                               'count': schedule.count,
+                               'rating': schedule.pos_votes/schedule.total_votes or None,
+                               'storage_id': schedule.storage_id}
+        schedule_list += [schedule_dictionary]
+        
+    def reorder(element):
+        return element['rating']
+    schedule_list.sort(key=reorder, reverse=True)
+
+    return schedule_list
 
 
 def load_schedule(user_id, storage_id, load_start_date):
@@ -1074,8 +1096,9 @@ def like_schedule(storage_id):
     schedule.pos_votes += 1
     schedule.total_votes += 1
     db.session.commit()
-    
-    return True
+    state = {'rating': schedule.pos_votes/schedule.total_votes}
+
+    return state
 
 
 def dislike_schedule(storage_id):
@@ -1083,8 +1106,9 @@ def dislike_schedule(storage_id):
     schedule = get_saved_schedule(storage_id)
     schedule.total_votes += 1
     db.session.commit()
-    
-    return True
+    state = {'rating': schedule.pos_votes/schedule.total_votes}
+
+    return state
 
 
 if __name__ == '__main__':
