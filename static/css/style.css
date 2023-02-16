@@ -1,289 +1,41 @@
-.fc-list-event-time {
-  display: none;
+/* Base HTML */
+.header-banner {
+  background-image: linear-gradient(black, white);
+  border-radius: 10px 10px 0px 0px;
+  padding: 10px;
 }
-.modal-body {
-  text-align: center;
+.footer-banner {
+  background-image: linear-gradient(white, gray);
+  border-radius: 0px 0px 10px 10px;
+  padding: 10px;
 }
-.btn-sm {
-  margin: .125rem;
+#banner-logo {
+  font-size: 4em;
+  font-weight: bolder;
+  color: red;
+  text-shadow: 4px 4px rgb(0 0 0 / 50%);
 }
-.modal-up {
-  border-color: white;
-  font-size: 1rem;
-}
-.modal-down {
-  border-color: white;
-  font-size: 1rem;
-}
-.strength {
+.banner-quote {
   color: white;
-  background-color: black;
-  border-color: black;
 }
-.strength:hover {
-  color: white;
-  background-color: black;
-  border-color: black;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 0 / 50%);
-  opacity: 1;
+#banner-quote {
+  font-size: 2em;
+  font-family: cursive ;
 }
-.strength.selected {
-  color: white;
-  background-color: black;
-  border-color: black;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 0 / 50%);
+#banner-instructor {
+  font-size: 1em;
+  font: arial;
 }
-.meditation {
-  color: white;
-  background-color: green;
-  border-color: green;
-}
-.meditation:hover {
-  color: white;
-  background-color: green;
-  border-color: green;
-  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
-  opacity: 1;
-}
-.meditation.selected {
-  color: white;
-  background-color: green;
-  border-color: green;
-  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
-}
-.stretching {
-  color: white;
-  background-color: green;
-  border-color: green;
-  opacity: .5;
-}
-.stretching:hover {
-  color: white;
-  background-color: green;
-  border-color: green;
-  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
-  opacity: .5;
-}
-.stretching.selected {
-  color: white;
-  background-color: green;
-  border-color: green;
-  box-shadow: 0 0 0 0.25rem rgb(0 255 0 / 50%);
-  opacity: .5;
-}
-.yoga {
-  color: white;
-  background-color: purple;
-  border-color: purple;
-}
-.yoga:hover {
-  color: white;
-  background-color: purple;
-  border-color: purple;
-  box-shadow: 0 0 0 0.25rem rgb(128 0 128 / 50%);
-  opacity: 1;
-}
-.yoga.selected {
-  color: white;
-  background-color: purple;
-  border-color: purple;
-  box-shadow: 0 0 0 0.25rem rgb(128 0 128 / 50%);
-}
-.cardio {
-  color: white;
-  background-color: goldenrod;
-  border-color: goldenrod;
-}
-.cardio:hover {
-  color: white;
-  background-color: goldenrod;
-  border-color: goldenrod;
-  box-shadow: 0 0 0 0.25rem rgb(218 165 32 / 50%);
-  opacity: 1;
-}
-.cardio.selected {
-  color: white;
-  background-color: goldenrod;
-  border-color: goldenrod;
-  box-shadow: 0 0 0 0.25rem rgb(218 165 32 / 50%);
-}
-.cycling {
-  color: white;
-  background-color: red;
-  border-color: red;
-}
-.cycling.selected {
-  color: white;
-  background-color: red;
-  border-color: red;
-  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
-}
-.cycling:hover {
-  color: white;
-  background-color: red;
-  border-color: red;
-  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
-  opacity: 1;
-}
-.bc_bike {
-  color: white;
-  background-color: red;
-  border-color: red;
-  opacity: .65;
-}
-.bc_bike:hover {
-  color: white;
-  background-color: red;
-  border-color: red;
-  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
-  opacity: 1;
-  opacity: .65;
-}
-.bc_bike.selected {
-  color: white;
-  background-color: red;
-  border-color: red;
-  box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 50%);
-  opacity: .65;
-}
-.outdoor {
-  color: white;
-  background-color: gray;
-  border-color: gray;
-}
-.outdoor:hover {
-  color: white;
-  background-color: gray;
-  border-color: gray;
-  box-shadow: 0 0 0 0.25rem rgb(128 128 128 / 50%);
-  opacity: 1;
-}
-.outdoor.selected {
-  color: white;
-  background-color: gray;
-  border-color: gray;
-  box-shadow: 0 0 0 0.25rem rgb(128 128 128 / 50%);
-}
-.running {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-}
-.running:hover {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-  opacity: 1;
-}
-.running.selected {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-}
-.walking {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  opacity: .66;
-}
-.walking:hover {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-  opacity: .66;
-}
-.walking.selected {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-  opacity: .66;
-}
-.bc_tread {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  opacity: .33;
-}
-.bc_tread:hover {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-  opacity: .33;
-}
-.bc_tread.selected {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-  opacity: .33;
-}
-.rowing {
-  color: white;
-  background-color: lightcoral;
-  border-color: lightcoral;
-}
-.rowing:hover {
-  color: white;
-  background-color: lightcoral;
-  border-color: lightcoral;
-  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
-  opacity: 1;
-}
-.rowing.selected {
-  color: white;
-  background-color: lightcoral;
-  border-color: lightcoral;
-  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
-}
-.bc_row {
-  color: white;
-  background-color: lightcoral;
-  border-color: lightcoral;
-  opacity: .75;
-}
-.bc_row:hover {
-  color: white;
-  background-color: lightcoral;
-  border-color: lightcoral;
-  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
-  opacity: 1;
-  opacity: .75;
-}
-.bc_row.selected {
-  color: white;
-  background-color: lightcoral;
-  border-color: lightcoral;
-  box-shadow: 0 0 0 0.25rem rgb(240 128 128 / 50%);
-  opacity: .75;
-}
-.dimmed {
-  opacity: .1;
-}
-/* .add-discipline {
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  box-shadow: 0 0 0 0.25rem rgb(0 0 255 / 50%);
-} */
-
-.fc-h-event .fc-event-title {
-  font-size: 11px;
-}
-
-/* Profile Page */
 .unfollow-user {
   border: none;
   background-color: white;
 }
 .content-box {
   border: 1px solid black;
-  padding: 5px;
-  margin: 5px;
+  padding: 15px;
+  margin: 25px;
+  border-radius: 30px;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 .content-box-nb {
   padding: 5px;
@@ -307,4 +59,24 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+.fc-list-event-time {
+  display: none;
+}
+.modal-body {
+  text-align: center;
+}
+.btn-sm {
+  margin: .125rem;
+}
+.modal-up {
+  border-color: white;
+  font-size: 1rem;
+}
+.modal-down {
+  border-color: white;
+  font-size: 1rem;
+}
+.fc-h-event .fc-event-title {
+  font-size: 11px;
 }
