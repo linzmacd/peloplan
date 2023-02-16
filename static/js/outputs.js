@@ -12,28 +12,28 @@ fetch('/get-outputs')
     data: {
       datasets: [
         {
-          label: '20 Mins',
+          label: '20 Min Ride',
           data: twentyOutputs,
           borderColor: 'rgba(255, 0, 0, 1)',
           backgroundColor: 'rgba(255, 0, 0, .25)',
-          pointStyle: 'circle'
+          pointStyle: 'circle',
         },
         {
-          label: '30 Mins',
+          label: '30 Min Ride',
           data: thirtyOutputs,
           borderColor: 'rgba(218, 165, 32, 1)',
           backgroundColor: 'rgba(218, 165, 32, .4)',
           pointStyle: 'circle'
         },
         {
-          label: '45 Mins',
+          label: '45 Min Ride',
           data: fortyfiveOutputs,
           borderColor: 'rgba(0, 128, 0, 1)',
           backgroundColor: 'rgba(0, 128, 0, .25)',
           pointStyle: 'circle'
         },
         {
-          label: '60 Mins',
+          label: '60 Min Ride',
           data: sixtyOutputs,
           borderColor: 'rgba(0, 0, 255, 1)',
           backgroundColor: 'rgba(0, 0 , 255 , .25)',
@@ -44,15 +44,19 @@ fetch('/get-outputs')
     options: {
       scales: {
         x: {
-          type: 'timeseries',
+          type: 'time',
+          display: true,
         }
       },
       plugins: {
-        tooltips: {
+        tooltip: {
           callbacks: {
-            label: function(context) {
-              let label = context.parsed.y;
-              return label
+            label: function(content) {
+              const date = new Date(content.raw.x).toLocaleDateString('en-us', {year:"numeric", month:"short", day:"numeric"})
+              const tooltip = [`${content.dataset.label}`]
+              tooltip.push([`${date}`]);
+              tooltip.push([`Output: ${content.raw.y} KJ`]);
+              return tooltip;
             }
           }
         }
