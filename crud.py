@@ -91,7 +91,6 @@ def verify_instructors():
         instructor_id = instructor['id']
         if not Instructor.query.get(instructor_id):
             instructor_name = instructor['name']
-            print(f'''"{instructor['quote']}" - {instructor['name']}''')
             new_instructor = Instructor(instructor_id = instructor_id,
                                         instructor_name = instructor_name)
             db.session.add(new_instructor)

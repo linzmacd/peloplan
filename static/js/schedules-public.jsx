@@ -1,6 +1,4 @@
-
-// style={{paddingBlock: 5, margin: 5, borderBlock: 1, borderBlockStyle: solid, borderBlockColor: black}}
-
+// Schedule List Component
 function ScheduleList(props) {
   const scheduleList = [];
   for (const schedule of props.schedules) {
@@ -21,8 +19,11 @@ function ScheduleList(props) {
   )
 }
 
+// Schedule Component
 function Schedule(props) {
-  const [rating, setRating] = React.useState(props.rating)
+  const [rating, setRating] = React.useState(props.rating);
+  const storageId = props.storageId;
+  const schedName = props.schedName;
 
   let schedType = '';
   if (props.schedType == 'specific') {
@@ -31,21 +32,16 @@ function Schedule(props) {
   if (props.schedType == 'generic') {
     schedType = 'Schedule Template';
   }
-  const storageId = props.storageId
   function previewSchedule() {
     const url = `/preview-schedule/${storageId}`;
     window.open(url)
   }
   function loadSchedule() {
-    document.querySelector('#modal-storage-id').value = storageId;  
+    document.querySelector('#load-modal-title').innerText = schedName;  
+    document.querySelector('#load-modal-title').dataset.id = storageId;
     let loadModal = new bootstrap.Modal(document.getElementById('load-modal'));
     loadModal.show();
   }
-  // function deleteSchedule() {
-  //   document.querySelector('#modal-storage-id').value = storageId;  
-  //   let deleteModal = new bootstrap.Modal(document.getElementById('delete-modal'));
-  //   deleteModal.show();
-  // }
   function likeSchedule() {
     fetch(`/schedule-like/${storageId}`)
     .then((response) => response.json())
@@ -73,16 +69,34 @@ function Schedule(props) {
       Rating: {(rating*100).toFixed(2)}% </p>
       <button onClick={previewSchedule}>Preview</button>
       <button onClick={loadSchedule}>Load</button>
-      {/* <button onClick={deleteSchedule}>Delete</button> */}
       <button onClick={likeSchedule}><i className='bi bi-hand-thumbs-up'></i></button>
       <button onClick={dislikeSchedule}><i className='bi bi-hand-thumbs-down'></i></button>
     </div>
   );
 }
 
+// Rendering Page
 fetch('/get-public-schedules')
 .then((response) => response.json())
 .then((schedules) => {
-  console.log(schedules);
   ReactDOM.render(<ScheduleList schedules={schedules}/>, document.querySelector('#root'));
 })
+
+// Load Schedule Modal
+document.querySelector('#load-schedule').addEventListener('click', (event) => {
+  event.preventDefault();
+  const formInputs = {
+    storageId: document.querySelector('#load-modal-title').dataset.id,
+    startDate: document.querySelector('#load-start-date').value,
+  }
+  fetch('/load-schedule', {
+    method: 'POST',
+    body: JSON.stringify(formInputs),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((response) => {
+    window.location.href = '/peloplan'
+  });
+});
