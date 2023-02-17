@@ -1,5 +1,5 @@
 from model import (db, User, Sched_Workout, Comp_Workout, Workout, Schedule, 
-                   Instructor, Inst_Disc, Category, connect_to_db)
+                   Sched_Rating, Instructor, Inst_Disc, Category, connect_to_db)
 import peloton_api
 from datetime import datetime
 from sqlalchemy import func, extract
@@ -966,11 +966,11 @@ def create_schedule(creator, visibility, sched_name, start_date,
                         sched_type = sched_type,
                         count = count, 
                         description = description,
-                        pos_votes = 1,
-                        total_votes = 1,
                         workouts = workouts)
     db.session.add(schedule)
     db.session.commit()
+    like_schedule(creator, schedule.storage_id)
+
     return schedule
 
 
@@ -1018,8 +1018,6 @@ def get_user_schedule_list(user_id):
                                'description': schedule.description,
                                'length': schedule.length,
                                'count': schedule.count,
-                               'pos_votes': schedule.pos_votes,
-                               'votes': schedule.total_votes,
                                'storage_id': schedule.storage_id}
         schedule_list += [schedule_dictionary]
     
@@ -1034,28 +1032,34 @@ def get_saved_schedule(storage_id):
 def get_public_schedules():
     '''Returns all public schedules.'''
     return Schedule.query.options(db.joinedload('user'))\
-                         .filter(Schedule.visibility == 'public')\
+                         .options(db.joinedload('ratings'))\
+                         .filter(Schedule.visibility == 'public').all()
 
 
-def get_public_schedule_list():
+def get_public_schedule_list(user_id):
     '''Returns list of dictionaries for schedules that are public.'''
     schedules = get_public_schedules()
+    user_ratings = get_user_ratings(user_id)
+
     schedule_list = []
     for schedule in schedules:
-        schedule_dictionary = {'sched_name': schedule.sched_name,
+        schedule_dictionary = {'storage_id': schedule.storage_id,
+                               'sched_name': schedule.sched_name,
                                'creator': f'{schedule.user.fname} {schedule.user.lname}',
                                'sched_type': schedule.sched_type,
                                'description': schedule.description,
                                'length': schedule.length,
                                'count': schedule.count,
-                               'rating': schedule.pos_votes/schedule.total_votes or None,
-                               'storage_id': schedule.storage_id}
+                               'rating': get_schedule_rating(schedule.storage_id)[0],
+                               'votes': get_schedule_rating(schedule.storage_id)[1],
+                               'user_rating': user_ratings.get(schedule.storage_id, 'No Rating')
+                               }
         schedule_list += [schedule_dictionary]
         
     def reorder(element):
         return element['rating']
     schedule_list.sort(key=reorder, reverse=True)
-
+    print(schedule_list)
     return schedule_list
 
 
@@ -1089,25 +1093,95 @@ def delete_saved_schedule(storage_id):
     return True
 
 
-def like_schedule(storage_id):
+# def like_schedule(storage_id):
+#     '''Likes a saved schedule.'''
+#     schedule = get_saved_schedule(storage_id)
+#     schedule.pos_votes += 1
+#     schedule.total_votes += 1
+#     db.session.commit()
+#     state = {'rating': schedule.pos_votes/schedule.total_votes}
+
+#     return state
+
+
+# def dislike_schedule(storage_id):
+#     '''Dislikes a saved schedule.'''
+#     schedule = get_saved_schedule(storage_id)
+#     schedule.total_votes += 1
+#     db.session.commit()
+#     state = {'rating': schedule.pos_votes/schedule.total_votes}
+
+#     return state
+
+
+def like_schedule(user_id, storage_id):
     '''Likes a saved schedule.'''
-    schedule = get_saved_schedule(storage_id)
-    schedule.pos_votes += 1
-    schedule.total_votes += 1
-    db.session.commit()
-    state = {'rating': schedule.pos_votes/schedule.total_votes}
+    rating = Sched_Rating.query.filter(Sched_Rating.storage_id == storage_id)\
+                               .filter(Sched_Rating.user_id == user_id).first()
+    if rating:
+        rating.user_rating = 1
+        db.session.commit()
+    else:
+        rating = Sched_Rating(storage_id = storage_id,
+                              user_id = user_id, 
+                              user_rating = 1)
+        db.session.add(rating)
+        db.session.commit()
+    new_rating = get_schedule_rating(storage_id)
+    state = {'rating': new_rating[0],
+             'votes': new_rating[1],
+             'user_rating': 1}
 
     return state
 
 
-def dislike_schedule(storage_id):
+def dislike_schedule(user_id, storage_id):
     '''Dislikes a saved schedule.'''
-    schedule = get_saved_schedule(storage_id)
-    schedule.total_votes += 1
-    db.session.commit()
-    state = {'rating': schedule.pos_votes/schedule.total_votes}
+    rating = Sched_Rating.query.filter(Sched_Rating.storage_id == storage_id)\
+                               .filter(Sched_Rating.user_id == user_id).first()
+    if rating:
+        rating.user_rating = 0
+        db.session.commit()
+    else:
+        rating = Sched_Rating(storage_id = storage_id,
+                            user_id = user_id, 
+                            user_rating = 0)
+        db.session.add(rating)
+        db.session.commit()
+    new_rating = get_schedule_rating(storage_id)
+    state = {'rating': new_rating[0],
+             'votes': new_rating[1],
+             'user_rating': 0}
 
     return state
+
+
+def get_schedule_rating(storage_id):
+    '''Gets the current rating of a schedule.'''
+    ratings = Sched_Rating.query.filter(Sched_Rating.storage_id == storage_id).all()
+    pos_votes = 0
+    total_votes = 0
+    for rating in ratings:
+        pos_votes += rating.user_rating
+        total_votes += 1
+
+    return [pos_votes/total_votes, total_votes]
+
+
+# def get_user_schedule_rating(user_id, storage_id):
+#     '''Returns a user's rating for a schedule '''
+#     rating = Sched_Rating.query.filter(Sched_Rating.storage_id == storage_id)\
+#                                .filter(Sched_Rating.user_id == user_id).first()
+
+
+def get_user_ratings(user_id):
+    '''Gets a user's schedule ratings.'''
+    ratings = Sched_Rating.query.filter(Sched_Rating.user_id == user_id).all()
+    ratings_dict = {}
+    for rating in ratings:
+        ratings_dict[rating.storage_id] = rating.user_rating
+
+    return ratings_dict
 
 
 if __name__ == '__main__':

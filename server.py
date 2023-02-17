@@ -350,8 +350,7 @@ def save_schedule():
 @app.route('/get-public-schedules')
 def get_public_schedules():
     '''Retrieves public schedules.'''
-
-    return jsonify(crud.get_public_schedule_list())
+    return jsonify(crud.get_public_schedule_list(session['user_id']))
 
 
 @app.route('/load-schedule', methods=['POST'])
@@ -411,14 +410,14 @@ def delete_schedule():
 
 @app.route('/schedule-like/<storage_id>')
 def like_schedule(storage_id):
-    '''Likes a schedule.'''
-    return jsonify(crud.like_schedule(storage_id))
+    '''Likes a schedule.'''    
+    return jsonify(crud.like_schedule(session['user_id'], storage_id))
 
 
 @app.route('/schedule-dislike/<storage_id>')
 def dislike_schedule(storage_id):
     '''Dislikes a schedule.'''
-    return jsonify(crud.dislike_schedule(storage_id))
+    return jsonify(crud.dislike_schedule(session['user_id'], storage_id))
 
 
 @app.route('/profile')

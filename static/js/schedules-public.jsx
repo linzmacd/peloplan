@@ -11,6 +11,8 @@ function ScheduleList(props) {
                 length={schedule.length}
                 count={schedule.count}
                 rating={schedule.rating}
+                votes={schedule.votes}
+                userRating={schedule.user_rating}
                 storageId={schedule.storage_id} />
     );
   }
@@ -22,6 +24,8 @@ function ScheduleList(props) {
 // Schedule Component
 function Schedule(props) {
   const [rating, setRating] = React.useState(props.rating);
+  const [votes, setVotes] = React.useState(props.votes)
+  const [userRating, setUserRating] = React.useState(props.userRating);
   const storageId = props.storageId;
   const schedName = props.schedName;
 
@@ -31,6 +35,13 @@ function Schedule(props) {
   }
   if (props.schedType == 'generic') {
     schedType = 'Schedule Template';
+  }
+  let thumbsUp = 'bi bi-hand-thumbs-up';
+  let thumbsDown = 'bi bi-hand-thumbs-down';
+  if (userRating === 1) {
+    thumbsUp = 'bi bi-hand-thumbs-up-fill';
+  } else if (userRating === 0) {
+    thumbsDown = 'bi bi-hand-thumbs-down-fill';
   }
   function previewSchedule() {
     const url = `/preview-schedule/${storageId}`;
@@ -48,6 +59,8 @@ function Schedule(props) {
     .then((newRating) => {
       console.log(newRating)
       setRating(newRating.rating);
+      setVotes(newRating.votes);
+      setUserRating(newRating.user_rating);
     });
   }
   function dislikeSchedule() {
@@ -56,6 +69,8 @@ function Schedule(props) {
     .then((newRating) => {
       console.log(newRating)
       setRating(newRating.rating);
+      setVotes(newRating.votes);
+      setUserRating(newRating.user_rating)
     });
   }
   return (
@@ -66,11 +81,11 @@ function Schedule(props) {
       <p>"{props.description}"</p>
       <p>Length: {props.length} days <br/>
       Workouts: {props.count} <br/>
-      Rating: {(rating*100).toFixed(2)}% </p>
+      Rating: {(rating*100).toFixed(2)}% ({votes} votes)</p>
       <button onClick={previewSchedule}>Preview</button>
       <button onClick={loadSchedule}>Load</button>
-      <button onClick={likeSchedule}><i className='bi bi-hand-thumbs-up'></i></button>
-      <button onClick={dislikeSchedule}><i className='bi bi-hand-thumbs-down'></i></button>
+      <button onClick={likeSchedule} id='thumb-up'><i className={thumbsUp}></i></button>
+      <button onClick={dislikeSchedule} id='thumb-down'><i className={thumbsDown}></i></button>
     </div>
   );
 }
@@ -79,6 +94,7 @@ function Schedule(props) {
 fetch('/get-public-schedules')
 .then((response) => response.json())
 .then((schedules) => {
+  console.log(schedules)
   ReactDOM.render(<ScheduleList schedules={schedules}/>, document.querySelector('#root'));
 })
 

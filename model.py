@@ -30,6 +30,7 @@ class User(db.Model):
 
     sched_workouts = db.relationship('Sched_Workout', back_populates='user')
     schedules = db.relationship('Schedule', back_populates='user')
+    ratings = db.relationship('Sched_Rating', back_populates='user')
     following = db.relationship('User', secondary=friend,
                                 primaryjoin=user_id == friend.c.f1_id,
                                 secondaryjoin=user_id == friend.c.f2_id,
@@ -128,17 +129,40 @@ class Schedule(db.Model):
     length = db.Column(db.Integer, nullable=False)
     sched_type = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, nullable=False)
-    pos_votes = db.Column(db.Integer, nullable=False)
-    total_votes = db.Column(db.Integer, nullable=False)
+    # pos_votes = db.Column(db.Integer, nullable=False)
+    # total_votes = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String, nullable=False)
     workouts = db.Column(db.JSON, nullable=False)
     
 
     user = db.relationship('User', back_populates='schedules')
+    ratings = db.relationship('Sched_Rating', back_populates='schedule')
     
     def __repr__(self):
         return f'<Schedule "{self.sched_name}" created by User {self.creator}>'
     
+
+class Sched_Rating(db.Model):
+    '''A schedule rating'''
+
+    __tablename__ = 'sched_ratings'
+
+    rating_id = db.Column(db.Integer,
+                          autoincrement=True,
+                          primary_key=True)
+    storage_id = db.Column(db.Integer,
+                           db.ForeignKey('schedules.storage_id'))
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'))
+    user_rating = db.Column(db.Integer,
+                            nullable=False)
+    
+    schedule = db.relationship('Schedule', back_populates='ratings')
+    user = db.relationship('User', back_populates='ratings')
+
+    def __repr__(self):
+        return f'<Sched_Rating rating_id={self.rating_id}>'
+
 
 class Instructor(db.Model):
     '''An Instructor.'''
