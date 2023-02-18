@@ -1,4 +1,6 @@
 
+document.querySelector('a.nav-link.page-profile').classList.add('active');
+
 const unFollowButtons = document.querySelectorAll('.unfollow-user');
 for (const unFollowButton of unFollowButtons) {
   unFollowButton.addEventListener('click', (event) => {

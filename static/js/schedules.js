@@ -1,4 +1,6 @@
 
+document.querySelector('a.nav-link.page-schedules').classList.add('active');
+
 // Schedule Buttons
 const previewButtons = document.querySelectorAll('.sched-preview')
 for (const previewButton of previewButtons) {

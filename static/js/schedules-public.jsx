@@ -1,3 +1,6 @@
+
+document.querySelector('a.nav-link.page-schedules').classList.add('active');
+
 // Schedule List Component
 function ScheduleList(props) {
   const scheduleList = [];
@@ -28,13 +31,23 @@ function Schedule(props) {
   const [userRating, setUserRating] = React.useState(props.userRating);
   const storageId = props.storageId;
   const schedName = props.schedName;
+  const votesTooltip = `${(rating*100).toFixed(0)}% with ${votes} votes`
 
   let schedType = '';
+  let schedBox = '';
+  let id = '';
+  let schedButtons = ''
   if (props.schedType == 'specific') {
-    schedType = 'Class Schedule';
+    schedType = 'Classes';
+    schedBox = 'col-3 schedule-box classes'
+    id = 'sched-type-classes';
+    schedButtons = 'col-7 sched-buttons-classes'
   }
   if (props.schedType == 'generic') {
-    schedType = 'Schedule Template';
+    schedType = 'Template';
+    schedBox = 'col-3 schedule-box template'
+    id = 'sched-type-template';
+    schedButtons = 'col-7 sched-buttons-template'
   }
   let thumbsUp = 'bi bi-hand-thumbs-up';
   let thumbsDown = 'bi bi-hand-thumbs-down';
@@ -57,7 +70,6 @@ function Schedule(props) {
     fetch(`/schedule-like/${storageId}`)
     .then((response) => response.json())
     .then((newRating) => {
-      console.log(newRating)
       setRating(newRating.rating);
       setVotes(newRating.votes);
       setUserRating(newRating.user_rating);
@@ -67,25 +79,35 @@ function Schedule(props) {
     fetch(`/schedule-dislike/${storageId}`) 
     .then((response) => response.json())
     .then((newRating) => {
-      console.log(newRating)
       setRating(newRating.rating);
       setVotes(newRating.votes);
       setUserRating(newRating.user_rating)
     });
   }
   return (
-    <div className='col-3 content-box' align='left'>
-      <h4>{props.schedName}</h4>
-      <p>{schedType.toUpperCase()}<br/>
-        by {props.creator}</p>
-      <p>"{props.description}"</p>
-      <p>Length: {props.length} days <br/>
-      Workouts: {props.count} <br/>
-      Rating: {(rating*100).toFixed(2)}% ({votes} votes)</p>
-      <button onClick={previewSchedule}>Preview</button>
-      <button onClick={loadSchedule}>Load</button>
-      <button onClick={likeSchedule} id='thumb-up'><i className={thumbsUp}></i></button>
-      <button onClick={dislikeSchedule} id='thumb-down'><i className={thumbsDown}></i></button>
+    <div className={schedBox} align='left'>
+      <div className='row justify-content-center'>
+        <div className='col-4' id={id}>
+          {schedType}
+        </div>  
+      </div>
+      <div className='row sched-content'>
+        <div className='column' align='left'>
+          <h4 className='sched-title'>{props.schedName}</h4>
+          <p className='sched-creator'>by {props.creator}</p>
+          <p>"{props.description}"</p>
+          <p>{props.count} workouts in {props.length} day(s)</p>
+        </div>
+      </div>
+      <div className='row justify-content-center'>
+        <div className={schedButtons} align='center'>
+          <button title='Preview' onClick={previewSchedule}><i class="bi bi-zoom-in"></i></button>
+          <button title='Load' onClick={loadSchedule}><i class="bi bi-calendar-week"></i></button>
+          <span title={votesTooltip}>{(rating*100).toFixed(0)}%</span>
+          <button title='Like' onClick={likeSchedule} id='thumb-up'><i className={thumbsUp}></i></button>
+          <button title='Dislike' onClick={dislikeSchedule} id='thumb-down'><i className={thumbsDown}></i></button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -94,7 +116,6 @@ function Schedule(props) {
 fetch('/get-public-schedules')
 .then((response) => response.json())
 .then((schedules) => {
-  console.log(schedules)
   ReactDOM.render(<ScheduleList schedules={schedules}/>, document.querySelector('#root'));
 })
 

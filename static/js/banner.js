@@ -50,12 +50,11 @@ const quotes = [
   {
     instructor: 'Robin Arzon',
     quote: "Yes, you can."
-  }]
+  }
+];
 
-  const random = Math.floor(Math.random() * quotes.length);
-  const instructor = quotes[random].instructor
-  const quote = quotes[random].quote
-  document.querySelector('#banner-quote').innerText = `"${quote}"`
-  document.querySelector('#banner-instructor').innerText = `- ${instructor}`
-  
-
+const random = Math.floor(Math.random() * quotes.length);
+const instructor = quotes[random].instructor
+const quote = quotes[random].quote
+document.querySelector('#banner-quote').innerText = `"${quote}"`
+document.querySelector('#banner-instructor').innerText = `- ${instructor}`

@@ -1,19 +1,5 @@
 
-// const colors = {
-//   strength: 'black',
-//   yoga: 'purple',
-//   meditation: 'green',
-//   cardio: 'goldenrod',
-//   stretching: 'green',
-//   cycling: 'red',
-//   outdoor: 'gray',
-//   running: 'blue',
-//   walking: 'blue',
-//   'bootcamp': 'blue',
-//   'bike_bootcamp': 'red',
-//   caesar: 'lightcoral',
-//   'caesar_bootcamp': 'lightcoral'
-// }
+document.querySelector('a.nav-link.page-monthly').classList.add('active');
 
 const colors = {
   strength: 'rgba(0, 0, 0, 1)',

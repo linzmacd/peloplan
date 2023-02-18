@@ -1,4 +1,6 @@
 
+document.querySelector('a.nav-link.page-weekly').classList.add('active');
+
 const colors = {
   strength: 'black',
   yoga: 'purple',

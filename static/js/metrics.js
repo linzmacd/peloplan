@@ -1,4 +1,6 @@
 
+document.querySelector('a.nav-link.page-metrics').classList.add('active');
+
 // Discipline & Instructor Charts
 const disciplines = ['strength', 'yoga', 'running', 'walking', 
 'bootcamp', 'meditation', 'stretching', 'cardio', 

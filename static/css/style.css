@@ -1,11 +1,11 @@
 /* Base HTML */
 .header-banner {
-  background-image: linear-gradient(black, white);
+  background-image: linear-gradient(black, gray);
   border-radius: 10px 10px 0px 0px;
   padding: 10px;
 }
 .footer-banner {
-  background-image: linear-gradient(white, gray);
+  /* background-image: linear-gradient(white, black); */
   border-radius: 0px 0px 10px 10px;
   padding: 10px;
 }
@@ -26,9 +26,17 @@
   font-size: 1em;
   font: arial;
 }
-.unfollow-user {
-  border: none;
-  background-color: white;
+.nav-bar {
+  background-color: gray;
+}
+.nav-link {
+  color: white;
+}
+.nav-link:hover {
+  color: white;
+}
+.nav-tabs {
+  border-bottom: 0;
 }
 .content-box {
   border: 1px solid black;
@@ -50,6 +58,10 @@
   padding: 5px;
   margin: 10px;
 }
+.unfollow-user {
+  border: none;
+  background-color: white;
+}
 .metrics-box {
   border: 1px solid black;
   padding:10px;
@@ -59,6 +71,64 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+.sched-title {
+  margin-bottom: 0;
+}
+.sched-creator {
+  font-size: 12px;
+  font-weight: 200;
+}
+.schedule-box.classes {
+  border: 2px solid green;
+  padding: 0px 15px 0px 15px;
+  margin: 25px;
+  border-radius: 30px;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+#sched-type-classes {
+  background-color: green;
+  color: white;
+  font-variant: small-caps;
+  text-align: center;
+  border-radius: 0 0 5px 5px;
+}
+.sched-buttons-classes {
+  background-color: green;
+  border-radius: 5px 5px 0px 0px;
+  color: white;
+}
+.sched-buttons-classes button{
+  background-color: green;
+  color: white;
+  border: none;
+}
+.schedule-box.template {
+  border: 2px solid goldenrod;
+  padding: 0px 15px 0px 15px;
+  margin: 25px;
+  border-radius: 30px;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+#sched-type-template {
+  background-color: goldenrod;
+  color: white;
+  font-variant: small-caps;
+  text-align: center;
+  border-radius: 0 0 5px 5px;
+}
+.sched-content {
+  margin-top: 10px
+}
+.sched-buttons-template {
+  background-color: goldenrod;
+  border-radius: 5px 5px 0px 0px;
+  color: white;
+}
+.sched-buttons-template button{
+  background-color: goldenrod;
+  color: white;
+  border: none;
 }
 .fc-list-event-time {
   display: none;

@@ -1,4 +1,6 @@
 
+document.querySelector('a.nav-link.page-metrics').classList.add('active');
+
 //  Output Chart
 fetch('/get-outputs')
 .then((response) => response.json())
