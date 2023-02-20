@@ -384,7 +384,8 @@ def delete_workouts(user_id, start_date, end_date):
 #                 # if class is already on schedule add completed_id
 #                 if sched_workout:
 #                     sched_workout.completed_id = completed_id
-#                     print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
+#                     print(f'{index_counter} - Workout {sched_workout.sched_order} '
+#                           f'on {sched_workout.sched_date} marked as completed')
 #                     index_counter -= 1
 #                 # if class not on schedule
 #                 else:
@@ -401,7 +402,8 @@ def delete_workouts(user_id, start_date, end_date):
 #                     if sched_discipline:
 #                         sched_discipline.workout_id = workout_id
 #                         sched_discipline.completed_id = completed_id
-#                         print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+#                         print(f'{index_counter} - Workout {sched_discipline.sched_order} '
+#                               f'on {sched_discipline.sched_date} updated and marked as completed')
 #                         index_counter -= 1    
 #                     # otherwise make new completed workout on schedule
 #                     else:
@@ -424,7 +426,8 @@ def delete_workouts(user_id, start_date, end_date):
 #                 if sched_discipline:
 #                     sched_discipline.workout_id = workout_id
 #                     sched_discipline.completed_id = completed_id
-#                     print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+#                     print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} '
+#                           f'on {sched_discipline.sched_date} updated and marked as completed')
 #                     index_counter -= 1
 #                 else:
 #                     sched_order = get_order(user_id, workout_date)
@@ -471,7 +474,7 @@ def sync_with_peloton_csv(user_id):
                 # if class is already on schedule add completed_id
                 if sched_workout:
                     sched_workout.completed_id = completed_id
-                    print(f'{index_counter} - Workout {sched_workout.sched_order}'
+                    print(f'{index_counter} - Workout {sched_workout.sched_order} '
                           f'on {sched_workout.sched_date} marked as completed')
                     index_counter -= 1
                 # if class not on schedule
@@ -486,7 +489,7 @@ def sync_with_peloton_csv(user_id):
                     if sched_discipline:
                         sched_discipline.workout_id = workout_id
                         sched_discipline.completed_id = completed_id
-                        print(f'{index_counter} - Workout {sched_discipline.sched_order}'
+                        print(f'{index_counter} - Workout {sched_discipline.sched_order} '
                               f'on {sched_discipline.sched_date} updated and marked as completed')
                         index_counter -= 1    
                     # otherwise make new completed workout on schedule
@@ -510,7 +513,7 @@ def sync_with_peloton_csv(user_id):
                 if sched_discipline:
                     sched_discipline.workout_id = workout_id
                     sched_discipline.completed_id = completed_id
-                    print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order}'
+                    print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} '
                           f'on {sched_discipline.sched_date} updated and marked as completed')
                     index_counter -= 1
                 else:
@@ -557,7 +560,8 @@ def sync_with_peloton_csv(user_id):
 #                 # if class is already on schedule add completed_id
 #                 if sched_workout:
 #                     sched_workout.completed_id = completed_id
-#                     print(f'{index_counter} - Workout {sched_workout.sched_order} on {sched_workout.sched_date} marked as completed')
+#                     print(f'{index_counter} - Workout {sched_workout.sched_order} '
+#                           f'on {sched_workout.sched_date} marked as completed')
 #                     index_counter -= 1
 #                 # if class not on schedule
 #                 else:
@@ -574,7 +578,8 @@ def sync_with_peloton_csv(user_id):
 #                     if sched_discipline:
 #                         sched_discipline.workout_id = workout_id
 #                         sched_discipline.completed_id = completed_id
-#                         print(f'{index_counter} - Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+#                         print(f'{index_counter} - Workout {sched_discipline.sched_order} '
+#                               f'on {sched_discipline.sched_date} updated and marked as completed')
 #                         index_counter -= 1    
 #                     # otherwise make new completed workout on schedule
 #                     else:
@@ -597,7 +602,8 @@ def sync_with_peloton_csv(user_id):
 #                 if sched_discipline:
 #                     sched_discipline.workout_id = workout_id
 #                     sched_discipline.completed_id = completed_id
-#                     print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} on {sched_discipline.sched_date} updated and marked as completed')
+#                     print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} '
+#                           f'on {sched_discipline.sched_date} updated and marked as completed')
 #                     index_counter -= 1
 #                 else:
 #                     sched_order = get_order(user_id, workout_date)
@@ -643,7 +649,7 @@ def full_sync_with_peloton_csv(user_id):
                 # if class is already on schedule add completed_id
                 if sched_workout:
                     sched_workout.completed_id = completed_id
-                    print(f'{index_counter} - Workout {sched_workout.sched_order}'
+                    print(f'{index_counter} - Workout {sched_workout.sched_order} '
                           f'on {sched_workout.sched_date} marked as completed')
                     index_counter -= 1
                 # if class not on schedule
@@ -658,7 +664,7 @@ def full_sync_with_peloton_csv(user_id):
                     if sched_discipline:
                         sched_discipline.workout_id = workout_id
                         sched_discipline.completed_id = completed_id
-                        print(f'{index_counter} - Workout {sched_discipline.sched_order}'
+                        print(f'{index_counter} - Workout {sched_discipline.sched_order} '
                               f'on {sched_discipline.sched_date} updated and marked as completed')
                         index_counter -= 1    
                     # otherwise make new completed workout on schedule
@@ -682,7 +688,7 @@ def full_sync_with_peloton_csv(user_id):
                 if sched_discipline:
                     sched_discipline.workout_id = workout_id
                     sched_discipline.completed_id = completed_id
-                    print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order}'
+                    print(f'{index_counter} - Freestyle Workout {sched_discipline.sched_order} '
                           f'on {sched_discipline.sched_date} updated and marked as completed')
                     index_counter -= 1
                 else:
@@ -1029,16 +1035,17 @@ def get_saved_schedule(storage_id):
     return Schedule.query.get(storage_id)
 
 
-def get_public_schedules():
+def get_public_schedules(user_id):
     '''Returns all public schedules.'''
     return Schedule.query.options(db.joinedload('user'))\
                          .options(db.joinedload('ratings'))\
-                         .filter(Schedule.visibility == 'public').all()
+                         .filter(Schedule.visibility == 'public')\
+                         .filter(Schedule.creator != user_id).all()
 
 
 def get_public_schedule_list(user_id):
     '''Returns list of dictionaries for schedules that are public.'''
-    schedules = get_public_schedules()
+    schedules = get_public_schedules(user_id)
     user_ratings = get_user_ratings(user_id)
 
     schedule_list = []
@@ -1059,7 +1066,7 @@ def get_public_schedule_list(user_id):
     def reorder(element):
         return element['rating']
     schedule_list.sort(key=reorder, reverse=True)
-    print(schedule_list)
+
     return schedule_list
 
 
@@ -1086,72 +1093,62 @@ def load_schedule(user_id, storage_id, load_start_date):
 
 def delete_saved_schedule(storage_id):
     '''Deletes schedule object from database.'''
+    ratings = Sched_Rating.query.filter(Sched_Rating.storage_id == storage_id).all()
+    for rating in ratings:
+        db.session.delete(rating)
     schedule = Schedule.query.get(storage_id)
     db.session.delete(schedule)
+
     db.session.commit()
 
     return True
 
 
-# def like_schedule(storage_id):
-#     '''Likes a saved schedule.'''
-#     schedule = get_saved_schedule(storage_id)
-#     schedule.pos_votes += 1
-#     schedule.total_votes += 1
-#     db.session.commit()
-#     state = {'rating': schedule.pos_votes/schedule.total_votes}
-
-#     return state
-
-
-# def dislike_schedule(storage_id):
-#     '''Dislikes a saved schedule.'''
-#     schedule = get_saved_schedule(storage_id)
-#     schedule.total_votes += 1
-#     db.session.commit()
-#     state = {'rating': schedule.pos_votes/schedule.total_votes}
-
-#     return state
-
-
 def like_schedule(user_id, storage_id):
     '''Likes a saved schedule.'''
+    user_rating = 1
     rating = Sched_Rating.query.filter(Sched_Rating.storage_id == storage_id)\
                                .filter(Sched_Rating.user_id == user_id).first()
     if rating:
-        rating.user_rating = 1
-        db.session.commit()
+        if rating.user_rating == 1:
+            db.session.delete(rating)
+            user_rating = 'No Rating'
+        else:
+            rating.user_rating = 1
     else:
         rating = Sched_Rating(storage_id = storage_id,
                               user_id = user_id, 
                               user_rating = 1)
         db.session.add(rating)
-        db.session.commit()
+    db.session.commit()
     new_rating = get_schedule_rating(storage_id)
     state = {'rating': new_rating[0],
              'votes': new_rating[1],
-             'user_rating': 1}
+             'user_rating': user_rating}
 
     return state
 
 
 def dislike_schedule(user_id, storage_id):
     '''Dislikes a saved schedule.'''
+    user_rating = 0
     rating = Sched_Rating.query.filter(Sched_Rating.storage_id == storage_id)\
                                .filter(Sched_Rating.user_id == user_id).first()
     if rating:
-        rating.user_rating = 0
-        db.session.commit()
+        if rating.user_rating == 0:
+            db.session.delete(rating)
+        else:
+            rating.user_rating = 0
     else:
         rating = Sched_Rating(storage_id = storage_id,
                             user_id = user_id, 
                             user_rating = 0)
         db.session.add(rating)
-        db.session.commit()
+    db.session.commit()
     new_rating = get_schedule_rating(storage_id)
     state = {'rating': new_rating[0],
              'votes': new_rating[1],
-             'user_rating': 0}
+             'user_rating': user_rating}
 
     return state
 
