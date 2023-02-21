@@ -104,7 +104,7 @@ const changePageButtons = document.querySelectorAll('.change-page')
 for (const changePageButton of changePageButtons) {
   changePageButton.addEventListener('click', (event) => {
     event.preventDefault();
-    window.scrollTo(0, 0);
+    document.querySelector('.outer-scroll').scrollTop = 0;
     const pageChange = changePageButton.value;
     const page = document.querySelector('#filter-page').value;
     const newPage = parseInt(page) + parseInt(pageChange);
@@ -134,7 +134,7 @@ for (const changePageButton of changePageButtons) {
       for (const instructor of results.instructors) {
         instructors[instructor.id] = instructor.name;
       };
-      document.querySelector('#query-results').innerHTML = ''      
+      document.querySelector('#query-results').innerHTML = '';
       for (const result of results.data) {
         document.querySelector('#query-results').insertAdjacentHTML('beforeend', `
         <div class='row workout-box'>

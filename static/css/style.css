@@ -168,6 +168,10 @@
   border-radius: 5px;
   font-size: 24px;
 }
+.change-page {
+  border-radius: 5px;
+  margin: 10px;
+}
 /* Profile Page */
 .content-box {
   border: 1px solid black;
