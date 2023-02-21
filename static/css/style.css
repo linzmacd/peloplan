@@ -1,4 +1,4 @@
-/* Base HTML */
+/* Base HTML: Header and Nav Bar */
 .header-banner {
   background-image: linear-gradient(black, gray);
   border-radius: 10px 10px 0px 0px;
@@ -38,6 +38,137 @@
 .nav-tabs {
   border-bottom: 0;
 }
+/* Login Pages */
+.login-box {
+  border: 1px solid black;
+  padding: 15px 30px 0 30px;
+  margin: 25px;
+  border-radius: 30px;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  min-width: 366px;
+}
+.login-header {
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  border-bottom: 0.5px solid gray;
+}
+.login-submit {
+  padding-top: 15px;
+  margin-top: 10px;
+  border-top: 0.5px solid gray;
+}
+.login-submit input {
+  background-color: red;
+  border: 1px solid red;
+  color: white;
+  border-radius: 5px;
+}
+/* PeloPlan Calendar & Modals */
+.fc-list-event-time {
+  display: none;
+}
+.fc-h-event .fc-event-title {
+  font-size: 11px;
+}
+.modal-body {
+  text-align: center;
+}
+.btn-sm {
+  margin: .125rem;
+}
+.modal-up {
+  border-color: white;
+  font-size: 1rem;
+}
+.modal-down {
+  border-color: white;
+  font-size: 1rem;
+}
+/* Workout Filter Page */
+.outer-scroll {
+  height: calc(100vh - 157px);
+  overflow-y: scroll;
+}
+.filter-bar {
+  padding-left: 0;
+  padding-right: 0;
+}
+#filters-box {
+  text-align: left;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  padding-bottom: 15px;
+  margin-top: 25px;
+}
+#filters-box select {
+  width: 150px;
+}
+.workout-filters {
+  padding-top: 10px;
+}
+.workout-box {
+  border: 1px solid black;
+  padding: 15px;
+  margin: 25px 0px 25px 10px;
+  border-radius: 30px;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  align-items: center;
+}
+.workout-details {
+  text-align: left;
+  min-height: 180px;
+}
+.workout-header {
+  border-bottom: .5px solid black;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+#workout-title {
+  font-size: 22px;
+  font-weight: 600;
+}
+#workout-inst {
+  font-size: 16px;
+  font-weight: 300;
+  color:gray;
+}
+#workout-desc {
+  font-weight: 300;
+}
+.workout-stats {
+  border: .5px solid black;
+  border-radius: 5px;
+  /* padding: 5px; */
+  /* margin: 10px */
+}
+.workout-stat {
+  color: red;
+  font-size: 16px;
+}
+.workout-text {
+  font-size: 14px;
+  font-weight: 100; 
+}
+.workout-text-sm {
+  font-size: 11px;
+  font-weight: 100;
+}
+.add-workout {
+  color: white;
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 24px;
+}
+.add-workout:hover {
+  color: red;
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 24px;
+}
+/* Profile Page */
 .content-box {
   border: 1px solid black;
   padding: 15px;
@@ -62,11 +193,13 @@
   border: none;
   background-color: white;
 }
+/* Metrics Pages */
 .metrics-box {
   border: 1px solid black;
   padding:10px;
   margin: 10px;
 }
+/* Schedules Pages */
 #schedule-parent-box {
   display: flex;
   flex-direction: row;
@@ -79,17 +212,38 @@
   font-size: 12px;
   font-weight: 200;
 }
+.sched-button-box {
+  position: absolute;
+  bottom: 0px;
+  left: 25%
+}
 .schedule-box.classes {
-  border: 2px solid green;
+  border: .5px solid green;
   padding: 0px 15px 0px 15px;
   margin: 25px;
   border-radius: 30px;
   box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  position: relative;
+}
+.schedule-box.template {
+  border: .5px solid goldenrod;
+  padding: 0px 15px 0px 15px;
+  margin: 25px;
+  border-radius: 30px;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  position: relative;
 }
 #sched-type-classes {
   background-color: green;
   color: white;
-  font-variant: small-caps;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 0 0 5px 5px;
+}
+#sched-type-template {
+  background-color: goldenrod;
+  color: white;
+  font-size: 14px;
   text-align: center;
   border-radius: 0 0 5px 5px;
 }
@@ -97,56 +251,44 @@
   background-color: green;
   border-radius: 5px 5px 0px 0px;
   color: white;
+  font-variant: all-small-caps;
+}
+.sched-buttons-template {
+  background-color: goldenrod;
+  border-radius: 5px 5px 0px 0px;
+  color: white;
+  font-variant: all-small-caps;
 }
 .sched-buttons-classes button{
   background-color: green;
   color: white;
   border: none;
 }
-.schedule-box.template {
-  border: 2px solid goldenrod;
-  padding: 0px 15px 0px 15px;
-  margin: 25px;
-  border-radius: 30px;
-  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-}
-#sched-type-template {
-  background-color: goldenrod;
-  color: white;
-  font-variant: small-caps;
-  text-align: center;
-  border-radius: 0 0 5px 5px;
-}
-.sched-content {
-  margin-top: 10px
-}
-.sched-buttons-template {
-  background-color: goldenrod;
-  border-radius: 5px 5px 0px 0px;
-  color: white;
-}
 .sched-buttons-template button{
   background-color: goldenrod;
   color: white;
   border: none;
 }
-.fc-list-event-time {
-  display: none;
+.sched-details-classes {
+  color: green;
+  font-variant: bold;
 }
-.modal-body {
+.sched-details-template {
+  color: goldenrod;
+  font-variant: bold;
+}
+.sched-content {
+  margin-top: 10px;
+  text-align: left;
+}
+.sched-details {
   text-align: center;
+  align-content: center;
+  border-left: .25px solid gray
 }
-.btn-sm {
-  margin: .125rem;
-}
-.modal-up {
-  border-color: white;
-  font-size: 1rem;
-}
-.modal-down {
-  border-color: white;
-  font-size: 1rem;
-}
-.fc-h-event .fc-event-title {
-  font-size: 11px;
+.sched-details-sm {
+  font-size: 12px;
+  font-weight: 200;
+  color: black;
+  text-align: center;
 }

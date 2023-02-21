@@ -52,22 +52,31 @@ for (const filterButton of filterButtons) {
       document.querySelector('#query-results').innerHTML = ''      
       for (const result of results.data) {
         document.querySelector('#query-results').insertAdjacentHTML('beforeend', `
-        <div class='row align-items-center content-box'>
+        <div class='row workout-box'>
           <div class='col-4'>
-            <img src="${result.image_url}" height=170px>
+            <img src="${result.image_url}" width=300px>
           </div>
-          <div class='col-5'>
-            <h4>${result.title}</h4>
-            ${instructors[result.instructor_id]}<br>
-            ${result.description}<br>
-            Total Riders: ${result.total_workouts.toLocaleString('en-US')}<br>
-            Rating: ${(result.overall_rating_avg*100).toFixed(2)}%
-            (${result.overall_rating_count.toLocaleString('en-US')} votes)<br>
-            Difficulty: ${result.difficulty_rating_avg.toFixed(2)}
-            (${result.difficulty_rating_count.toLocaleString('en-US')} votes)<br>
+          <div class='col-5 workout-details'>
+            <div class='row workout-header'>
+              <span id='workout-title'>${result.title}</span><br/>
+              <span id='workout-inst'>${instructors[result.instructor_id]}</span><br/>
+            </div>
+            <span id='workout-desc'>${result.description}</span><br/>
           </div>
-          <div class='col-2'>
-            <button class='add-workout' value="${result.id}"> Add to Calendar </button>
+          <div class='col-2 workout-stats'>
+            <span class='workout-stat'>${result.total_workouts.toLocaleString('en-US')}</span><br/>
+            <span class='workout-text'>members</span><br/>
+            <span class='workout-stat'>${(result.overall_rating_avg*100).toFixed(1)}% </span>
+            <span class='workout-text-sm'>/${result.overall_rating_count.toLocaleString('en-US')}</span><br/>
+            <span class='workout-text'>rating</span><br/>
+            <span class='workout-stat'>${result.difficulty_rating_avg.toFixed(2)}</span>
+            <span class='workout-text-sm'>/${result.difficulty_rating_count.toLocaleString('en-US')}</span><br/>
+            <span class='workout-text'>difficulty</span><br/>
+          </div>
+          <div class='col-1'>
+            <button class='add-workout' title='Add Workout' value="{{ result['id'] }}">
+              <i class="bi bi-calendar-week"></i>
+            </button>
           </div>
         </div>
         `);
@@ -128,22 +137,31 @@ for (const changePageButton of changePageButtons) {
       document.querySelector('#query-results').innerHTML = ''      
       for (const result of results.data) {
         document.querySelector('#query-results').insertAdjacentHTML('beforeend', `
-        <div class='row align-items-center content-box'>
+        <div class='row workout-box'>
           <div class='col-4'>
-            <img src="${result.image_url}" height=170px>
+            <img src="${result.image_url}" width=300px>
           </div>
-          <div class='col-5'>
-            <h4>${result.title}</h4>
-            ${instructors[result.instructor_id]}<br>
-            ${result.description}<br>
-            Total Riders: ${result.total_workouts.toLocaleString('en-US')}<br>
-            Rating: ${(result.overall_rating_avg*100).toFixed(2)}%
-            (${result.overall_rating_count.toLocaleString('en-US')} votes)<br>
-            Difficulty: ${result.difficulty_rating_avg.toFixed(2)}
-            (${result.difficulty_rating_count.toLocaleString('en-US')} votes)<br>
+          <div class='col-5 workout-details'>
+            <div class='row workout-header'>
+              <span id='workout-title'>${result.title}</span><br/>
+              <span id='workout-inst'>${instructors[result.instructor_id]}</span><br/>
+            </div>
+            <span id='workout-desc'>${result.description}</span><br/>
           </div>
-          <div class='col-2'>
-            <button class='add-workout' value="${result.id}"> Add to Calendar </button>
+          <div class='col-2 workout-stats'>
+            <span class='workout-stat'>${result.total_workouts.toLocaleString('en-US')}</span><br/>
+            <span class='workout-text'>members</span><br/>
+            <span class='workout-stat'>${(result.overall_rating_avg*100).toFixed(1)}% </span>
+            <span class='workout-text-sm'>/${result.overall_rating_count.toLocaleString('en-US')}</span><br/>
+            <span class='workout-text'>rating</span><br/>
+            <span class='workout-stat'>${result.difficulty_rating_avg.toFixed(2)}</span>
+            <span class='workout-text-sm'>/${result.difficulty_rating_count.toLocaleString('en-US')}</span><br/>
+            <span class='workout-text'>difficulty</span><br/>
+          </div>
+          <div class='col-1'>
+            <button class='add-workout' title='Add Workout' value="{{ result['id'] }}">
+              <i class="bi bi-calendar-week"></i>
+            </button>
           </div>
         </div>
         `);

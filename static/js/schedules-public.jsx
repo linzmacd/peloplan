@@ -36,18 +36,21 @@ function Schedule(props) {
   let schedType = '';
   let schedBox = '';
   let id = '';
-  let schedButtons = ''
+  let schedButtons = '';
+  let schedDetails = '';
   if (props.schedType == 'specific') {
     schedType = 'Classes';
     schedBox = 'col-3 schedule-box classes'
     id = 'sched-type-classes';
-    schedButtons = 'col-7 sched-buttons-classes'
+    schedButtons = 'column sched-buttons-classes';
+    schedDetails = 'sched-details-classes';
   }
   if (props.schedType == 'generic') {
     schedType = 'Template';
     schedBox = 'col-3 schedule-box template'
     id = 'sched-type-template';
-    schedButtons = 'col-7 sched-buttons-template'
+    schedButtons = 'column sched-buttons-template';
+    schedDetails = 'sched-details-template';
   }
   let thumbsUp = 'bi bi-hand-thumbs-up';
   let thumbsDown = 'bi bi-hand-thumbs-down';
@@ -85,25 +88,33 @@ function Schedule(props) {
     });
   }
   return (
-    <div className={schedBox} align='left'>
+    <div className={schedBox}>
       <div className='row justify-content-center'>
         <div className='col-4' id={id}>
-          {schedType}
+          {schedType.toUpperCase()}
         </div>  
       </div>
       <div className='row sched-content'>
-        <div className='column' align='left'>
+        <div className='col-9'>
           <h4 className='sched-title'>{props.schedName}</h4>
           <p className='sched-creator'>by {props.creator}</p>
           <p>"{props.description}"</p>
-          <p>{props.count} workouts in {props.length} day(s)</p>
+          <br></br>
+        </div>
+        <div className='col-3'>
+          <div className='row sched-details'>
+            <span className={schedDetails}>{props.count}</span><br/>
+            <span className='sched-details-sm'>workouts</span><br/>
+            <span className={schedDetails}>{props.length}</span><br/>
+            <span className='sched-details-sm'>day(s)</span>
+          </div>
         </div>
       </div>
-      <div className='row justify-content-center'>
-        <div className={schedButtons} align='center'>
+      <div className='row sched-button-box'>
+        <div className={schedButtons}>
           <button title='Preview' onClick={previewSchedule}><i class="bi bi-zoom-in"></i></button>
           <button title='Load' onClick={loadSchedule}><i class="bi bi-calendar-week"></i></button>
-          <span title={votesTooltip}>{(rating*100).toFixed(0)}%</span>
+          {'  '}<span title={votesTooltip}>{(rating*100).toFixed(0)}%</span>{'  '}
           <button title='Like' onClick={likeSchedule} id='thumb-up'><i className={thumbsUp}></i></button>
           <button title='Dislike' onClick={dislikeSchedule} id='thumb-down'><i className={thumbsDown}></i></button>
         </div>

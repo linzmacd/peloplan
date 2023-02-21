@@ -12,9 +12,11 @@
 </div>
 <div class='row'>
   <div class='col-4 offset-2'>
-    <div id='login-box'>
-      <h2>Log In to PeloPlan</h2>
+    <div class='login-box'>
       <form action='/login' method='POST'>
+        <div class='row login-header'>
+          <h2>Log In</h2>
+        </div>
         <div class='row'>
           <div class='col-4' align='right'>
             <p>Email: </p>
@@ -31,16 +33,18 @@
             <input type='password' name='password' required>
           </div>
         </div>
-        <div class='row'>
+        <div class='row login-submit'>
           <p><input type='submit'></p>
         </div>
       </form>
     </div>
   </div>
   <div class='col-4'>
-    <div id='new-acct-box'>
-      <h2>Create an Account</h2>
+    <div class='login-box'>
       <form action='/create-account' method='POST'>
+        <div class='row login-header'>
+          <h2>Create Account</h2>
+        </div>
         <div class='row'>
           <div class='col-4' align='right'>
             <p>First Name: </p>
@@ -75,13 +79,13 @@
         </div>
         <div class='row'>
           <div class='col-4' align='right'>
-            <p>Confirm password: </p>
+            <p>Confirm: </p>
           </div>
           <div class='col-8' align='left'>
             <input type='password' name='confirm' required>
           </div>
         </div>
-        <div class='row'>
+        <div class='row login-submit'>
           <p><input type='submit'></p>
         </div>
       </form>
