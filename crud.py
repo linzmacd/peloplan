@@ -1136,6 +1136,7 @@ def dislike_schedule(user_id, storage_id):
                                .filter(Sched_Rating.user_id == user_id).first()
     if rating:
         if rating.user_rating == 0:
+            user_rating = 'No Rating'
             db.session.delete(rating)
         else:
             rating.user_rating = 0
