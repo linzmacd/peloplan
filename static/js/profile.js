@@ -107,7 +107,7 @@ findEmailButton.addEventListener('click', (event) => {
         <div class='col-4'>
           ${friend.email}
         </div>
-        <div class='col-4'>
+        <div class='col-4 modal-friends-submit'>
           <button class='follow-friend' value='${friend.user_id}'>Follow</button>
         </div>
       </div>

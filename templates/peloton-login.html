@@ -4,9 +4,9 @@
 
 {% block body %}
 
-<div class='row'>
-  <div class='col-6 offset-3 text-center'>
-    <div row>
+<div class='row justify-content-center'>
+  <div class='col-4 offset-2 login-box'>
+    <div class='row login-header'>
       <h2>Peloton Log In</h2>
       <br>
     </div>
@@ -27,12 +27,12 @@
           <input type='password' name='peloton_password' required></p>
         </div>
       </div>
-      <div>
+      <div class='row login-submit'>
         <p><input type='submit'></p>
       </div>
-      <div>
-        <p>Please note, your Peloton password will never be saved. <br>
-          You may be required to periodically log in to Peloton.</p>
+      <div class='row peloton-blurb'>
+        <p>Please note: since your Peloton password is not saved, <br>
+          you may be required to periodically re-login to Peloton.</p>
        <p>Load time will depend on the time since your last login.</p>
       </div>
     </form>

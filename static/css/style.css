@@ -45,6 +45,9 @@
   padding-bottom: 10px;
   border-radius: 0 0 10px 10px;
 }
+.flash-msg {
+  display: none;
+}
 /* Login Pages */
 .login-box {
   border: 1px solid black;
@@ -69,6 +72,14 @@
   border: 1px solid red;
   color: white;
   border-radius: 5px;
+}
+.login-submit input:hover {
+  background-color: firebrick;
+  border: 1px solid firebrick;
+}
+.peloton-blurb {
+  text-align: left;
+  font-size: 14px;
 }
 /* PeloPlan Calendar & Modals */
 .fc-list-event-time {
@@ -227,6 +238,10 @@
   border-radius: 5px;
   margin-bottom: 20px;
 }
+.profile-submit button:hover {
+  background-color: firebrick;
+  border: 1px solid firebrick;
+}
 #full-sync-blurb {
   font-size: 15px;
 }
@@ -243,6 +258,10 @@
   border-radius: 5px;
   margin-bottom: 20px;
 }
+.sync-submit button:hover {
+  background-color: firebrick;
+  border: 1px solid firebrick;
+}
 .follower-box {
   justify-content: center;
 }
@@ -252,12 +271,45 @@
 }
 .follow-box {
   border: 1px solid black;
+  border-radius: 5px;
   padding: 5px;
   margin: 10px;
+  text-align: left;
 }
 .unfollow-user {
   border: none;
   background-color: white;
+}
+.friends-submit {
+  padding-top: 15px;
+  margin-top: 10px;
+  border-top: 0.5px solid gray;
+  justify-content: center;
+}
+.friends-submit button {
+  background-color: red;
+  border: 1px solid red;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.friends-submit button:hover {
+  background-color: firebrick;
+  border: 1px solid firebrick;
+}
+.modal-friends-submit {
+  justify-content: center;
+}
+.modal-friends-submit button {
+  background-color: red;
+  border: 1px solid red;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.modal-friends-submit button:hover {
+  background-color: firebrick;
+  border: 1px solid firebrick;
 }
 /* Metrics Pages */
 .metrics-box {
