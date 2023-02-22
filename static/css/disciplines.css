@@ -247,3 +247,36 @@
 .dimmed {
   opacity: .1;
 }
+.disciplines {
+  border-right: 1px solid black; 
+  border-radius: 10px;
+  padding: 20px;
+  padding-right: 40px;
+}
+.center-line {
+  border-bottom: 1px solid black;
+}
+.disciplines-submit {
+  border-left: 1px solid black;
+  border-radius: 10px;
+  padding-left: 30px;
+}
+.disciplines-submit button {
+  color: white;
+  background-color: dimgray;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+}
+.disciplines-submit button:hover:enabled {
+  color: white;
+  background-color: dimgray;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 0 0.25rem rgb(105 105 105 / 50%);
+}
+.disciplines-submit button:disabled {
+  color: white;
+  background-color: lightgray;
+  border-radius: 5px;
+}

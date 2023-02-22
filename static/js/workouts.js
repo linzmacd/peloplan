@@ -74,7 +74,7 @@ for (const filterButton of filterButtons) {
             <span class='workout-text'>difficulty</span><br/>
           </div>
           <div class='col-1'>
-            <button class='add-workout' title='Add Workout' value="{{ result['id'] }}">
+            <button class='add-workout' title='Add Workout' value=${result['id']}>
               <i class="bi bi-calendar-week"></i>
             </button>
           </div>
@@ -159,7 +159,7 @@ for (const changePageButton of changePageButtons) {
             <span class='workout-text'>difficulty</span><br/>
           </div>
           <div class='col-1'>
-            <button class='add-workout' title='Add Workout' value="{{ result['id'] }}">
+            <button class='add-workout' title='Add Workout' value=${result['id']}>
               <i class="bi bi-calendar-week"></i>
             </button>
           </div>

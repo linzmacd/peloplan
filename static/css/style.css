@@ -4,15 +4,17 @@
   border-radius: 10px 10px 0px 0px;
   padding: 10px;
 }
-.footer-banner {
-  /* background-image: linear-gradient(white, black); */
+/* .footer-banner {
+  background-image: linear-gradient(white, black);
   border-radius: 0px 0px 10px 10px;
   padding: 10px;
-}
+} */
 #banner-logo {
+  font-family: Bowlby One SC, Impact;
+  /* font-family: Sigmar One, Impact; */
   font-size: 4em;
   font-weight: bolder;
-  color: red;
+  color: rgb(255, 51, 71);
   text-shadow: 4px 4px rgb(0 0 0 / 50%);
 }
 .banner-quote {
@@ -20,7 +22,7 @@
 }
 #banner-quote {
   font-size: 2em;
-  font-family: cursive ;
+  font-family: Permanent Marker, cursive ;
 }
 #banner-instructor {
   font-size: 1em;
@@ -38,11 +40,16 @@
 .nav-tabs {
   border-bottom: 0;
 }
+.container {
+  box-shadow: 0 10px 16px 0 rgb(255 51 71 / 20%), 0 6px 20px 0 rgb(255 51 71 / 19%);  
+  padding-bottom: 10px;
+  border-radius: 0 0 10px 10px;
+}
 /* Login Pages */
 .login-box {
   border: 1px solid black;
   padding: 15px 30px 0 30px;
-  margin: 25px;
+  margin: 25px 25px 60px 25px;
   border-radius: 30px;
   box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
   min-width: 366px;
@@ -70,6 +77,17 @@
 .fc-h-event .fc-event-title {
   font-size: 11px;
 }
+#calendar a {
+  color: gray;
+}
+#calendar .fc-button-primary {
+  background-color: dimgray;
+  border: 1px solid dimgray;
+}
+#calendar .fc-button-primary:hover {
+  background-color: rgb(48,48,48);
+  border: 1px solid rgb(48,48,48);
+}
 .modal-body {
   text-align: center;
 }
@@ -86,7 +104,7 @@
 }
 /* Workout Filter Page */
 .outer-scroll {
-  height: calc(100vh - 157px);
+  height: calc(100vh - 190px);
   overflow-y: scroll;
 }
 .filter-bar {
@@ -98,6 +116,7 @@
   border: 1px solid black;
   border-radius: 5px;
   padding: 10px;
+  margin-left: 10px;
   padding-bottom: 15px;
   margin-top: 25px;
 }
@@ -200,8 +219,22 @@
 /* Metrics Pages */
 .metrics-box {
   border: 1px solid black;
+  border-radius: 5px;
   padding:10px;
-  margin: 10px;
+  margin: 0 0 20px 0;
+}
+.chart-title {
+  margin-top: 20px;
+  padding: 10px;
+  border-bottom: 1px solid gray;
+}
+.output-title {
+  margin: 20px;
+  padding: 10px;
+  border-bottom: 1px solid gray;
+}
+#graph-outputs {
+  padding: 20px;
 }
 /* Schedules Pages */
 #schedule-parent-box {

@@ -13,10 +13,26 @@
 
 {% block body %}
 
-<div class='row'>
+<!-- <div class='row'>
   <div class='column'>
     <h2>Workout metrics</h2>
   </div> 
+</div> -->
+<div class='row justify-content-center'>
+  <div class='col-5'>
+    <div class='row'>
+      <h2 class='chart-title'>Workout By Discipline</h2>
+      <div class='chart-container' >
+        <canvas id='pie-disciplines'></canvas>
+      </div>
+    </div>
+  </div>
+  <div class='col-6'>
+    <h2 class='chart-title'>Workout By Instructor</h2>
+    <div class='chart-container'>
+      <canvas id='bar-instructors'></canvas>
+    </div>
+  </div>
 </div>
 <div class='row justify-content-center' >
   <div class='col-6 metrics-box'>
@@ -35,22 +51,6 @@
     </div> 
   </div>
 </div> 
-<div class='row justify-content-center'>
-  <div class='col-5'>
-    <div class='row'>
-      <h2>Workout By Discipline</h2>
-      <div class='chart-container' >
-        <canvas id='pie-disciplines'></canvas>
-      </div>
-    </div>
-  </div>
-  <div class='col-6'>
-    <h2>Workout By Instructor</h2>
-    <div class='chart-container'>
-      <canvas id='bar-instructors'></canvas>
-    </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block js %}

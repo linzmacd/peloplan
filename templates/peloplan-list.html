@@ -18,8 +18,8 @@
 
 {% block body %}
 <!-- Calendar -->
-<div class='row'>
-  <div class='col-10'>
+<div class='row justify-content-center'>
+  <div class='col-7'>
     <br>
     <div id='calendar'></div>
   </div>
@@ -27,34 +27,40 @@
 
 <!-- Disciplines Modal -->
 <div class='modal fade' id='disciplines-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-  <div class='modal-dialog modal-lg modal-dialog-centered'>
+  <div class='modal-dialog modal-dialog-centered'>
     <div class='modal-content'>
       <div class='modal-header'>
         <h1 class='modal-title fs-5' id='disciplines-modal-title'>Select Discipline</h1>
         <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
       </div>
-      <div class='modal-body '>
+      <div class='modal-body'>
         <div class='row align-items-center'>
-          <div class='col-6'>
-            <div class='d-grid gap-2 col-6 mx-auto disciplines'>
-              <button class='btn btn-primary strength' type='button' value='strength'>Strength</button>
-              <button class='btn btn-primary yoga' type='button' value='yoga'>Yoga</button>
-              <button class='btn btn-primary running' type='button' value='running'>Running</button>
-              <button class='btn btn-primary walking' type='button' value='walking'>Walking</button>
-              <button class='btn btn-primary bc_tread' type='button' value='bootcamp'>Tread Bootcamp</button>
-              <button class='btn btn-primary meditation' type='button' value='meditation'>Meditation</button>
-              <button class='btn btn-primary stretching ' type='button' value='stretching'>Stretching</button>
-              <button class='btn btn-primary cardio' type='button' value='cardio'>Cardio</button>
-              <button class='btn btn-primary cycling' type='button' value='cycling'>Cycling</button>
-              <button class='btn btn-primary bc_bike' type='button' value='bike_bootcamp'>Bike Bootcamp</button>
-              <button class='btn btn-primary rowing' type='button' value='caesar'>Rowing</button>
-              <button class='btn btn-primary bc_row' type='button' value='caesar_bootcamp'>Row Bootcamp</button>
-              <!-- <button class='btn btn-primary outdoor' type='button' value='outdoor'>Outdoor</button> -->
-            </div>
+          <div class='col-6 d-grid gap-2 mx-auto disciplines'>
+            <button class='btn btn-primary strength' type='button' value='strength'>Strength</button>
+            <button class='btn btn-primary yoga' type='button' value='yoga'>Yoga</button>
+            <button class='btn btn-primary running' type='button' value='running'>Running</button>
+            <button class='btn btn-primary walking' type='button' value='walking'>Walking</button>
+            <button class='btn btn-primary bc_tread' type='button' value='bootcamp'>Tread Bootcamp</button>
+            <button class='btn btn-primary meditation' type='button' value='meditation'>Meditation</button>
+            <button class='btn btn-primary stretching ' type='button' value='stretching'>Stretching</button>
+            <button class='btn btn-primary cardio' type='button' value='cardio'>Cardio</button>
+            <button class='btn btn-primary cycling' type='button' value='cycling'>Cycling</button>
+            <button class='btn btn-primary bc_bike' type='button' value='bike_bootcamp'>Bike Bootcamp</button>
+            <button class='btn btn-primary rowing' type='button' value='caesar'>Rowing</button>
+            <button class='btn btn-primary bc_row' type='button' value='caesar_bootcamp'>Row Bootcamp</button>
+            <!-- <button class='btn btn-primary outdoor' type='button' value='outdoor'>Outdoor</button> -->
           </div>
           <div class='col-1'>
-            <input type='submit' id='add-discipline' value='Save a generic workout to PeloPlan' disabled><br><br>
-            <input type='submit' id='select-workout' value='Pick a specific Peloton workout' disabled>
+            <div class='row center-line'><br></div>
+            <div class='row'><br></div>
+          </div>
+          <div class='col-5'>
+            <div class='row'>
+              <div class='col-10 disciplines-submit'>
+                <button type='submit' id='add-discipline' disabled>Save Generic Workout</button>
+                <button type='submit' id='select-workout' disabled>Select Specific Workout</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
