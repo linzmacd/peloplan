@@ -77,6 +77,11 @@
 .fc-h-event .fc-event-title {
   font-size: 11px;
 }
+.calendar-container {
+  padding-top: 10px;
+  justify-content: center;
+  height: calc(100vh - 190px);
+}
 #calendar a {
   color: gray;
 }
@@ -194,7 +199,7 @@
 /* Profile Page */
 .content-box {
   border: 1px solid black;
-  padding: 15px;
+  padding: 30px 30px 0 30px;
   margin: 25px;
   border-radius: 30px;
   box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
@@ -202,6 +207,44 @@
 .content-box-nb {
   padding: 5px;
   margin: 5px;
+  justify-content: center;
+}
+.profile-header {
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  border-bottom: 0.5px solid gray;
+}
+.profile-submit {
+  padding-top: 15px;
+  margin-top: 10px;
+  border-top: 0.5px solid gray;
+  justify-content: center;
+}
+.profile-submit button {
+  background-color: red;
+  border: 1px solid red;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+#full-sync-blurb {
+  font-size: 15px;
+}
+.sync-submit {
+  padding-top: 15px;
+  margin-top: 1px;
+  border-top: 0.5px solid gray;
+  justify-content: center;
+}
+.sync-submit button {
+  background-color: red;
+  border: 1px solid red;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.follower-box {
+  justify-content: center;
 }
 .find-friends {
   padding: 20px;

@@ -27,7 +27,7 @@ const initialDate =  document.querySelector('#initial-date').value;
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
-    height: 700,
+    height: '100%',
     initialView: 'dayGridMonth',
     initialDate: initialDate,
     timeZone: 'local',

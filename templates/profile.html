@@ -8,9 +8,9 @@
 
 {% block body %}
 
-<div class='row justify-content-center content-box-nb'>
+<div class='row content-box-nb'>
   <div class='col-4 offset-2 content-box'>
-    <div class='row'>
+    <div class='row profile-header'>
       <h2> My Profile</h2>
     </div>
     <div class='row'>
@@ -37,14 +37,14 @@
         <p>{{ user.email }}</p>
       </div>
     </div>
-    <div class='row justify-content-center'>
+    <div class='row profile-submit'>
       <div class='col-6'>
         <button id='update-profile'>Update Profile</button>
       </div>
     </div>
   </div>
   <div class='col-4 offset-1 content-box'>
-    <div class='row'>
+    <div class='row profile-header'>
       <h2>Sync Full Peloton History</h2>
     </div>
     <div class='row' id='full-sync-blurb'>
@@ -52,23 +52,22 @@
         It only needs to be performed if you're a first-time user or if you haven't visited in awhile. 
         Please be patient and do not hit refresh while syncing is taking place.</p>
     </div>
-    <div class='row'>
-      <div class='col-6 offset-3  '>
+    <div class='row sync-submit'>
+      <div class='col-6'>
         <button id='full-peloton-sync'>Full History Sync</button>
       </div>
     </div>
-    
   </div>  
 </div>
-<div class='row justify-content-center content-box-nb'>
-  <div class='col-8 content-box'>
+<div class='row content-box-nb'>
+  <div class='col-8 profile-header'>
     <h2> My Friends</h2>
-    <div class='row justify-content-center'>
+    <div class='row follower-box'>
       <div class='col-5 follow-box'>
         <div class='row'>
           <h3>Following</h3>
         </div>
-        <div class='row' align='left'>
+        <div class='row'>
           <div class='col-8 offset-2'>
             <ul>
               {% for follow in user.following %}
