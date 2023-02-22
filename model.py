@@ -1,6 +1,7 @@
 '''Models for PeloPlan app.'''
 
 from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import argon2
 
 db = SQLAlchemy()
 
@@ -129,8 +130,6 @@ class Schedule(db.Model):
     length = db.Column(db.Integer, nullable=False)
     sched_type = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, nullable=False)
-    # pos_votes = db.Column(db.Integer, nullable=False)
-    # total_votes = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String, nullable=False)
     workouts = db.Column(db.JSON, nullable=False)
     
@@ -209,6 +208,19 @@ class Category(db.Model):
 
     def __repr__(self):
         return f'<Category {self.category_name}, {self.discipline}>'
+    
+
+def test_data():
+    '''Creates sample user data for testing.'''
+    # Empty out existing data
+    User.query.delete()
+
+    # Add sample user
+    hashed_pw = argon2.hash('password123')
+    jane = User(email='janedoe@gmail.com', password=hashed_pw)
+
+    db.session.add(jane)
+    db.session.commit()
 
 
 
