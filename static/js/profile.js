@@ -11,30 +11,27 @@ for (const unFollowButton of unFollowButtons) {
     .then((success) => {
       if (success) {
       location.reload();
-      };
+      }
     });
   });
-};
+}
 
 const fullSyncButton = document.querySelector('#full-peloton-sync')
 fullSyncButton.addEventListener('click', (event) => {
   event.preventDefault();
-  const answer = confirm('Are you sure you want to begin a full sync?');
-  if (answer == true) {
-    let syncModal = new bootstrap.Modal(document.getElementById('sync-modal'));
-    syncModal.show();
-    fetch('/full-peloton-sync')
-    .then((response) => response.json())
-    .then((success) => {
-      if (success) {
-        syncModal.hide();
-        document.querySelector('#full-sync-blurb').innerHTML = `
-        <p>Congratulations!</p>
-        <p>You are fully synced!</p>
-        `
-      };
-    });
-  };
+  let syncModal = new bootstrap.Modal(document.getElementById('sync-modal'));
+  syncModal.show();
+  fetch('/full-peloton-sync')
+  .then((response) => response.json())
+  .then((success) => {
+    if (success) {
+      syncModal.hide();
+      document.querySelector('#full-sync-blurb').innerHTML = `
+      <p>Congratulations!</p>
+      <p>You are fully synced!</p>
+      `
+    }
+  });
 });
 
 // Update Profile Modal
@@ -84,11 +81,11 @@ findNameButton.addEventListener('click', (event) => {
           .then((success) => {
             if (success) {
               location.reload();
-            };
+            }
           });
         });
-      };
-    };
+      }
+    }
   });
 });
 
@@ -98,7 +95,7 @@ findEmailButton.addEventListener('click', (event) => {
   fetch(`/find-by-email/${email}`)
   .then((response) => response.json())
   .then((friend) => {
-    const results = document.querySelector('#find-friend-results')
+    const results = document.querySelector('#find-friend-results');
     results.insertAdjacentHTML('beforeend', `
       <div class='row content-box'>
         <div class='col-4'>
@@ -121,10 +118,10 @@ findEmailButton.addEventListener('click', (event) => {
         .then((success) => {
           if (success) {
             location.reload();
-          };
+          }
         });
       });
-    };
+    }
   });
 });
 
