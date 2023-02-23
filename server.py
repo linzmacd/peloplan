@@ -7,8 +7,7 @@ from jinja2 import StrictUndefined
 from passlib.hash import argon2
 import crud, peloton_api
 from datetime import date
-import json
-
+from functools import wraps
 
 
 app = Flask(__name__)
@@ -18,6 +17,17 @@ app.jinja_env.undefined = StrictUndefined
 
 
 # Routes and view functions
+def logged_in(f):
+    '''Checks that user is logged in.'''
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('user_id', False):
+            flash('Please log in to view PeloPlan.')
+            return redirect('/')
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.route('/')
 def homepage():
     '''Renders PeloPlan homepage.'''
@@ -87,6 +97,7 @@ def check_session_cookie(session_id):
     
 
 @app.route('/peloton-login')
+@logged_in
 def peloton_login():
     '''Renders Peloton Login page.'''
     return render_template('peloton-login.html')
@@ -146,6 +157,7 @@ def get_schedule():
 
 
 @app.route('/peloplan')
+@logged_in
 def display_peloplan():
     '''Shows monthly calendar.'''
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
@@ -165,6 +177,7 @@ def re_redirect():
 
 
 @app.route('/peloplan-weekly')
+@logged_in
 def display_weekly_peloplan():
     '''Shows weekly calendar.'''
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
@@ -184,6 +197,7 @@ def re_redirect_weekly():
 
 
 @app.route('/peloplan-list')
+@logged_in
 def display_peloplan_as_list():
     '''Shows a weekly list.'''
     initial_date = session.get('pp_start_date', date.today().strftime('%Y-%m-%d'))
@@ -212,6 +226,7 @@ def add_generic_workout(workout_date, sched_order, discipline):
 
 
 @app.route('/workout-selection/<workout_date>/<sched_order>/<discipline>')
+@logged_in
 def select_workout(workout_date, sched_order, discipline):
     '''Allows user to select specific workout.'''
     instructors = crud.get_instructors_by_discipline(discipline)
@@ -316,6 +331,7 @@ def delete(workout_date, sched_id):
 
 
 @app.route('/saved-schedules')
+@logged_in
 def show_saved_schedules():
     '''Displays all user's saved schedules'''
     user = crud.get_user_by_id(session['user_id'])
@@ -327,6 +343,7 @@ def show_saved_schedules():
 
 
 @app.route('/public-schedules')
+@logged_in
 def show_public_schedules():
     '''Displays all public saved schedules'''
 
@@ -374,6 +391,7 @@ def delete_range():
 
 
 @app.route('/preview-schedule/<storage_id>')
+@logged_in
 def preview_schedule(storage_id):
     '''Previews a schedule from database.'''
     sample = crud.get_saved_schedule(storage_id)
@@ -421,6 +439,7 @@ def dislike_schedule(storage_id):
 
 
 @app.route('/profile')
+@logged_in
 def show_profile():
     '''Shows user's profile'''
     user = crud.get_user_by_id(session['user_id'])
@@ -463,6 +482,7 @@ def unfollow_user(friend_id):
 
 
 @app.route('/workout-stats')
+@logged_in
 def show_workout_stats():
     '''Shows user's workout stats.'''
     date_today = date.today().strftime('%Y-%m')
@@ -473,6 +493,7 @@ def show_workout_stats():
 
 
 @app.route('/workout-stats/<date>/<measure>')
+@logged_in
 def show_filtered_workout_stats(date, measure):
     '''Shows user's workout stats.'''
 
@@ -493,6 +514,7 @@ def get_metrics(date, measure):
 
 
 @app.route('/output-stats')
+@logged_in
 def show_output_stats():
     '''Shows user's output stats over time.'''
     metrics = crud.get_metrics_all_time(session['user_id'])
