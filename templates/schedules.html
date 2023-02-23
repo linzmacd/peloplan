@@ -9,29 +9,82 @@
 {% endblock %}
 
 {% block body %}
-<div class='row' align='left'>
-  <h1>{{ fname }}'s Saved Schedules</h1>
+<div class='row schedules-title'>
+  <h1>My Saved Schedules</h1>
 </div>
-<div class='row align-items-left' id='schedule-card'>
-  {% for schedule in schedules %}
-  <div class='col-3 content-box' align='left'>
-    <h4><span id='name-{{ schedule.storage_id }}'>{{ schedule.sched_name }}</span></h4>
-    <p>"{{ schedule.description }}"</p>
-    <p>
-    {% if schedule.sched_type == 'specific' %}
-      Class Schedule
-    {% endif %}
-    {% if schedule.sched_type == 'generic' %}
-      Schedule Template
-    {% endif %}
-    <br>Length: {{ schedule.length }} days<br>
-    Workouts: {{ schedule.count }}<br></p>
-    <button class='sched-preview' value="{{ schedule.storage_id }}">Preview</button>
-    <button class='sched-load' value="{{ schedule.storage_id }}">Load</button>
-    <!-- <button class='sched-edit' value="{{ schedule.storage_id }}">Edit</button> -->
-    <button class='sched-delete' value="{{ schedule.storage_id }}">Delete</button>
+<div class='row'>
+  <div id='schedule-parent-box'>
+    {% for schedule in schedules %}
+      {% if schedule.sched_type == 'specific' %}
+      <div class='col-3 schedule-box classes'>
+        <div class='row justify-content-center'>
+          <div class='col-4' id='sched-type-classes'>
+            CLASSES
+          </div>  
+        </div>
+        <div class='row sched-content'>
+          <div class='col-9'>
+            <h4 class='sched-title' id='name-{{ schedule.storage_id }}'>{{ schedule.sched_name }}</h4>
+            <p class='sched-desc'>"{{ schedule.description }}"</p>
+            <br/>
+          </div>
+          <div class='col-3'>
+            <div class='row sched-details'>
+              <span class='sched-details-classes'>{{ schedule.count }}</span><br/>
+              <span class='sched-details-sm'>workouts</span><br/>
+              <span class='sched-details-classes'>{{ schedule.length }}</span><br/>
+              <span class='sched-details-sm'>day(s)</span>
+            </div>
+          </div>
+        </div>
+        <div class='row my-sched-button-box'>
+          <div class='column sched-buttons-classes'>
+            <button class='sched-preview' value={{ schedule.storage_id }}>
+              <i class="bi bi-zoom-in"></i></button>
+            <button class='sched-load' value={{ schedule.storage_id }}>
+              <i class="bi bi-calendar-week"></i></button>
+            <button class='sched-delete' value={{ schedule.storage_id }}>
+              <i class="bi bi-trash3"></i></button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% if schedule.sched_type == 'generic' %}
+      <div class='col-3 schedule-box template'>
+        <div class='row justify-content-center'>
+          <div class='col-4' id='sched-type-template'>
+            TEMPLATE
+          </div>  
+        </div>
+        <div class='row sched-content'>
+          <div class='col-9'>
+            <h4 class='sched-title' id='name-{{ schedule.storage_id }}'>{{ schedule.sched_name }}</h4>
+            <p class='sched-desc'>"{{ schedule.description }}"</p>
+            <br/>
+          </div>
+          <div class='col-3'>
+            <div class='row sched-details'>
+              <span class='sched-details-template'>{{ schedule.count }}</span><br/>
+              <span class='sched-details-sm'>workouts</span><br/>
+              <span class='sched-details-template'>{{ schedule.length }}</span><br/>
+              <span class='sched-details-sm'>day(s)</span>
+            </div>
+          </div>
+        </div>
+        <div class='row my-sched-button-box'>
+          <div class='column sched-buttons-template'>
+            <button class='sched-preview' value={{ schedule.storage_id }}>
+              <i class="bi bi-zoom-in"></i></button>
+            <button class='sched-load' value={{ schedule.storage_id }}>
+              <i class="bi bi-calendar-week"></i></button>
+            <button class='sched-delete' value={{ schedule.storage_id }}>
+              <i class="bi bi-trash3"></i></button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
 
 <!-- Load Schedule Modal -->
@@ -63,7 +116,7 @@
                 </div>
               </div>
               <div class='modal-footer'>
-                <p><input type='submit' id='load-schedule' value='Load Schedule'></p>
+                <p><input type='submit' id='load-schedule' class='rb' value='Load Schedule'></p>
               </div>
             </form>
           </div>
@@ -94,7 +147,7 @@
                 </div>
               </div>
               <div class='modal-footer'>
-                <p><input type='submit' id='delete-schedule' value='Confirm Delete'></p>
+                <p><input type='submit' id='delete-schedule' class='rb' value='Confirm Delete'></p>
               </div>
             </form>
           </div>

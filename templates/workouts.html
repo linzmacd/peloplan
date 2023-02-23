@@ -87,7 +87,7 @@
               <span id='workout-title'>{{ result['title'] }}</span><br/>
               {% for instructor in results['instructors'] %}
                 {% if instructor['id'] == result['instructor_id'] %}
-                  <span id='workout-inst'>{{ instructor['name'].upper() }}</span><br/>
+                  <span id='workout-inst'>{{ instructor['name'] }}</span><br/>
                 {% endif %}
               {% endfor %}
             </div>
