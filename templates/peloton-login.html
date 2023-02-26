@@ -1,14 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'base-homepage.html' %}
 
 {% block title %}PeloPlan{% endblock %}
 
 {% block body %}
-
+<div class='row'>
+  <div class='column'>
+    <br>
+    <h1>Connect with Peloton</h1>
+    <br>
+  </div>
+</div>
 <div class='row justify-content-center'>
   <div class='col-4 offset-2 login-box'>
     <div class='row login-header'>
       <h2>Peloton Log In</h2>
-      <br>
     </div>
     <form action='/peloton-login' method='POST'>
       <div class='row'>

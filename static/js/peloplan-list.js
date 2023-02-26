@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var calendar = new FullCalendar.Calendar(calendarEl, {
     height: '100%',
     initialView: 'listWeek',
-    initialDate: initialDate,
+    initialDate: '2023-02-13',
     timeZone: 'local',
     customButtons: {
       save: {
@@ -264,7 +264,12 @@ document.querySelector('#load-schedule').addEventListener('click', (event) => {
       'Content-Type': 'application/json',
     },
   })
-  .then(location.reload())
+  .then((response) => response.json())
+  .then((success) => {
+    if (success) {
+      window.location.href = '/saved-schedules'
+    }
+  })
 });
 
 // Delete Range Modal

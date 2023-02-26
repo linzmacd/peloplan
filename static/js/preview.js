@@ -22,7 +22,7 @@ const url = `/preview-schedule/${storageId}/data`;
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
-    height: 700,
+    height: '98%',
     initialView: 'dayGridMonth',
     initialDate: initialDate,
     headerToolbar: {

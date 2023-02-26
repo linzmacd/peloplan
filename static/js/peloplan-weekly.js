@@ -247,7 +247,12 @@ document.querySelector('#save-schedule').addEventListener('click', (event) => {
       'Content-Type': 'application/json',
     },
   })
-  .then(location.reload())
+  .then((response) => response.json())
+  .then((success) => {
+    if (success) {
+      window.location.href = '/saved-schedules'
+    }
+  })
 });
 
 // Load Schedule Modal

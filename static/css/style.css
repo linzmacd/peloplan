@@ -302,6 +302,16 @@
 #graph-outputs {
   padding: 20px;
 }
+.pie-chart-container {
+  padding-top: 10px;
+  justify-content: center;
+  height: calc(100vh - 380px);
+}
+.output-chart-container {
+  padding-top: 10px;
+  justify-content: center;
+  height: calc(100vh - 290px);
+}
 /* Schedules Pages */
 .schedules-title {
   margin: 20px;
@@ -382,8 +392,18 @@
   color: white;
   border: none;
 }
+.sched-buttons-classes button:hover{
+  background-color: darkgreen;
+  color: white;
+  border: none;
+}
 .sched-buttons-template button{
   background-color: goldenrod;
+  color: white;
+  border: none;
+}
+.sched-buttons-template button:hover{
+  background-color: darkgoldenrod;
   color: white;
   border: none;
 }

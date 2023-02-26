@@ -44,6 +44,8 @@ fetch('/get-outputs')
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           type: 'time',
