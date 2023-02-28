@@ -18,7 +18,7 @@ A workout planning and schedule sharing app for Peloton users.
 <img src='static/img/readme/homepage.jpg' title='PeloPlan'>
 
 
-- Build schedules with classes from the Peloton course catalog or generic workouts that can be decided on later. 
+- Build schedules with classes from the Peloton catalog or generic workouts that can be decided on later. 
 <p><img src='static/img/readme/disciplines.png' title='Disciplines' width=48%><img src='static/img/readme/workouts.png' title='Workouts' width=50%></p>
 
 
