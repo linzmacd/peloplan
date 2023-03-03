@@ -48,7 +48,7 @@ A workout planning and schedule sharing app for Peloton users.
 
 2. Create and activate a virtual environment inside the directory
 ```bash 
-    create virtualenv env
+    virtualenv env
     source env/bin/activate
 ```
 
