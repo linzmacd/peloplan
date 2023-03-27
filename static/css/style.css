@@ -275,12 +275,13 @@
   border-radius: 5px;
   margin-bottom: 20px;
 }
-.modal-friends-submit {
-  justify-content: center;
-}
 .modal-friends-submit button {
   border-radius: 5px;
   margin-bottom: 20px;
+}
+.modal-friend {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 /* Metrics Pages */
 .metrics-box {

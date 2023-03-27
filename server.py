@@ -455,7 +455,7 @@ def show_profile():
 @app.route('/find-by-name/<first_name>/<last_name>')
 def find_friend_by_name(first_name, last_name):
     '''Returns list of users with the specified name.'''
-    return jsonify(crud.get_user_by_name(first_name, last_name))
+    return jsonify(crud.get_user_by_name(first_name.title(), last_name.title()))
 
 
 @app.route('/find-by-email/<email>')

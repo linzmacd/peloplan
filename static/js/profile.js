@@ -60,7 +60,7 @@ findNameButton.addEventListener('click', (event) => {
     const results = document.querySelector('#find-friend-results')
     for (const friend of friends) {
       results.insertAdjacentHTML('beforeend', `
-        <div class='row content-box'>
+        <div class='row content-box modal-friend'>
           <div class='col-4'>
             ${friend.name}
           </div>
@@ -68,7 +68,7 @@ findNameButton.addEventListener('click', (event) => {
             ${friend.email}
           </div>
           <div class='col-4'>
-            <button class='follow-friend' value='${friend.user_id}'>Follow</button>
+            <button class='follow-friend rb' value='${friend.user_id}'>Follow</button>
           </div>
         </div>
       `);
@@ -97,15 +97,15 @@ findEmailButton.addEventListener('click', (event) => {
   .then((friend) => {
     const results = document.querySelector('#find-friend-results');
     results.insertAdjacentHTML('beforeend', `
-      <div class='row content-box'>
+      <div class='row content-box modal-friend'>
         <div class='col-4'>
           ${friend.name}
         </div>
         <div class='col-4'>
           ${friend.email}
         </div>
-        <div class='col-4 modal-friends-submit'>
-          <button class='follow-friend' value='${friend.user_id}'>Follow</button>
+        <div class='col-4'>
+          <button class='follow-friend rb' value='${friend.user_id}'>Follow</button>
         </div>
       </div>
     `);

@@ -7,97 +7,119 @@
 {% block variables %}{% endblock %}
 
 {% block body %}
-
-<div class='row content-box-nb'>
-  <div class='col-4 offset-2 content-box'>
-    <div class='row profile-header'>
-      <h2> My Profile</h2>
+<div class='outer-scroll'>
+  <div class='row content-box-nb'>
+    <div class='col-4 offset-2 content-box'>
+      <div class='row profile-header'>
+        <h2> My Profile</h2>
+      </div>
+      <div class='row'>
+        <div class='col-6' align='right'>
+          <p>First Name: </p>
+        </div>
+        <div class='col-6' align='left'>
+          <p>{{ user.fname }}</p>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-6' align='right'>
+          <p>Last Name: </p>
+        </div>
+        <div class='col-6' align='left'>
+          <p>{{ user.lname }}</p>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-6' align='right'>
+          <p>Email: </p>
+        </div>
+        <div class='col-6' align='left'>
+          <p>{{ user.email }}</p>
+        </div>
+      </div>
+      <div class='row profile-submit'>
+        <div class='col-6'>
+          <button id='update-profile' class='rb'>Update Profile</button>
+        </div>
+      </div>
     </div>
-    <div class='row'>
-      <div class='col-6' align='right'>
-        <p>First Name: </p>
+    <div class='col-4 offset-1 content-box'>
+      <div class='row profile-header'>
+        <h2>Sync Full Peloton History</h2>
       </div>
-      <div class='col-6' align='left'>
-        <p>{{ user.fname }}</p>
+      <div class='row' id='full-sync-blurb'>
+        <p>This operation takes about a minute per 5000 workouts. 
+          It only needs to be performed if you're a first-time user or if you haven't visited in awhile. 
+          Please be patient and do not hit refresh while syncing is taking place.</p>
       </div>
-    </div>
-    <div class='row'>
-      <div class='col-6' align='right'>
-        <p>Last Name: </p>
+      <div class='row sync-submit'>
+        <div class='col-6'>
+          <button id='full-peloton-sync' class='rb'>Full History Sync</button>
+        </div>
       </div>
-      <div class='col-6' align='left'>
-        <p>{{ user.lname }}</p>
+    </div>  
+  </div>
+  <div class='row content-box-nb'>
+    <div class='col-8 content-box'>
+      <div class='row profile-header'>
+        <h2> My Friends</h2>
       </div>
-    </div>
-    <div class='row'>
-      <div class='col-6' align='right'>
-        <p>Email: </p>
+      <div class='row follower-box'>
+        <div class='col-5 follow-box'>
+          <div class='row'>
+            <h3 align='center'>Following</h3>
+          </div>
+          <div class='row'>
+            <div class='col-8 offset-2'>
+              <ul>
+                {% for follow in user.following %}
+                <li>{{ follow.fname }} {{ follow.lname }} <button class='unfollow-user' value={{ follow.user_id }}><i class="bi bi-x-circle"></i></button></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class='col-5 follow-box'>
+          <div class='row'>
+            <h3 align='center'>Followers</h3>
+          </div>
+          <div class='row'>
+            <div class='col-8 offset-2'>
+              <ul>
+                {% for follower in user.followers %}
+                <li>{{ follower.fname }} {{ follower.lname }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class='col-6' align='left'>
-        <p>{{ user.email }}</p>
-      </div>
-    </div>
-    <div class='row profile-submit'>
-      <div class='col-6'>
-        <button id='update-profile' class='rb'>Update Profile</button>
+      <div class='row friends-submit'>
+        <div class='col-6'>
+          <button id='find-friends' class='rb'>Find Friends</button>
+          <button id='invite-friends' class='rb'>Invite Friends</button>
+        </div>
       </div>
     </div>
   </div>
-  <div class='col-4 offset-1 content-box'>
-    <div class='row profile-header'>
-      <h2>Sync Full Peloton History</h2>
-    </div>
-    <div class='row' id='full-sync-blurb'>
-      <p>This operation takes about a minute per 5000 workouts. 
-        It only needs to be performed if you're a first-time user or if you haven't visited in awhile. 
-        Please be patient and do not hit refresh while syncing is taking place.</p>
-    </div>
-    <div class='row sync-submit'>
-      <div class='col-6'>
-        <button id='full-peloton-sync' class='rb'>Full History Sync</button>
+  <div class='row content-box-nb'>
+    <div class='col-5 content-box'>
+      <div class='row profile-header'>
+        <h2> Coming Soon! </h2>
       </div>
-    </div>
-  </div>  
-</div>
-<div class='row content-box-nb'>
-  <div class='col-8 content-box'>
-    <div class='row profile-header'>
-      <h2> My Friends</h2>
-    </div>
-    <div class='row follower-box'>
-      <div class='col-5 follow-box'>
-        <div class='row'>
-          <h3 align='center'>Following</h3>
-        </div>
-        <div class='row'>
-          <div class='col-8 offset-2'>
-            <ul>
-              {% for follow in user.following %}
-              <li>{{ follow.fname }} {{ follow.lname }} <button class='unfollow-user' value={{ follow.user_id }}><i class="bi bi-x-circle"></i></button></li>
-              {% endfor %}
-            </ul>
-          </div>
+      <div class='row coming-soon-list content-box-nb'>
+        <div class='col-10' align="left">
+          <ul>
+            <li>'Update Profile' button functionality</li>
+            <li>'Invite Friends' button functionality</li>
+            <li>'My Friends' Schedules' Tab</li>
+            <li>Optimization for mobile</li>
+          </ul>
         </div>
       </div>
-      <div class='col-5 follow-box'>
-        <div class='row'>
-          <h3 align='center'>Followers</h3>
-        </div>
-        <div class='row'>
-          <div class='col-8 offset-2'>
-            <ul>
-              {% for follower in user.followers %}
-              <li>{{ follower.fname }} {{ follower.lname }}</li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class='row friends-submit'>
-      <div class='col-6'>
-        <button id='find-friends' class='rb'>Find Friends</button>
-        <button id='invite-friends' class='rb'>Invite Friends</button>
+      <div class='row profile-submit'>
+        <p>Suggestions or comments?</p>
+        <a href='mailto:linzmacd@gmail.com?subject=** PeloPlan Feature Request **'>Email Me!</a></br></br>
       </div>
     </div>
   </div>
