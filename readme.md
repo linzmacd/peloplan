@@ -2,10 +2,10 @@
 
 A workout planning and schedule sharing app for Peloton users.
 
-*Now deployed at [PeloPlan.com](http://peloplan.com/)!*
+*Now deployed at [www.peloplan.com](https://www.peloplan.com/)!*
 
 ## Technologies
-- Backend: Python, Flash, PostgreSQL, SqlAlchemy 
+- Backend: Python, Flask, PostgreSQL, SqlAlchemy 
 - Frontend: JavaScript, React, AJAX, JSON, Chart.js, HTML, CSS, Flexbox, Bootstrap
 - API: Peloton API
 
