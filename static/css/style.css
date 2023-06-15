@@ -81,6 +81,13 @@
   background-color: firebrick;
   border: 1px solid firebrick;
 }
+.demo-video {
+  color: gray;
+}
+.demo-video a {
+  color: red;
+
+}
 /* PeloPlan Calendar & Modals */
 .fc-list-event-time {
   display: none;
