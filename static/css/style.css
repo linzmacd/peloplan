@@ -156,6 +156,17 @@
   box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
   align-items: center;
 }
+.workout-image {
+  position: relative;
+  text-align: center;
+  color: white;
+  font-size: 28px;
+}
+.workout-icon{
+  position: absolute;
+  top: 2px;
+  left: 28px;
+}
 .workout-details {
   text-align: left;
   min-height: 180px;
