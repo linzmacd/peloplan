@@ -6,7 +6,7 @@ from model import connect_to_db
 from jinja2 import StrictUndefined
 from passlib.hash import argon2
 import crud, peloton_api
-from datetime import date
+from datetime import (date, datetime)
 from functools import wraps
 
 
@@ -14,7 +14,10 @@ app = Flask(__name__)
 app.secret_key = 'dev'
 app.jinja_env.undefined = StrictUndefined
 
-
+@app.template_filter('strftime')
+def convert_timestamp(timestamp):
+    date = datetime.fromtimestamp(timestamp)
+    return date.strftime('%B %d, %Y')
 
 # Routes and view functions
 def logged_in(f):
