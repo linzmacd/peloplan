@@ -45,21 +45,38 @@ for (const filterButton of filterButtons) {
     .then((results) => {
       document.querySelector('#filter-page').value = results.page;
       document.querySelector('#filter-page-max').value = results.page_count;
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                    'July', 'August', 'September', 'October', 'November', 'December'];
       const instructors = {}
       for (const instructor of results.instructors) {
         instructors[instructor.id] = instructor.name;
       };
       document.querySelector('#query-results').innerHTML = ''      
       for (const result of results.data) {
+        if (result.is_favorite == true && result.total_user_workouts > 0) {
+          result.icon = '<i class="bi bi-bookmark-check-fill"></i>'
+        } else if (result.is_favorite == true) {
+          result.icon = '<i class="bi bi-bookmark-fill"></i>'
+        } else if (result.total_user_workouts > 0) {
+          result.icon = '<i class="bi bi-bookmark-check"></i>'
+        } else {
+          result.icon = '<i class="bi bi-bookmark"></i>'
+        }
+        const airtime = new Date(result.original_air_time * 1000);
+        const month = months[airtime.getMonth()];
+        const date = airtime.getDate();
+        const year = airtime.getFullYear();
+        const formatted_airtime = `${month} ${date}, ${year}`
         document.querySelector('#query-results').insertAdjacentHTML('beforeend', `
         <div class='row workout-box'>
-          <div class='col-4'>
+          <div class='col-4 workout-image'>
             <img src="${result.image_url}" width=300px>
+            <div class='workout-icon'>${result.icon}</div>
           </div>
           <div class='col-5 workout-details'>
             <div class='row workout-header'>
               <span id='workout-title'>${result.title}</span><br/>
-              <span id='workout-inst'>${instructors[result.instructor_id]}</span><br/>
+              <span id='workout-inst'>${instructors[result.instructor_id]} - ${formatted_airtime} </span><br/>
             </div>
             <span id='workout-desc'>${result.description}</span><br/>
           </div>
@@ -130,21 +147,38 @@ for (const changePageButton of changePageButtons) {
     .then((results) => {
       document.querySelector('#filter-page').value = results.page;
       document.querySelector('#filter-page-max').value = results.page_count;
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+      'July', 'August', 'September', 'October', 'November', 'December'];
       const instructors = {}
       for (const instructor of results.instructors) {
         instructors[instructor.id] = instructor.name;
       };
       document.querySelector('#query-results').innerHTML = '';
       for (const result of results.data) {
+        if (result.is_favorite == true && result.total_user_workouts > 0) {
+          result.icon = '<i class="bi bi-bookmark-check-fill"></i>'
+        } else if (result.is_favorite == true) {
+          result.icon = '<i class="bi bi-bookmark-fill"></i>'
+        } else if (result.total_user_workouts > 0) {
+          result.icon = '<i class="bi bi-bookmark-check"></i>'
+        } else {
+          result.icon = '<i class="bi bi-bookmark"></i>'
+        }
+        const airtime = new Date(result.original_air_time * 1000);
+        const month = months[airtime.getMonth()];
+        const date = airtime.getDate();
+        const year = airtime.getFullYear();
+        const formatted_airtime = `${month} ${date}, ${year}`
         document.querySelector('#query-results').insertAdjacentHTML('beforeend', `
         <div class='row workout-box'>
-          <div class='col-4'>
+          <div class='col-4 workout-image'>
             <img src="${result.image_url}" width=300px>
+            <div class='workout-icon'>${result.icon}</div>
           </div>
           <div class='col-5 workout-details'>
             <div class='row workout-header'>
               <span id='workout-title'>${result.title}</span><br/>
-              <span id='workout-inst'>${instructors[result.instructor_id]}</span><br/>
+              <span id='workout-inst'>${instructors[result.instructor_id]} - ${formatted_airtime}</span><br/>
             </div>
             <span id='workout-desc'>${result.description}</span><br/>
           </div>

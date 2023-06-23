@@ -63,6 +63,7 @@
           Sort By:<br>
           <select name='duration' id='filter-sortby'>
             <option value='original_air_time'>Newest</option>
+            <option value='oldest'>Oldest</option>
             <option value='top_rated'>Top Rated</option>
             <option value='popularity'>Most Popular</option>
             <!-- <option value='trending'>Trending</option> -->
@@ -79,15 +80,24 @@
       <div id='query-results'>
         {% for result in results['data'] %}
         <div class='row workout-box'>
-          <div class='col-4'>
+          <div class='col-4 workout-image'>
             <img src="{{ result['image_url'] }}" width=300px>
+            {% if result['is_favorite'] == true and result['total_user_workouts'] > 0 %}
+              <div class='workout-icon'><i class="bi bi-bookmark-check-fill"></i></div>
+            {% elif result['is_favorite'] == true %}
+              <div class='workout-icon'><i class="bi bi-bookmark-fill"></i></div>
+            {% elif result['total_user_workouts'] > 0 %}
+              <div class='workout-icon'><i class="bi bi-bookmark-check"></i></div>
+            {% else %}
+              <div class='workout-icon'><i class="bi bi-bookmark"></i></div>
+            {% endif %}
           </div>
           <div class='col-5 workout-details'>
             <div class='row workout-header'>
               <span id='workout-title'>{{ result['title'] }}</span><br/>
               {% for instructor in results['instructors'] %}
                 {% if instructor['id'] == result['instructor_id'] %}
-                  <span id='workout-inst'>{{ instructor['name'] }}</span><br/>
+                  <span id='workout-inst'>{{ instructor['name'] }} - {{ result['original_air_time']|strftime }}</span><br/>
                 {% endif %}
               {% endfor %}
             </div>
