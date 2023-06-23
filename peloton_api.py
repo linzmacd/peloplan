@@ -167,6 +167,11 @@ def query_database(discipline, duration=None, instructor=None,
     if params['sort_by'] == 'easiest':
         params['sort_by'] = 'difficulty'
         params['desc'] = False
+
+    # if sorting by oldest, correct params
+    if params['sort_by'] == 'oldest':
+        params['sort_by'] = 'original_air_time'
+        params['desc'] = False
     
     api_url = BASE_URL + endpoint
     response = requests.get(api_url, params=params, cookies=session['cookie'])
