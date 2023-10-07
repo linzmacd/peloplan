@@ -37,6 +37,12 @@ def homepage():
     return render_template('homepage.html')
 
 
+@app.route('/sign-up')
+def new_user():
+    '''Renders PeloPlan sign-up page.'''
+    return render_template('sign-up.html')
+
+
 @app.route('/create-account', methods=['POST'])
 def create_account():
     '''Creates new PeloPlan user account.'''

@@ -1,0 +1,72 @@
+{% extends 'base-homepage.html' %}
+
+{% block title %}PeloPlan{% endblock %}
+
+{% block body %}
+<div class='row'>
+  <div class='column'>
+    <br>
+    <h1>Welcome to PeloPlan!</h1>
+    <h4 class='demo-video'>Watch <a href="https://youtu.be/wR8js2b2S1I">DEMO</a> on YouTube</h4>
+    <br>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-4 offset-4'>
+    <div class='login-box'>
+      <form action='/create-account' method='POST'>
+        <div class='row login-header'>
+          <h2>Create Account</h2>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>First Name: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='text' name='fname'>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>Last Name: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='text' name='lname'>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>Email: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='email' name='email' pattern='\S+@\S+\.\S+' required>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>Password*: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='password' name='password' required>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-4' align='right'>
+            <p>Confirm: </p>
+          </div>
+          <div class='col-8' align='left'>
+            <input type='password' name='confirm' required>
+          </div>
+        </div>
+        <div class='row login-submit'>
+          <p><input type='submit' class='rb'></p>
+        </div>
+        <div class='row peloton-blurb'>
+          <p>* This password is just for PeloPlan and does not need to match your Peloton password.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  
+{% endblock %}
