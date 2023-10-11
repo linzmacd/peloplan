@@ -465,7 +465,8 @@ def sync_with_peloton_csv(user_id):
         else:
             metrics_csv = metrics_list[i]
             add_metrics_csv(completed_id, metrics_csv)
-            workout_date = datetime.fromtimestamp(workout['created']).strftime('%Y-%m-%d')
+            date_csv = metrics_csv[0]
+            workout_date = date_csv[:10]
             workout_type = workout['workout_type']
             # if workout is a class or scenic workout
             if workout_type == 'class' or workout_type == 'scenic':
@@ -640,7 +641,8 @@ def full_sync_with_peloton_csv(user_id):
         else:
             metrics_csv = metrics_list[i]
             add_metrics_csv(completed_id, metrics_csv)
-            workout_date = datetime.fromtimestamp(workout['created']).strftime('%Y-%m-%d')
+            date_csv = metrics_csv[0]
+            workout_date = date_csv[:10]
             workout_type = workout['workout_type']
             # if workout is a class or scenic workout
             if workout_type == 'class' or workout_type == 'scenic':

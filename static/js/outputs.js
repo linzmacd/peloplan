@@ -56,8 +56,10 @@ fetch('/get-outputs')
         tooltip: {
           callbacks: {
             label: function(content) {
-              const date = new Date(content.raw.x).toLocaleDateString('en-us', {year:"numeric", month:"short", day:"numeric"})
-              const tooltip = [`${content.dataset.label}`]
+              let date = new Date(content.raw.x)
+              date.setDate(date.getDate() + 1);
+              date = date.toLocaleDateString('en-us', {year:"numeric", month:"short", day:"numeric"});
+              const tooltip = [`${content.dataset.label}`];
               tooltip.push([`${date}`]);
               tooltip.push([`Output: ${content.raw.y} KJ`]);
               return tooltip;
