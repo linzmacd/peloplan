@@ -54,12 +54,18 @@ document.addEventListener('DOMContentLoaded', function() {
           let deleteRangeModal = new bootstrap.Modal(document.getElementById('delete-range-modal'));
           deleteRangeModal.show();
         }
+      },
+      refresh: {
+        text: 'refresh',
+        click: function() {
+          window.location.href = '/peloton-sync'
+        }
       }
     },
     headerToolbar: {
       left: 'save load delete', // 'dayGridMonth dayGridWeek listWeek',
       center: 'title',
-      right: 'today prev,next'
+      right: 'refresh today prev,next'
     },
     dateClick: function(info) {
       const workout_date = document.querySelector('#modal-workout-date').value = info.dateStr;
